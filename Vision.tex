@@ -3,6 +3,8 @@
 
 % Preamble
 \documentclass[11pt]{article}
+\usepackage{hyperref}
+\usepackage{natbib}
 
 
 
@@ -44,7 +46,7 @@
 
     Om dit onderzoek te definiëren zullen wij uit gaan van de volgende onderzoekshoofdvraag:\\
 
-    \textbf{Hoofdvraag} \hspace{5} \emph{Welke computer methoden op basis van computer vision zonder gebruik van netwerkconnectiviteit high
+    \textbf{Hoofdvraag} \hspace{5pt} \emph{Welke computer methoden op basis van computer vision zonder gebruik van netwerkconnectiviteit high
     performance hardware bestaan er waarmee je pijn kan kwantificeren in de context van een embedded systeem?}
 
     \bigskip
@@ -87,27 +89,98 @@
     \section{Uitvoering}
     Voor deelvraag 1 zullen wij een cross-sectioneel onderzoek uitvoeren.
     Vooraf bepalen wij waaraan zo een algoritme moet voldoen, en stellen hier metrics voor op.
-    Vervolgens passenwij deze metrics toe op alle algoritmes, om zo de beste optie te kunnen vinden.
+    Vervolgens passen wij deze metrics toe op alle algoritmes, om zo de beste optie te kunnen vinden.
+
     Voor deelvraag 2 doen wij deskresearch op basis van de bezochte methoden.
     Wij interpreteren uit de methode hoeveel tijd er minimaal nodig is om pijn te detecteren, en vergelijken deze tijden.
-    Voor deelvraag 3 doen wij ook deskresearch, maar hier kijken wij naar de gebruiktecomputerkracht van een methode.
-    Op basis van een gegeven testopzet van een onderzoekschatten wij de benodigde geheugenruimte en processorkracht in.
-    Bij het beantwoorden van deelvraag 4 maken wij deels gebruik van de resultaten vandeelvraag 3.
+
+    Voor deelvraag 3 doen wij ook deskresearch, maar hier kijken wij naar de gebruikte computerkracht van een methode.
+    Op basis van een gegeven testopzet van een onderzoek schatten wij de benodigde geheugenruimte en processorkracht in.
+
+    Bij het beantwoorden van deelvraag 4 maken wij deels gebruik van de resultaten van deelvraag 3.
     De hardware-benodigdheden limiteren namelijk ook de camera.
-    Een cameragebruiken met een hogere resolutie dan het systeem aankan heeft namelijk geen zin.
-    Verdervergelijken wij bestaande onderzoeken over camerakeuze in Vision systemen.Voor deelvraag 4 doen wij experimenteel onderzoek.
-    Wij testen onze implementatie vanpijnherkenning meerdere keren op dezelfde dataset, terwijl wij de analysetijd per framesteeds aanpassen.
-    Wij vergelijken hoe goed de accuraatheid van de implementatie was perinstelling van de analysetijd.
+    Een camera gebruiken met een hogere resolutie dan het systeem aan kan heeft namelijk geen zin.
+    Verder vergelijken wij bestaande onderzoeken over camerakeuze in Vision systemen.
+
+    Voor deelvraag 4 doen wij experimenteel onderzoek.
+    Wij testen onze implementatie van pijnherkenning meerdere keren op dezelfde dataset, terwijl wij de analysetijd per frame steeds aanpassen.
+    Wij vergelijken hoe goed de accuraatheid van de implementatie was per instelling van de analysetijd.
+
     Deelvraag 5 is een deskresearch.
-    Wij onderzoeken en beschrijven bestaandeimplementaties van vision-pijnmeting algoritmen.
+    Wij onderzoeken en beschrijven bestaande implementaties van vision-pijnmeting algoritmen.
+
     Voor deelvraag 6 doen wij experimenteel onderzoek.
-    Door meerdere implementaties tevergelijken, kunnen wij de maximale bereikbare waarden ervan vergelijken.
+    Door meerdere implementaties te vergelijken, kunnen wij de maximale bereikbare waarden ervan vergelijken.
 
 
     \section{Resultaten}
 
+    \subsection{Deelvraag 1}
+    \emph{Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?}
+
+    Wij hebben een aantal velden opgesteld die wij per methode hebben onderzocht. De volgende resultaten zijn hieruit gekomen
+
+    \subsubsection{Methode 1}
+    \emph{\citet{werner2014automatic} Automatic pain recognition from video and biomedical signals}
+
+    \paragraph{Korte Omschrijving}
+    Het paper omschrijft een bredere methode, maar wij leggen de focus op het gedeelte vision.
+    Deze methode detecteert pijn door te kijken naar de positie van bepaalde gezichtseigenschappen ten opzichte van elkaar.
+    Zo kan pijn zich bijvoorbeeld uiten in een “samengetrokken” gezicht.
+
+    \paragraph{Van welk principe maakt het gebruik?}
+    Relationele positie van gezichtseigenschappen
+
+    \paragraph{Geschatte piek-geheugengebruik per meting}
+    Wij gaan uit van een ruime minimum voor gezichtsdetectie.
+    Gezichtsdetectie en herkenning functioneren beduidend minder onder een resolutie van 50x50 pixels \citet{boom2006effect}.
+    Hier gaan wij dan ook vanuit bij het geheugengebruik.
+    Een afbeelding van 50x50 gebruikt +- 7.5kB in ruimte.
+
+    Methoden van facedetection zijn ons niet bekend, hierom is dit moeilijk in te schatten.
+    Ervanuitgaande dat er convolutie-operaties uitgevoerd worden op de afbeelding zal de afbeelding hoogst waarschijnlijk op momenten meerdere keren in het geheugen moeten bestaand.
+    Hiernaast moet de draaiende programmacode, en eventuele image kernels toegevoegd worden.
+    In piek zal dit programma minimaal 50 kB geheugen gebruiken, maar naar alle waarschijnlijkheid meer.
+
+    \paragraph{Geschatte tijdsduur voor 1 conclusie}
+    Wij denken dat er minimaal 2 metingen gedaan moeten worden.
+    Dit omdat het gezicht vergeleken moet worden, en de samentrekking van het gezicht ten opzichte van de eerste meting bepaald moet worden.
+
+    Op een adequate computer hoeft een meting niet veel langer te duren dan 0,1 seconde.
+    Twee metingen zouden dan zo’n 0.2 seconden duren.
+
+    \paragraph{Embedded capaciteit}
+    Zoals wij al enigszins hadden verwacht is het niet redelijkerwijs mogelijk dit te draaien op een Arduino.
+    Dit is voornamelijk omdat het piek-geheugengebruik te groot is hiervoor.
+    Wel is dit prima mogelijk om te draaien op een Raspberry Pi of een mini-pc.
+
+    \paragraph{Maximale geschatte effectieve afstand}
+    Dit is voornamelijk afhankelijk van de tijd die wij besteden aan het herkennen.
+    In combinatie met een camera met een hoge resolutie kunnen afstanden van vele meters gehaald worden (uitgaande van een minimum gezichtsgrootte van 50pxx50px.
+    Hiervoor zou een face detection algoritme wel erg vaak/erg precies uitgevoerd worden, wat de verwerkingstijd flink vergroot.
+    De maximale afstand is in dit geval dus afhankelijk van de maximale verwerkingstijd
+
+    \paragraph{Kosten vereiste specifieke apparatuur}
+    Voor deze methode is alleen een (mini)-pc en een camera vereist. Een (minimale) combinatie van een Raspberry Pi (€40) en een standaard webcam(€30) zou ongeveer €70,- kosten.
+
+    \paragraph{Haalbaarheid}
+    Wij denken dat deze methode voor onze scope haalbaar is, met een paar aanpassingen:
+    \begin{itemize}
+        \item Deze methode projecteert gezichtseigenschappen op een 3d-model van een gezicht. Hier hebben wij noch ervaring, noch tijd voor om uit te werken.
+        Om dit te vermijden zouden wij de aanname doen dat iemand recht in de camera kijkt.
+        Zo kunnen wij toch met zekerheid afstanden tussen gezichtseigenschappen meten.
+        \item Zoals eerder aangegeven richten wij ons enkel op het vision-gedeelte van dit onderzoek, niet op de biomedische sensoren.
+    \end{itemize}
+
+    \paragraph{Mogelijke implementatie}
+    Wij maken gebruik van DLib, een c++ library waar een methode voor facial feature detection in opgenomen is.
+    Uit een eerste foto/meting extraheren wij een aantal afstanden tussen bepaalde gezichtskenmerken, en slaan deze op.
+    Hierna doen wij steeds opnieuw metingen en vergelijken dit met de oorspronkelijke afstandsmetingen,
+    hierbij kijkend naar de specifieke veranderingen zoals genoteerd in de onderzochte papers.
+
 
     \section{Conclusie en Discussie}
+    Test \citet{werner2014automatic}
 
 
     \section{Evaluatie}
@@ -125,7 +198,10 @@
     \section{Bijlagen}
 
 
-    \section{Referenties}
 
+    \bibliographystyle{apalike}
+    \bibliography{Bibliography/Main}
 
 \end{document}
+
+
