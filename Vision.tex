@@ -65,8 +65,7 @@
 
 
     \section{Literatuurverkenning}
-    In dit hoofdstuk verkennen we de onderzochte literatuur.
-    Hierbij beschrijven wij per stuk wat wij verwachten hieruit te halen, of hoe dit ons heeft geholpen met onze onderzoeksvragen.
+    In dit hoofdstuk verkennen we de te onderzoeken literatuur. Hierbij beschrijven wij welke informatie wij verwachten hieruit te halen.
 
 
     \section{Probleemstelling}
@@ -81,9 +80,46 @@
 
 
     \section{Theorie en hypothese}
+    De hoofdvraag van dit onderzoek vergelijkt methoden die wij nog niet kennen voor het onderzoek. Hierom kunnen wij geen hypothese stellen voor de hoofdvraag.
+    Wel kunnen wij een set kleinere hypotheses stellen, betreffende enkele deelvragen.
+
+    \paragraph{\hyperref[itm:dv1]{Deelvraag 1}}
+    Van wat wij zelf weten van pijndetectie en herkenning, is dat dit een moeilijk onderwerp is.
+    Ondanks dat er universele uitingen van pijn zijn (zoals auw zeggen, en een vertrokken gezicht), is het moeilijk om vast te stellen hoe veel pijn iemand heeft.
+    Doktoren vragen hierom dan ook vaak aan mensen om hun pijn een cijfer te geven.
+
+    Onze hypothese voor deze deelvraag is dan ook:  \emph{Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk}
+
+    \paragraph{\hyperref[itm:dv3]{Deelvraag 3}}
+    Wij verwachten dat de belangrijkste vereiste van een systeem een minimale hoeveelheid werkgeheugen is.
+    Omdat er geen directe deadline is voor een berekening, kan een processor hier langer over doen, maar als het geheugen niet toereikend is, kan een afbeelding niet opgeslagen worden voor verwerking.
+
+    Omdat microcontrollers vaak niet meer dan 50kB werkgeheugen hebben, verwachten wij dat de meesten geen Vision algoritmes kunnen draaien.
+    De grootste limiterende factor hiervoor is dat een 16 bits processor niet meer dan +- 131 kB aan kan.
+    Extern geheugen kan hierbij dus ook niet extreem veel toevoegen, aangezien dit niet kan worden geadresseerd.
+
+    Onze hypothese is daarom: \emph{Voor een Vision-gebaseerd pijnmetingsalgoritme is een embedded systeem nodig wat minimaal een 32 bits processor heeft.}
+
+    \paragraph{\hyperref[itm:dv4]{Deelvraag 4}}
+    Bij de vision algoritmes waar wij tot nu toe in aanraking zijn geweest (Gezichtsdetectie), was de uitkomst gebaseerd op een vaste set handelingen.
+    Omdat deze handelingen niet afhankelijk zijn van entropie, was het resultaat altijd hetzelfde.
+    Wij denken dat de handelingen voor pijndetectie op dezelfde manier zullen werken, aangezien deze ook te maken zullen hebben met het detecteren van gezichtskenmerken.
+
+    Voor deze deelvraag stellen wij dan ook de hypothese: \emph{Het langer analyseren van een videoframe zal geen accuratere resultaten geven bij een pijnmetingsalgoritme op basis van computer vision}
+
+    \paragraph{\hyperref[itm:dv5]{Deelvraag 5}}
+    Computer Vision algoritmes zijn hevig afhankelijk van detectie van kleuren, contrasten en randen.
+    Omdat de verwerking hiervan afhankelijk zijn van het kleurpalet van de gebruikte camera, denken wij dat er camera's zullen zijn die specifiek gericht zijn op Computer Vision.
+    Mogelijk gebruiken deze camera's geen RGB, maar bijvoorbeeld een aRGB kleurenschema.
+
+    Wij stellen hiervoor de hypothese: \emph{Er zijn camera's op de markt beschikbaar die specifiek gericht zijn op Computer Vision algoritmes}
 
 
     \section{Begrippenlijst}
+    \begin{tabular}{p{10em} p{21em}}
+        \textbf{Computer Vision} & Een algemene term voor algoritmes die gebruik maken van camerabeelden, en hier conclusies uit trekken\\
+
+    \end{tabular}
 
 
     \section{Uitvoering}
@@ -91,7 +127,7 @@
     Voor \emph{\hyperref[itm:dv1]{deelvraag 1}} tot en met \emph{\hyperref[itm:dv4]{deelvraag 4}} zullen wij een literatuuronderzoek
     verrichten naar methoden van pijndetectie door middel van Vision.
     Hierbij zullen wij per methode de deelvragen beantwoorden, om zo uiteindelijk een conclusie te kunnen trekken over
-    de meest gescchikte methode(n).
+    de meest geschikte methode(n).
     Het is belangrijk om hierbij te vermelden dat het aangeven van de hardware-vereisten
     zal gebeuren op basis van een schatting.
     Hierbij kijken we vooral naar het geheugengebruik van de methode,
@@ -109,13 +145,12 @@
 
     \section{Resultaten}
 
-
-
     \subsection{Onderzoek methoden pain detection}
 
     \subsubsection{Methode 1}
 
-    \emph{\citet{werner2014automatic} Automatic pain recognition from video and biomedical signals}
+    \emph{\citet{werner2014automatic}} Automatic pain recognition from video and biomedical signals\\
+    \emph{\citet{prkachin1992consistency}} The consistency of facial expressions of pain: a comparison across modalities\\
     Deze methode combineert het gebruik van Vision algoritmen, met het meten van biomedische data door middel van sensoren.
     Wij zullen hier alleen kijken naar het gedeelte van de methode met betrekking tot Vision.
 
@@ -155,6 +190,7 @@
     \section{Bijlagen}
 
     \subsection{Invullingen onderzoek}
+
     \subsubsection{Methode 1}
     \emph{\citet{werner2014automatic} Automatic pain recognition from video and biomedical signals}
 
