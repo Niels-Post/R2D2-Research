@@ -54,13 +54,13 @@
     Deze hoofdvraag verdelen wij in de volgende 7 deelvragen:
 
     \begin{enumerate}
-        \item \label{itm:dv1} Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?
-        \item \label{itm:dv2} Hoeveel foto’s per tijdseenheid moeten we minimaal verwerken om zeker te zijn dat we een valide uitspraak kunnen doen over het pijnniveau dat iemand ervaart?
-        \item \label{itm:dv3} Wat zijn de minimale hardwarevereisten van een systeem dat pijnmetingen door middel van Computer Vision uitvoert?
-        \item \label{itm:dv4} Volgt er een toename in accuraatheid uit het langer analyseren van een frame?
-        \item \label{itm:dv5} Wat is de beste camera voor het toepassen van Vision algoritmes die verkrijgbaar is op de markt?
-        \item \label{itm:dv6} Welke bestaande implementaties van een pijnmeting algoritme zijn er, en wat zijn de gebruiksrechten hiervan?
-        \item \label{itm:dv7} Wat is de maximaal bereikbare accuraatheid en snelheid bij gebruik van boven onderzochte methoden?
+        \item Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?
+        \item Hoeveel foto’s per tijdseenheid moeten we minimaal verwerken om zeker te zijn dat we een valide uitspraak kunnen doen over het pijnniveau dat iemand ervaart?
+        \item Wat zijn de minimale hardwarevereisten van een systeem dat pijnmetingen door middel van Computer Vision uitvoert?
+        \item Wat is de beste camera voor het toepassen van Vision algoritmes die verkrijgbaar is op de markt?
+        \item Volgt er een toename in accuraatheid uit het langer analyseren van een frame?
+        \item Welke bestaande implementaties van een pijnmeting algoritme zijn er, en wat zijn de gebruiksrechten hiervan?
+        \item Wat is de maximaal bereikbare accuraatheid en snelheid bij gebruik van boven onderzochte methoden?
     \end{enumerate}
 
 
@@ -71,7 +71,7 @@
 
     \section{Probleemstelling}
     Voor doktoren is het lastig om een objectief pijn vast te stellen.
-    Vaak moet een patiënt zelf een getal tussen de 1 en de 10 geven voor zijn pijn.
+    Vaak moet een patiënt zelfeen getal tussen de 1 en de 10 geven voor zijn pijn.
     Echter is deze manier van pijn inschatten niet erg objectief, daarnaast is het niet
     altijd mogelijk met de patiënt te communiceren.
     In rampscenario’s zijn er bijvoorbeeld te veel slachtoffers om aan iedereen te vragen hoeveel pijn hij voelt.
@@ -87,21 +87,27 @@
 
 
     \section{Uitvoering}
+    Voor deelvraag 1 zullen wij een cross-sectioneel onderzoek uitvoeren.
+    Vooraf bepalen wij waaraan zo een algoritme moet voldoen, en stellen hier metrics voor op.
+    Vervolgens passen wij deze metrics toe op alle algoritmes, om zo de beste optie te kunnen vinden.
 
-    Voor \emph{\hyperref[itm:dv1]{deelvraag 1}} tot en met \emph{\hyperref[itm:dv4]{deelvraag 4}} zullen wij een literatuuronderzoek
-    verrichten naar methoden van pijndetectie door middel van Vision.
-    Hierbij zullen wij per methode de deelvragen beantwoorden, om zo uiteindelijk een conclusie te kunnen trekken over
-    de meest gescchikte methode(n).
-    Het is belangrijk om hierbij te vermelden dat het aangeven van de hardware-vereisten
-    zal gebeuren op basis van een schatting.
-    Hierbij kijken we vooral naar het geheugengebruik van de methode,
-    aangezien dit de meest limiterende factor is van een embedded systeem.
+    Voor deelvraag 2 doen wij deskresearch op basis van de bezochte methoden.
+    Wij interpreteren uit de methode hoeveel tijd er minimaal nodig is om pijn te detecteren, en vergelijken deze tijden.
 
+    Voor deelvraag 3 doen wij ook deskresearch, maar hier kijken wij naar de gebruikte computerkracht van een methode.
+    Op basis van een gegeven testopzet van een onderzoek schatten wij de benodigde geheugenruimte en processorkracht in.
 
-    Voor \emph{\hyperref[itm:dv1]{deelvraag 5}} doen wij een vergelijkend onderzoek voor camera's.
-    We onderzoeken het bestaan van camera's specifiek voor vision, en noteren specificaties van deze camera's.
-    Bij dit onderzoek betrekken wij ook een webcam en een actiecamera.
+    Bij het beantwoorden van deelvraag 4 maken wij deels gebruik van de resultaten van deelvraag 3.
+    De hardware-benodigdheden limiteren namelijk ook de camera.
+    Een camera gebruiken met een hogere resolutie dan het systeem aan kan heeft namelijk geen zin.
+    Verder vergelijken wij bestaande onderzoeken over camerakeuze in Vision systemen.
 
+    Voor deelvraag 4 doen wij experimenteel onderzoek.
+    Wij testen onze implementatie van pijnherkenning meerdere keren op dezelfde dataset, terwijl wij de analysetijd per frame steeds aanpassen.
+    Wij vergelijken hoe goed de accuraatheid van de implementatie was per instelling van de analysetijd.
+
+    Deelvraag 5 is een deskresearch.
+    Wij onderzoeken en beschrijven bestaande implementaties van vision-pijnmeting algoritmen.
 
     Voor deelvraag 6 doen wij experimenteel onderzoek.
     Door meerdere implementaties te vergelijken, kunnen wij de maximale bereikbare waarden ervan vergelijken.
@@ -109,52 +115,11 @@
 
     \section{Resultaten}
 
+    \subsection{Deelvraag 1}
+    \emph{Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?}
 
+    Wij hebben een aantal velden opgesteld die wij per methode hebben onderzocht. De volgende resultaten zijn hieruit gekomen
 
-    \subsection{Onderzoek methoden pain detection}
-
-    \subsubsection{Methode 1}
-
-    \emph{\citet{werner2014automatic} Automatic pain recognition from video and biomedical signals}
-    Deze methode combineert het gebruik van Vision algoritmen, met het meten van biomedische data door middel van sensoren.
-    Wij zullen hier alleen kijken naar het gedeelte van de methode met betrekking tot Vision.
-
-    \paragraph{Aantal foto's per tijdseenheid}
-    Deze methode maakt gebruik van veranderingen in gezichtsafstanden ten opzichte van een baseline, en kan dus met 2 foto's een resultaat geven.
-    Deze foto's hoeven dan ook niet extreem snel verwerkt te worden, en het systeem mag hier een aantal seconden over doen.
-
-    \paragraph{Hardware-vereisten}
-    De vereisten voor de berekening zelf zijn weinig: Er moeten slechts een aantal afstanden van coordinaten vergeleken worden.
-    Dit zullen de meeste microcontrollers ook kunnen.
-    Het probleem zit hierom meer in de methode van facial feature detection.
-    Afhankelijk van de gebruikte methode, moet de processor mogelijk meerdere kleurafbeeldingen opslaan, of zware convoluties doen.
-    Hierom verwachten wij dat deze methode niet gedraaid kan worden op een microcontroller.
-
-    \paragraph{Langer analyseren frame}
-    Of pijn accurater gedetecteerd kan worden is grotendeels afhankelijk van de gebruikte methode voor facial feature recognition.
-    Het langer analyseren kan wel effect hebben op de afstand waarop pijn gedetecteerd kan worden.
-    Dit zou mogelijk zijn door de afbeelding op volledige resolutie te verwerken, en niet omlaag te schalen.
-
-
-    \section{Conclusie en Discussie}
-    Test \citet{werner2014automatic}
-
-
-    \section{Evaluatie}
-
-
-    \section{Aanbevelingen}
-
-
-    \section{Suggesties voor verder onderzoek}
-
-
-    \section{Literatuur}
-
-
-    \section{Bijlagen}
-
-    \subsection{Invullingen onderzoek}
     \subsubsection{Methode 1}
     \emph{\citet{werner2014automatic} Automatic pain recognition from video and biomedical signals}
 
@@ -196,8 +161,7 @@
     De maximale afstand is in dit geval dus afhankelijk van de maximale verwerkingstijd
 
     \paragraph{Kosten vereiste specifieke apparatuur}
-    Voor deze methode is alleen een (mini)-pc en een camera vereist.
-    Een (minimale) combinatie van een Raspberry Pi (€40) en een standaard webcam(€30) zou ongeveer €70,- kosten.
+    Voor deze methode is alleen een (mini)-pc en een camera vereist. Een (minimale) combinatie van een Raspberry Pi (€40) en een standaard webcam(€30) zou ongeveer €70,- kosten.
 
     \paragraph{Haalbaarheid}
     Wij denken dat deze methode voor onze scope haalbaar is, met een paar aanpassingen:
@@ -214,7 +178,62 @@
     Hierna doen wij steeds opnieuw metingen en vergelijken dit met de oorspronkelijke afstandsmetingen,
     hierbij kijkend naar de specifieke veranderingen zoals genoteerd in de onderzochte papers.
 
+    \subsubsection{Methode 2}
+    \emph{\citet{Performance_Of_Optical_Flow_Techniques} Performance Of Optical Flow Techniques.}\\
+    \emph{\citet{An_Efficient_Algorithm_for_Motion_Detection_Based_Facial_Expression_Recognition_using_Optical_Flow} An Efficient Algorithm for Motion Detection Based Facial Expression Recognition using Optical Flow.}\\
+    \emph{\citet{Facial_expression_change_detection_algorithm_using_optical_flow_technique} Facial expression change detection algorithm using optical flow technique.}\\
 
+    \paragraph{Korte Omschrijving}
+    Methode 2 draait om de zogenoemde techniek optical flow. 
+    Dit is een veel gebruikte techniek om verandering tussen frame in beeld te brengen en te kwantificeren.   
+
+    \paragraph{Van welk principe maakt het gebruik?}
+    Deze techniek kijkt naar verschillen tussen frames en probeert de richting van verandering vast te stellen. 
+    Er wordt over het gezicht gekeken naar verandering, welke uitgedrukt worden in vectoren.
+    Deze worden dan gematcht tegen een database met de verschillende emoties.
+    Door dat je verandering in mensen hun gezicht registreerd 
+
+    \paragraph{Geschatte piek-geheugengebruik per meting}
+
+
+    \paragraph{Geschatte tijdsduur voor 1 conclusie}
+    De techniek kan met drie frames al een nauwkurigheid van 83\% opleveren volgens \emph{\citet{An_Efficient_Algorithm_for_Motion_Detection_Based_Facial_Expression_Recognition_using_Optical_Flow}}. 
+    Deze drie frames zouden echter wel de verschillende staten van de emotie die uitgedrukt worden moeten in beeld moeten brengen.
+    De 
+
+    \paragraph{Embedded capaciteit}
+
+    \paragraph{Maximale geschatte effectieve afstand}
+
+    \paragraph{Kosten vereiste specifieke apparatuur}
+
+    \paragraph{Haalbaarheid}
+    Wij denken dat deze methode voor onze scope haalbaar is, met een paar aanpassingen:
+    \begin{itemize}
+        \item 
+        \item 
+    \end{itemize}
+
+    \paragraph{Mogelijke implementatie}
+
+
+    \section{Conclusie en Discussie}
+    Test \citet{werner2014automatic}
+
+
+    \section{Evaluatie}
+
+
+    \section{Aanbevelingen}
+
+
+    \section{Suggesties voor verder onderzoek}
+
+
+    \section{Literatuur}
+
+
+    \section{Bijlagen}
 
     \bibliographystyle{apalike}
     \bibliography{Bibliography/Main}
