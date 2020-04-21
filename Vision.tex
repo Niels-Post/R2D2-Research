@@ -65,8 +65,7 @@
 
 
     \section{Literatuurverkenning}
-    In dit hoofdstuk verkennen we de onderzochte literatuur.
-    Hierbij beschrijven wij per stuk wat wij verwachten hieruit te halen, of hoe dit ons heeft geholpen met onze onderzoeksvragen.
+    In dit hoofdstuk verkennen we de te onderzoeken literatuur. Hierbij beschrijven wij welke informatie wij verwachten hieruit te halen.
 
 
     \section{Probleemstelling}
@@ -81,9 +80,46 @@
 
 
     \section{Theorie en hypothese}
+    De hoofdvraag van dit onderzoek vergelijkt methoden die wij nog niet kennen voor het onderzoek. Hierom kunnen wij geen hypothese stellen voor de hoofdvraag.
+    Wel kunnen wij een set kleinere hypotheses stellen, betreffende enkele deelvragen.
+
+    \paragraph{\hyperref[itm:dv1]{Deelvraag 1}}
+    Van wat wij zelf weten van pijndetectie en herkenning, is dat dit een moeilijk onderwerp is.
+    Ondanks dat er universele uitingen van pijn zijn (zoals auw zeggen, en een vertrokken gezicht), is het moeilijk om vast te stellen hoe veel pijn iemand heeft.
+    Doktoren vragen hierom dan ook vaak aan mensen om hun pijn een cijfer te geven.
+
+    Onze hypothese voor deze deelvraag is dan ook:  \emph{Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk}
+
+    \paragraph{\hyperref[itm:dv3]{Deelvraag 3}}
+    Wij verwachten dat de belangrijkste vereiste van een systeem een minimale hoeveelheid werkgeheugen is.
+    Omdat er geen directe deadline is voor een berekening, kan een processor hier langer over doen, maar als het geheugen niet toereikend is, kan een afbeelding niet opgeslagen worden voor verwerking.
+
+    Omdat microcontrollers vaak niet meer dan 50kB werkgeheugen hebben, verwachten wij dat de meesten geen Vision algoritmes kunnen draaien.
+    De grootste limiterende factor hiervoor is dat een 16 bits processor niet meer dan +- 131 kB aan kan.
+    Extern geheugen kan hierbij dus ook niet extreem veel toevoegen, aangezien dit niet kan worden geadresseerd.
+
+    Onze hypothese is daarom: \emph{Voor een Vision-gebaseerd pijnmetingsalgoritme is een embedded systeem nodig wat minimaal een 32 bits processor heeft.}
+
+    \paragraph{\hyperref[itm:dv4]{Deelvraag 4}}
+    Bij de vision algoritmes waar wij tot nu toe in aanraking zijn geweest (Gezichtsdetectie), was de uitkomst gebaseerd op een vaste set handelingen.
+    Omdat deze handelingen niet afhankelijk zijn van entropie, was het resultaat altijd hetzelfde.
+    Wij denken dat de handelingen voor pijndetectie op dezelfde manier zullen werken, aangezien deze ook te maken zullen hebben met het detecteren van gezichtskenmerken.
+
+    Voor deze deelvraag stellen wij dan ook de hypothese: \emph{Het langer analyseren van een videoframe zal geen accuratere resultaten geven bij een pijnmetingsalgoritme op basis van computer vision}
+
+    \paragraph{\hyperref[itm:dv5]{Deelvraag 5}}
+    Computer Vision algoritmes zijn hevig afhankelijk van detectie van kleuren, contrasten en randen.
+    Omdat de verwerking hiervan afhankelijk zijn van het kleurpalet van de gebruikte camera, denken wij dat er camera's zullen zijn die specifiek gericht zijn op Computer Vision.
+    Mogelijk gebruiken deze camera's geen RGB, maar bijvoorbeeld een aRGB kleurenschema.
+
+    Wij stellen hiervoor de hypothese: \emph{Er zijn camera's op de markt beschikbaar die specifiek gericht zijn op Computer Vision algoritmes}
 
 
     \section{Begrippenlijst}
+    \begin{tabular}{p{10em} p{21em}}
+        \textbf{Computer Vision} & Een algemene term voor algoritmes die gebruik maken van camerabeelden, en hier conclusies uit trekken\\
+
+    \end{tabular}
 
 
     \section{Uitvoering}
@@ -91,8 +127,14 @@
     Vooraf bepalen wij waaraan zo een algoritme moet voldoen, en stellen hier metrics voor op.
     Vervolgens passen wij deze metrics toe op alle algoritmes, om zo de beste optie te kunnen vinden.
 
-    Voor deelvraag 2 doen wij deskresearch op basis van de bezochte methoden.
-    Wij interpreteren uit de methode hoeveel tijd er minimaal nodig is om pijn te detecteren, en vergelijken deze tijden.
+    Voor \emph{\hyperref[itm:dv1]{deelvraag 1}} tot en met \emph{\hyperref[itm:dv4]{deelvraag 4}} zullen wij een literatuuronderzoek
+    verrichten naar methoden van pijndetectie door middel van Vision.
+    Hierbij zullen wij per methode de deelvragen beantwoorden, om zo uiteindelijk een conclusie te kunnen trekken over
+    de meest geschikte methode(n).
+    Het is belangrijk om hierbij te vermelden dat het aangeven van de hardware-vereisten
+    zal gebeuren op basis van een schatting.
+    Hierbij kijken we vooral naar het geheugengebruik van de methode,
+    aangezien dit de meest limiterende factor is van een embedded systeem.
 
     Voor deelvraag 3 doen wij ook deskresearch, maar hier kijken wij naar de gebruikte computerkracht van een methode.
     Op basis van een gegeven testopzet van een onderzoek schatten wij de benodigde geheugenruimte en processorkracht in.
@@ -119,6 +161,51 @@
     \emph{Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?}
 
     Wij hebben een aantal velden opgesteld die wij per methode hebben onderzocht. De volgende resultaten zijn hieruit gekomen
+    \subsection{Onderzoek methoden pain detection}
+
+    \subsubsection{Methode 1}
+
+    \emph{\citet{werner2014automatic}} Automatic pain recognition from video and biomedical signals\\
+    \emph{\citet{prkachin1992consistency}} The consistency of facial expressions of pain: a comparison across modalities\\
+    Deze methode combineert het gebruik van Vision algoritmen, met het meten van biomedische data door middel van sensoren.
+    Wij zullen hier alleen kijken naar het gedeelte van de methode met betrekking tot Vision.
+
+    \paragraph{Aantal foto's per tijdseenheid}
+    Deze methode maakt gebruik van veranderingen in gezichtsafstanden ten opzichte van een baseline, en kan dus met 2 foto's een resultaat geven.
+    Deze foto's hoeven dan ook niet extreem snel verwerkt te worden, en het systeem mag hier een aantal seconden over doen.
+
+    \paragraph{Hardware-vereisten}
+    De vereisten voor de berekening zelf zijn weinig: Er moeten slechts een aantal afstanden van coordinaten vergeleken worden.
+    Dit zullen de meeste microcontrollers ook kunnen.
+    Het probleem zit hierom meer in de methode van facial feature detection.
+    Afhankelijk van de gebruikte methode, moet de processor mogelijk meerdere kleurafbeeldingen opslaan, of zware convoluties doen.
+    Hierom verwachten wij dat deze methode niet gedraaid kan worden op een microcontroller.
+
+    \paragraph{Langer analyseren frame}
+    Of pijn accurater gedetecteerd kan worden is grotendeels afhankelijk van de gebruikte methode voor facial feature recognition.
+    Het langer analyseren kan wel effect hebben op de afstand waarop pijn gedetecteerd kan worden.
+    Dit zou mogelijk zijn door de afbeelding op volledige resolutie te verwerken, en niet omlaag te schalen.
+
+
+    \section{Conclusie en Discussie}
+    Test \citet{werner2014automatic}
+
+
+    \section{Evaluatie}
+
+
+    \section{Aanbevelingen}
+
+
+    \section{Suggesties voor verder onderzoek}
+
+
+    \section{Literatuur}
+
+
+    \section{Bijlagen}
+
+    \subsection{Invullingen onderzoek}
 
     \subsubsection{Methode 1}
     \emph{\citet{werner2014automatic} Automatic pain recognition from video and biomedical signals}
@@ -191,47 +278,65 @@
     Deze techniek kijkt naar verschillen tussen frames en probeert de richting van verandering vast te stellen. 
     Er wordt over het gezicht gekeken naar verandering, welke uitgedrukt worden in vectoren.
     Deze worden dan gematcht tegen een database met de verschillende emoties.
-    Door dat je verandering in mensen hun gezicht registreerd 
+    Door dat je verandering in mensen hun gezicht registreerd/
 
     \paragraph{Geschatte piek-geheugengebruik per meting}
-
+    Gezien de ondergrens 3 frames is voor enige nauwkurigheid zijn de geheugen eisen voor het bewaren van de frames niet groot. Echter is een optical flow model wel een flinke 
 
     \paragraph{Geschatte tijdsduur voor 1 conclusie}
     De techniek kan met drie frames al een nauwkurigheid van 83\% opleveren volgens \emph{\citet{An_Efficient_Algorithm_for_Motion_Detection_Based_Facial_Expression_Recognition_using_Optical_Flow}}. 
     Deze drie frames zouden echter wel de verschillende staten van de emotie die uitgedrukt worden moeten in beeld moeten brengen.
-    De 
+    De geschatte tijdsduur zal dan ook grote deels afhankelijk zijn van de tijd die het kost om deze frames te verzamen.
+    De analysetijd is echter wel relatief lang, niet in de buurt van real time op een embedded systeem, echter is dit geen requirement en dus geen probleem.
 
     \paragraph{Embedded capaciteit}
+    De berekening die uitgevoerd moeten worden zijn een heleboel relatief simpele operaties.
+    Dit levert tijdsproblemen op voor embedded systemen, maar het is zeker niet onmogelijk.
+    De preciece capaciteiten moeten worden vast gesteld met testen maar we hebben vertrouwen dat het mogelijk is om deze module te draaien op een Raspberry Pi.
 
     \paragraph{Maximale geschatte effectieve afstand}
+    Je hebt geen hoge resolutie nodig om de gezichtseigenschappen te kunnen traceren met optical flow. 
+    Om deze methode goed uit te kunnen voeren op een embedded systeem wil je bij voorkeur een volledig gezicht zonder achtergrond.
+    Om dit voor elkaar te krijgen zou je moeten inzoemen op het gezicht. 
+    Op lage kwaliteit cameras levert dit meer ruis op, wat problemen levert in optical flow berekening.
+    De benodigde berekeningen kunnen tot ongeveer 200x200 pixels uitgevoerd worden en met een standaard wide angle camera zou dit tot enkele meters haalbaar moeten zijn.
 
     \paragraph{Kosten vereiste specifieke apparatuur}
+    We hebben hiervoor een camera (20 euro) en Raspberry Pi minimaal model 3B+ (35 euro), maar liever een model 4B (40 euro). 
 
     \paragraph{Haalbaarheid}
-    Wij denken dat deze methode voor onze scope haalbaar is, met een paar aanpassingen:
+    Wij zijn twijfelachtig over de werkelijke Haalbaarheid van deze methode, gezien de complexiteit van implementatie.
+    Het zou haalbaar moeten zijn als we een paar voorwaarden hebben:
     \begin{itemize}
-        \item 
-        \item 
+        \item Goed belichte, hoog contrast en laag ruis input beeld.
+        \item In het input beeld alleen het gezicht met gezichtseigenschappen al getagt.
     \end{itemize}
 
     \paragraph{Mogelijke implementatie}
-
+    Een mogelijke implementatie zou berusten op enige bestaande libaries zoals libd of opencv.
+    Dit omdat de implementatie van deze methode complex is en we het werk dat wij moeten doen zo veel mogelijk willen inperken tot wat nog niet bestaat.
+    Dubbel werk doen is nooit handig, en al helemaal niet als het werk dat je wel moet doen zo complex is.
 
     \section{Conclusie en Discussie}
-    Test \citet{werner2014automatic}
-
+    De indruk die opgewerkt is in dit literatuur onderzoek is dat deze methode complex is in implementatie en eigenlijk niet perfect onze requirements vervult.
+    Onderandere zijn dus meerdere frames van de transistie tussen neutraal en een een expressie nodig om te kunnen vast stellen welke expressie dit is.
+    Alhoewel optical flow technieken goed werken op lage resolutie beelden moeten deze beelden verder van hoge kwaliteit zijn.
+    Ook dit is een min punt van deze aanpak.
 
     \section{Evaluatie}
-
+    Vanwege meerdere minpunten met als belangrijk dat relatieve verschillen gemeten kunnen worden raden we niet aan om deze methode te gebruiken voor ons doeleinde.
 
     \section{Aanbevelingen}
-
+    Onze aanbeveling is om deze methode niet te gebruiken voor pijn detectie en door te zoeken naar een andere, effectievere methode.
 
     \section{Suggesties voor verder onderzoek}
+    Er is nog veel te lezen over optical flow methodes en hoe je deze effectief implementeert. Er is een 
+    \emph{\citet{Readinglist} Reading list}.
+    Hier staan op dit moment 72 artikels in over optical flow technieken.
 
 
     \section{Literatuur}
-
+    
 
     \section{Bijlagen}
 
