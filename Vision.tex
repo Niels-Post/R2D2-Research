@@ -6,6 +6,10 @@
 \usepackage{hyperref}
 \usepackage{natbib}
 
+\usepackage{graphicx}
+\graphicspath{ {./Images/} }
+
+\input{Include/main.tex}
 
 
 \title{Een methode voor pijndetectie door middel van Computer Vision, geörienteerd op embedded systemen}
@@ -14,10 +18,16 @@
 
 % Document
 \begin{document}
-    \maketitle
+
+    \begin{titlepage}
+        \centering
+        \maketitle
+        \includegraphics[height=0.6\textheight]{vision.jpg}
+        \clearpage
+    \end{titlepage}
+
 
     \clearpage
-    \renewcommand{\contentsname}{Inhoudsopgave}
     \tableofcontents
 
     \clearpage
@@ -54,13 +64,13 @@
     Deze hoofdvraag verdelen wij in de volgende 7 deelvragen:
 
     \begin{enumerate}
-        \item Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?
-        \item Hoeveel foto’s per tijdseenheid moeten we minimaal verwerken om zeker te zijn dat we een valide uitspraak kunnen doen over het pijnniveau dat iemand ervaart?
-        \item Wat zijn de minimale hardwarevereisten van een systeem dat pijnmetingen door middel van Computer Vision uitvoert?
-        \item Wat is de beste camera voor het toepassen van Vision algoritmes die verkrijgbaar is op de markt?
-        \item Volgt er een toename in accuraatheid uit het langer analyseren van een frame?
-        \item Welke bestaande implementaties van een pijnmeting algoritme zijn er, en wat zijn de gebruiksrechten hiervan?
-        \item Wat is de maximaal bereikbare accuraatheid en snelheid bij gebruik van boven onderzochte methoden?
+        \item \label{itm:dv1} Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?
+        \item \label{itm:dv2} Hoeveel foto’s per tijdseenheid moeten we minimaal verwerken om zeker te zijn dat we een valide uitspraak kunnen doen over het pijnniveau dat iemand ervaart?
+        \item \label{itm:dv3} Wat zijn de minimale hardwarevereisten van een systeem dat pijnmetingen door middel van Computer Vision uitvoert?
+        \item \label{itm:dv4} Wat is de beste camera voor het toepassen van Vision algoritmes die verkrijgbaar is op de markt?
+        \item \label{itm:dv5} Volgt er een toename in accuraatheid uit het langer analyseren van een frame?
+        \item \label{itm:dv6} Welke bestaande implementaties van een pijnmeting algoritme zijn er, en wat zijn de gebruiksrechten hiervan?
+        \item \label{itm:dv7} Wat is de maximaal bereikbare accuraatheid en snelheid bij gebruik van boven onderzochte methoden?
     \end{enumerate}
 
 
@@ -86,9 +96,16 @@
     \paragraph{\hyperref[itm:dv1]{Deelvraag 1}}
     Van wat wij zelf weten van pijndetectie en herkenning, is dat dit een moeilijk onderwerp is.
     Ondanks dat er universele uitingen van pijn zijn (zoals auw zeggen, en een vertrokken gezicht), is het moeilijk om vast te stellen hoe veel pijn iemand heeft.
-    Doktoren vragen hierom dan ook vaak aan mensen om hun pijn een cijfer te geven.
+    Doktoren vragen hierom dan ook vaak aan mensen om hun pijn een cijfer te geven.\\
 
-    Onze hypothese voor deze deelvraag is dan ook:  \emph{Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk}
+
+    \begin{definition}
+        Hypothese & Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk
+    \end{definition}
+
+%    \begin{tabular}{l p{0.7\textwidth}}
+%        \textbf{Hypothese} & \emph{Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk}
+%    \end{tabular}
 
     \paragraph{\hyperref[itm:dv3]{Deelvraag 3}}
     Wij verwachten dat de belangrijkste vereiste van een systeem een minimale hoeveelheid werkgeheugen is.
@@ -96,37 +113,39 @@
 
     Omdat microcontrollers vaak niet meer dan 50kB werkgeheugen hebben, verwachten wij dat de meesten geen Vision algoritmes kunnen draaien.
     De grootste limiterende factor hiervoor is dat een 16 bits processor niet meer dan +- 131 kB aan kan.
-    Extern geheugen kan hierbij dus ook niet extreem veel toevoegen, aangezien dit niet kan worden geadresseerd.
+    Extern geheugen kan hierbij dus ook niet extreem veel toevoegen, aangezien dit niet kan worden geadresseerd.\\
 
-    Onze hypothese is daarom: \emph{Voor een Vision-gebaseerd pijnmetingsalgoritme is een embedded systeem nodig wat minimaal een 32 bits processor heeft.}
+    \begin{definition}
+        Hypothese & Voor een Vision-gebaseerd pijnmetingsalgoritme is een embedded systeem nodig wat minimaal een 32 bits processor heeft.
+    \end{definition}
 
     \paragraph{\hyperref[itm:dv4]{Deelvraag 4}}
     Bij de vision algoritmes waar wij tot nu toe in aanraking zijn geweest (Gezichtsdetectie), was de uitkomst gebaseerd op een vaste set handelingen.
     Omdat deze handelingen niet afhankelijk zijn van entropie, was het resultaat altijd hetzelfde.
-    Wij denken dat de handelingen voor pijndetectie op dezelfde manier zullen werken, aangezien deze ook te maken zullen hebben met het detecteren van gezichtskenmerken.
+    Wij denken dat de handelingen voor pijndetectie op dezelfde manier zullen werken, aangezien deze ook te maken zullen hebben met het detecteren van gezichtskenmerken.\\
 
-    Voor deze deelvraag stellen wij dan ook de hypothese: \emph{Het langer analyseren van een videoframe zal geen accuratere resultaten geven bij een pijnmetingsalgoritme op basis van computer vision}
+    \begin{definition}
+        Hypothese & Het langer analyseren van een videoframe zal geen accuratere resultaten geven bij een pijnmetingsalgoritme op basis van computer vision
+    \end{definition}
 
     \paragraph{\hyperref[itm:dv5]{Deelvraag 5}}
     Computer Vision algoritmes zijn hevig afhankelijk van detectie van kleuren, contrasten en randen.
     Omdat de verwerking hiervan afhankelijk zijn van het kleurpalet van de gebruikte camera, denken wij dat er camera's zullen zijn die specifiek gericht zijn op Computer Vision.
-    Mogelijk gebruiken deze camera's geen RGB, maar bijvoorbeeld een aRGB kleurenschema.
+    Mogelijk gebruiken deze camera's geen RGB, maar bijvoorbeeld een aRGB kleurenschema.\\
 
-    Wij stellen hiervoor de hypothese: \emph{Er zijn camera's op de markt beschikbaar die specifiek gericht zijn op Computer Vision algoritmes}
+    \begin{definition}
+        Hypothese & Er zijn camera's op de markt beschikbaar die specifiek gericht zijn op Computer Vision algoritmes.
+    \end{definition}
 
 
     \section{Begrippenlijst}
-    \begin{tabular}{p{10em} p{21em}}
-        \textbf{Computer Vision} & Een algemene term voor algoritmes die gebruik maken van camerabeelden, en hier conclusies uit trekken\\
 
-    \end{tabular}
+    \begin{definition}
+        Computer Vision & Een algemene term voor algoritmes die gebruik maken van camerabeelden, en hier conclusies uit trekken
+    \end{definition}
 
 
     \section{Uitvoering}
-    Voor deelvraag 1 zullen wij een cross-sectioneel onderzoek uitvoeren.
-    Vooraf bepalen wij waaraan zo een algoritme moet voldoen, en stellen hier metrics voor op.
-    Vervolgens passen wij deze metrics toe op alle algoritmes, om zo de beste optie te kunnen vinden.
-
     Voor \emph{\hyperref[itm:dv1]{deelvraag 1}} tot en met \emph{\hyperref[itm:dv4]{deelvraag 4}} zullen wij een literatuuronderzoek
     verrichten naar methoden van pijndetectie door middel van Vision.
     Hierbij zullen wij per methode de deelvragen beantwoorden, om zo uiteindelijk een conclusie te kunnen trekken over
@@ -136,20 +155,10 @@
     Hierbij kijken we vooral naar het geheugengebruik van de methode,
     aangezien dit de meest limiterende factor is van een embedded systeem.
 
-    Voor deelvraag 3 doen wij ook deskresearch, maar hier kijken wij naar de gebruikte computerkracht van een methode.
-    Op basis van een gegeven testopzet van een onderzoek schatten wij de benodigde geheugenruimte en processorkracht in.
 
-    Bij het beantwoorden van deelvraag 4 maken wij deels gebruik van de resultaten van deelvraag 3.
-    De hardware-benodigdheden limiteren namelijk ook de camera.
-    Een camera gebruiken met een hogere resolutie dan het systeem aan kan heeft namelijk geen zin.
-    Verder vergelijken wij bestaande onderzoeken over camerakeuze in Vision systemen.
-
-    Voor deelvraag 4 doen wij experimenteel onderzoek.
-    Wij testen onze implementatie van pijnherkenning meerdere keren op dezelfde dataset, terwijl wij de analysetijd per frame steeds aanpassen.
-    Wij vergelijken hoe goed de accuraatheid van de implementatie was per instelling van de analysetijd.
-
-    Deelvraag 5 is een deskresearch.
-    Wij onderzoeken en beschrijven bestaande implementaties van vision-pijnmeting algoritmen.
+    Voor \emph{\hyperref[itm:dv1]{deelvraag 5}} doen wij een vergelijkend onderzoek voor camera's.
+    We onderzoeken het bestaan van camera's specifiek voor vision, en noteren specificaties van deze camera's.
+    Bij dit onderzoek betrekken wij ook een webcam en een actiecamera.
 
     Voor deelvraag 6 doen wij experimenteel onderzoek.
     Door meerdere implementaties te vergelijken, kunnen wij de maximale bereikbare waarden ervan vergelijken.
@@ -161,6 +170,7 @@
     \emph{Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?}
 
     Wij hebben een aantal velden opgesteld die wij per methode hebben onderzocht. De volgende resultaten zijn hieruit gekomen
+
     \subsection{Onderzoek methoden pain detection}
 
     \subsubsection{Methode 1}
@@ -266,25 +276,25 @@
     hierbij kijkend naar de specifieke veranderingen zoals genoteerd in de onderzochte papers.
 
     \subsubsection{Methode 2}
-    \emph{\citet{Performance_Of_Optical_Flow_Techniques} Performance Of Optical Flow Techniques.}\\
-    \emph{\citet{An_Efficient_Algorithm_for_Motion_Detection_Based_Facial_Expression_Recognition_using_Optical_Flow} An Efficient Algorithm for Motion Detection Based Facial Expression Recognition using Optical Flow.}\\
-    \emph{\citet{Facial_expression_change_detection_algorithm_using_optical_flow_technique} Facial expression change detection algorithm using optical flow technique.}\\
+    \emph{\citet{Performance_Of_Optical_Flow_Techniques} Performance Of Optical Flow Techniques.}\\ \\
+    \emph{\citet{An_Efficient_Algorithm_for_Motion_Detection_Based_Facial_Expression_Recognition_using_Optical_Flow} An Efficient Algorithm for Motion Detection Based Facial Expression Recognition using Optical Flow.}\\ \\
+    \emph{\citet{Facial_expression_change_detection_algorithm_using_optical_flow_technique} Facial expression change detection algorithm using optical flow technique.}\\ \\
 
     \paragraph{Korte Omschrijving}
-    Methode 2 draait om de zogenoemde techniek optical flow. 
-    Dit is een veel gebruikte techniek om verandering tussen frame in beeld te brengen en te kwantificeren.   
+    Methode 2 draait om de zogenoemde techniek optical flow.
+    Dit is een veel gebruikte techniek om verandering tussen frame in beeld te brengen en te kwantificeren.
 
     \paragraph{Van welk principe maakt het gebruik?}
-    Deze techniek kijkt naar verschillen tussen frames en probeert de richting van verandering vast te stellen. 
+    Deze techniek kijkt naar verschillen tussen frames en probeert de richting van verandering vast te stellen.
     Er wordt over het gezicht gekeken naar verandering, welke uitgedrukt worden in vectoren.
     Deze worden dan gematcht tegen een database met de verschillende emoties.
     Door dat je verandering in mensen hun gezicht registreerd/
 
     \paragraph{Geschatte piek-geheugengebruik per meting}
-    Gezien de ondergrens 3 frames is voor enige nauwkurigheid zijn de geheugen eisen voor het bewaren van de frames niet groot. Echter is een optical flow model wel een flinke 
+    Gezien de ondergrens 3 frames is voor enige nauwkurigheid zijn de geheugen eisen voor het bewaren van de frames niet groot. Echter is een optical flow model wel een flinke
 
     \paragraph{Geschatte tijdsduur voor 1 conclusie}
-    De techniek kan met drie frames al een nauwkurigheid van 83\% opleveren volgens \emph{\citet{An_Efficient_Algorithm_for_Motion_Detection_Based_Facial_Expression_Recognition_using_Optical_Flow}}. 
+    De techniek kan met drie frames al een nauwkurigheid van 83\% opleveren volgens \emph{\citet{An_Efficient_Algorithm_for_Motion_Detection_Based_Facial_Expression_Recognition_using_Optical_Flow}}.
     Deze drie frames zouden echter wel de verschillende staten van de emotie die uitgedrukt worden moeten in beeld moeten brengen.
     De geschatte tijdsduur zal dan ook grote deels afhankelijk zijn van de tijd die het kost om deze frames te verzamen.
     De analysetijd is echter wel relatief lang, niet in de buurt van real time op een embedded systeem, echter is dit geen requirement en dus geen probleem.
@@ -295,14 +305,14 @@
     De preciece capaciteiten moeten worden vast gesteld met testen maar we hebben vertrouwen dat het mogelijk is om deze module te draaien op een Raspberry Pi.
 
     \paragraph{Maximale geschatte effectieve afstand}
-    Je hebt geen hoge resolutie nodig om de gezichtseigenschappen te kunnen traceren met optical flow. 
+    Je hebt geen hoge resolutie nodig om de gezichtseigenschappen te kunnen traceren met optical flow.
     Om deze methode goed uit te kunnen voeren op een embedded systeem wil je bij voorkeur een volledig gezicht zonder achtergrond.
-    Om dit voor elkaar te krijgen zou je moeten inzoemen op het gezicht. 
+    Om dit voor elkaar te krijgen zou je moeten inzoemen op het gezicht.
     Op lage kwaliteit cameras levert dit meer ruis op, wat problemen levert in optical flow berekening.
     De benodigde berekeningen kunnen tot ongeveer 200x200 pixels uitgevoerd worden en met een standaard wide angle camera zou dit tot enkele meters haalbaar moeten zijn.
 
     \paragraph{Kosten vereiste specifieke apparatuur}
-    We hebben hiervoor een camera (20 euro) en Raspberry Pi minimaal model 3B+ (35 euro), maar liever een model 4B (40 euro). 
+    We hebben hiervoor een camera (20 euro) en Raspberry Pi minimaal model 3B+ (35 euro), maar liever een model 4B (40 euro).
 
     \paragraph{Haalbaarheid}
     Wij zijn twijfelachtig over de werkelijke Haalbaarheid van deze methode, gezien de complexiteit van implementatie.
@@ -317,31 +327,35 @@
     Dit omdat de implementatie van deze methode complex is en we het werk dat wij moeten doen zo veel mogelijk willen inperken tot wat nog niet bestaat.
     Dubbel werk doen is nooit handig, en al helemaal niet als het werk dat je wel moet doen zo complex is.
 
+
     \section{Conclusie en Discussie}
     De indruk die opgewerkt is in dit literatuur onderzoek is dat deze methode complex is in implementatie en eigenlijk niet perfect onze requirements vervult.
     Onderandere zijn dus meerdere frames van de transistie tussen neutraal en een een expressie nodig om te kunnen vast stellen welke expressie dit is.
     Alhoewel optical flow technieken goed werken op lage resolutie beelden moeten deze beelden verder van hoge kwaliteit zijn.
     Ook dit is een min punt van deze aanpak.
 
+
     \section{Evaluatie}
     Vanwege meerdere minpunten met als belangrijk dat relatieve verschillen gemeten kunnen worden raden we niet aan om deze methode te gebruiken voor ons doeleinde.
+
 
     \section{Aanbevelingen}
     Onze aanbeveling is om deze methode niet te gebruiken voor pijn detectie en door te zoeken naar een andere, effectievere methode.
 
+
     \section{Suggesties voor verder onderzoek}
-    Er is nog veel te lezen over optical flow methodes en hoe je deze effectief implementeert. Er is een 
+    Er is nog veel te lezen over optical flow methodes en hoe je deze effectief implementeert. Er is een
     \emph{\citet{Readinglist} Reading list}.
     Hier staan op dit moment 72 artikels in over optical flow technieken.
 
 
     \section{Literatuur}
-    
+
 
     \section{Bijlagen}
 
     \bibliographystyle{apalike}
-    \bibliography{Bibliography/Main}
+    \bibliography{Include/Main}
 
 \end{document}
 
