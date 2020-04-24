@@ -58,7 +58,7 @@ De hoofdvraag van ons onderzoek gaat over het afwerken van de medische A.B.C.D.E
 Een aantal van de onderdelen van de A.B.C.D.E lijst kunnen worden gecontroleerd met sensoren. Denk hierbij aan temperatuur, hartslag of zuurstofsaturatie. Maar bij een deel is dit lastig met sensoren op te lossen en is het verstandig daar een menselijk oog aan te pas te laten komen. Het is dus handig als medisch personeel op afstand zou kunnen (mee)kijken via een robot om iemands medische staat te controleren. Hiervoor willen wij deelonderzoek gaan uitvoeren naar de mogelijkheid een Arduino Due te gebruiken in combinatie met een camera. Om de scope van ons onderzoek te verkleinen doen we geen onderzoek naar het versturen van deze beelddata, maar wel naar het bufferen van deze beelddata zodat het in de toekomst verstuurd zou kunnen worden. 
 Uit deze context hebben wij de volgende hoofdvraag afgeleid: 
 
-Welke camera, compatibel met de Arduino due en onder de 28 euro, is het meest geschikt om de toestand van een patiënt te fotograferen of filmen en dit zo vlot en accuraat mogelijk lokaal te bufferen op het RAM geheugen van de Arduino due om wanneer het gebufferd kan worden, door te kunnen sturen naar medisch personeel voor de medische vaststelling van de A en D van de ABCDE lijst? 
+\textit{Welke camera, compatibel met de Arduino due en onder de 28 euro, is het meest geschikt om de toestand van een patiënt te fotograferen of filmen en dit zo vlot en accuraat mogelijk lokaal te bufferen op het RAM geheugen van de Arduino due om wanneer het gebufferd kan worden, door te kunnen sturen naar medisch personeel voor de medische vaststelling van de A en D van de ABCDE lijst?}
 
 Om deze hoofdvraag te beantwoorden hebben wij deze onderverdeeld in 8 deelvragen. Deze vragen lopen we systematisch en volgordelijk af om op die manier tot een antwoord op de hoofdvraag te komen. De deelvragen luiden als volgt:
 
@@ -67,7 +67,7 @@ Om deze hoofdvraag te beantwoorden hebben wij deze onderverdeeld in 8 deelvragen
 	\item Welke factoren beïnvloeden welke camera het meest geschikt is voor onze toepassing? 
 	\item Als er camera’s bestaan die aan onze geschiktheidseisen voldoen, welke zou dan het meest geschikt zijn voor deze toepassing? 
 	\item Heeft de Arduino Due genoeg intern geheugen om één frame te bufferen met de meest geschikte camera? 
-	\item Wat is het maximale aantal frames dat wij met de gekozen camera kunnen bufferen op het RAM geheugen van de Arduino Due? 
+	\item Wat is het maximale aantal frames (of deel van een frame) dat wij met de gekozen camera kunnen bufferen op het RAM geheugen van de Arduino Due? 
 	\item Kan alles van de A {\&} D van de ABCDE lijst gecontroleerd worden met een foto of filmpje? 
 	\item Wat moet medisch personeel zien op een filmpje of foto om erachter te komen wat er medisch nodig is voor de A {\&} D van de ABCDE lijst? 
 	\item Hoeveel frames moeten we bufferen om het voor medici mogelijk te maken, zover het mogelijk is via beelden, de A {\&} D controle te doen? 
@@ -127,12 +127,11 @@ Deze tabel kan volgensmij wat schoner. Kan iemand er even naar kijken. Niels mis
 	\end{table}
 
 \section{Theorie en hypothese}
-Voor ons hoofdonderzoek hebben wij geen hypothese. Voor deelvraag 4 van dit deelonderzoek wel. Om deze deelvraag te beantwoorden gaan we gebruik maken van een toetsend onderzoek. We stellen de hypothese dat de Arduino Due voldoende RAM geheugen heeft om 1 frame op te slaan. Deze frames moeten immers bewaard worden om later te versturen naar een medisch operator. Dit versturen valt buiten de scope van ons onderzoek.
-We ontwerpen onze software alsof de Arduino Due voldoende geheugen heeft om de frame van de gekozen camera op te slaan en testen vervolgens of dit lukt. Daarna maken we 20 foto’s, als de Arduino dan niet vastloopt of data verliest en steeds de vorige foto netjes overschrijft weten we dat we de code kunnen gebruiken om camerabeeld te maken en te bufferen op een Arduino Due. 
+Voor ons hoofdonderzoek hebben wij geen hypothese. Voor deelvraag 5 van dit deelonderzoek wel. In eerste instantie wilde we als hypothese aannemen dat de Arduino Due voldoende RAM zou hebben om een beeld op te slaan en daar dan ook onze testcode voor schrijven. Na het beantwoorden van deelvraag 4 bleek dit na de berekening gelijk niet het geval. Dus om deze deelvraag te beantwoorden gaan we gebruik maken van een toetsend onderzoek. We stellen de hypothese dat de Arduino Due niet voldoende RAM geheugen heeft om 1 frame op te slaan. 
+We gaan proberen om met de Arduino Due zo groot mogelijke delen van een enkel frame te bufferen. We willen dus kijken hoeveel procent van 1 frame gebufferd kan worden op het RAM geheugen van de Arduino Due. Deze data zouden na het bufferen eventueel verstuurd kunnen worden naar een operator voor de triage. Maar het versturen valt buiten de scope van ons onderzoek. 
+De hypothese is dus als volgt: \textit{De arduino Due heeft niet voldoende Ram geheugen om 1 frame op te slaan die gemaakt is met de gekozen camera.}
 
-De hypothese is dus als volgt: \textit{"De arduino Due heeft voldoende Ram geheugen om 1 frame op te slaan die gemaakt is met de gekozen camera."}
-
-Opzet en uitvoering van het onderzoek
+\section{Opzet en uitvoering van het onderzoek}
 Hier geef je een beschrijving van hoe het onderzoek is opgezet en hoe de uitvoering in z’n werk is gegaan. Eventueel kunnen onderdelen van dit hoofdstuk naar de bijlagen als het te lang blijkt te worden. Onder dit hoofdstuk valt het onderzoekstype en het onderzoeksontwerp, een beschrijving van de populatie en steekproef, beschrijving van de onderzoeksinstrumenten, de wijze van materiaalverzameling, verwerking van de gegevens en beschrijving van analysebeslissingen.
 
 De opzet van dit deel onderzoek verloopt volgens de waterval methode. We lopen stapsgewijs door de deelvragen heen en beantwoorden de vragen door middel van bijbehorende onderzoeksmethoden. Uiteindelijk is er dan een conclusie die we kunnen verbinden aan de hoofdvraag om deze te beantwoorden.
@@ -143,8 +142,8 @@ Omwille van de leesbaarheid hebben we de deelvragen met hun bijbehorende toetsme
 	\item Bij de eerste deelvraag doen we een exploratief onderzoek. We gaan op het internet zoeken naar camera’s en kiezen 5 camera’s die veel voorkomen om nader te onderzoeken. Als Covid-19 niet had plaatsgevonden waren we ook naar een aantal winkels en school gegaan om experts op het gebied hiernaar te vragen (Wouter van Ooijen bv.). Maar dat werd nu wat lastig dus beperken we ons tot veel voorkomende camera’s op het internet. Via deze \href{https://www.open-electronics.org/a-complete-guide-to-arduino-based-video-camera/}{website} hebben we een hoop goede camera’s kunnen vinden.
 	\item Vraag 2 beantwoorden we door met elkaar te sparren en te beredeneren welke factoren voor het bufferen en gebruik op microcontrollers belangrijk zijn voor een camera.
 	\item Vraag 3 beantwoorden we door bij iedere gekozen factor een eis te stellen waar de camera aan moet voldoen. Dan gaan we beredeneren welke camera we het beste kunnen kiezen voor ons onderzoek.
-	\item Vraag 4 gaan we beantwoorden volgens het toetsend onderzoek zoals beschreven in het hoofdstuk “theorie en hypothese.” We nemen aan dat er voldoende geheugen is op Arduino om 1 frame op te slaan, schrijven hier onze code voor, en gaan toetsen of dat dit ook het geval is. Het toetsen bestaat uit 20 keer een foto maken, bekijken of de vorige foto wordt overschreven in het geheugen en bekijken of de Arduino niet vastloopt of data verliest.
-	\item Vraag 5 kunnen we beantwoorden door middel van een observatie onderzoek. We weten inmiddels hoe veel ruimte 1 frame in neemt, en we weten hoeveel Ram geheugen we hebben op de Arduino Due. Vervolgens kunnen we uitrekenen hoeveel frames we moeten kunnen bufferen op de Arduino.
+	\item Vraag 4 gaan we beantwoorden door een toetsende onderzoek. Met een simpele berekening kunnen we aantonen of een Due voldoende geheugen heeft. We weten na het beantwoorden van de eerst deelvragen welke resolutie de camera heeft, en daarmee ook hoeveel bytes 1 beeld in beslag neemt. We weten ook dat de due 96 kB aan Ram heeft en vanaf daar is het een simpele som.
+	\item Vraag 5 gaan we beantwoorden volgens toetsend onderzoek en met de hypothese zoals beschreven in het hoofdstuk ”Theorie en hypothese.” We nemen aan dat er niet voldoende geheugen is op Arduino om 1 frame op te slaan, dus splitsen we het beeld op in meerdere delen. We splitsen het in opeenvolgende stappen van 5\% op. We bufferen eerst 100\% van het frame, en kijken of het past op het geheugen. Dan 95\% en kijken of dat past, etc. Uiteindelijk weten we dan dus hoeveel procent van één frame gebufferd kan worden op de Arduino Due. Deze 5\% stappen zijn bewust want als de code iets zou uitbreiden moet er ook ruimte op het Ram zijn daarvoor.
 	\item Vraag 6 {\&} 7 gaan we beantwoorden door het aan een medisch expert te vragen. Medisch personeel kan precies vertellen wat men zou willen zien op een foto om de A {\&} D te kunnen beoordelen van de ABCDE lijst.
 	\item Vraag 8 kunnen we beantwoorden nadat we het antwoord hebben op vraag 5 {\&} 6. Dit is dus een observatie onderzoek.  
 
@@ -184,13 +183,15 @@ Wij hebben gekozen voor de OV7670. Dit was de enige gevonden camera die binnen o
 
 \subsubsection{Deelvraag 4}
 De Arduino Due heeft 96kb ram. De OV7670, onze gekozen camera, maakt een afbeelding met een resolutie van 640x480. Dit zijn 307.200 pixels in het totaal. De module gebruikt 1 byte per pixel als een bayer filter die we moeten decoden. In het totaal is dat dus ongeveer 0,3mb. De Arduino Due heeft volgens de berekening dus niet genoeg geheugen voor het opslaan/bufferen van 1 frame.
-Toch hebben we besloten wel verder te gaan met het programmeren van code om deze deelvraag te beantwoorden. We willen met zekerheid kunnen zeggen dat het niet mogelijk is om 1 frame op te slaan op de Arduino. 
-Omdat we besloten hebben verder te gaan met het maken van code, werden we nieuwsgierig of andere mensen ditzelfde probleem ook al eens zijn tegengekomen. Uit heel kort zoekwerk op internet blijkt dit een bekend probleem en er zijn verschillende mensen te vinden die hier \href{https://forum.arduino.cc/index.php?topic=159557.0}{vragen} over stelde. Op Github hebben we uiteindelijk een persoon gevonden die in zijn \href{https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c}{main}  dit probleem oplost. Het probleem wordt hier opgelost door het bestand (de foto) in meerdere delen op te delen en hem dan in delen te bufferen op de Arduino. 
 
-\textit{!!HIER VERDER OVER HET HELE CODE VERHAAL EN DE CONCLUSIE DAAROVER!!}
+Onze oorspronkelijke hypothese voorafgaand aan het onderzoek was dat de Arduino wel voldoende geheugen zou hebben. Daarom was ons oorspronkelijke plan ook om daar dan code voor te schrijven. Nu blijkt natuurlijk al dat dat geen zin heeft maar we willen toch code schrijven en een degelijk onderzoek neerzetten.
+Uit heel kort zoekwerk op internet blijkt beperkt geheugen een bekend probleem en er zijn verschillende mensen te vinden die hier \href{vragen}{https://forum.arduino.cc/index.php?topic=159557.0} over stelde. Op Github hebben we uiteindelijk een persoon gevonden die in zijn \href{main}{https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c} dit probleem oplost. Het probleem wordt hier opgelost door het bestand (de foto) in meerdere delen op te delen en hem dan in delen te bufferen op de Arduino. 
+
+Als gevolg daarvan hebben wij besloten onze hypothese aan te passen en aan te nemen dat de Arduino Due niet voldoende geheugen heeft om 1 frame te bufferen.
+
 
 \subsubsection{Deelvraag 5}
-Na het beantwoorden van deelvraag 4, zijn wij er achter gekomen dat de Arduino Due niet genoeg geheugen heeft voor een enkele frame. Om dit mogelijk te kunnen maken, moet er meer onderzoek gedaan worden.
+Door het beperkte geheugen op de DUE zijn wij in staat om slechts een deel van een frame te bufferen. Dit deel is XXXX \% van het frame. 
 
 \section{Resultaten}
 De onderzoeksvragen, theorie en hypotheses worden hier kort samengevat. Hier volgen nog geen interpretatie wel getalsmatige conclusies.
