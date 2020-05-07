@@ -72,6 +72,52 @@
     Hierom, in combinatie met de doelen van het R2D2 bedrijf, bestaat de vraag naar een automatische module die pijn
     detecteert.
 
+    \section{Begrippenlijst}\label{sec:begrippenlijst}
+    \paragraph{Triage}
+    Triage is een middel om met beperkte capaciteit spoedzorg te organiseren. 
+    In de kern betekent triage dat in een tijdsbestek van enkele minuten op basis van beperkte gegevens een beslissing genomen moet worden over hoe snel de patiënt dient te worden beoordeeld door een hulpverlener, zoals een huisarts, ambulanceverpleegkundige of een SEH-arts.    
+    bron https://de-nts.nl/nts/basisprincipes-nts/
+
+    \paragraph{PPG} 
+    Photoplethysmography (PPG) is een simpele en goedkope optische meetmethode die vaak wordt gebruikt voor het controleren van hartslag doelen. 
+    PPG is een niet-invasieve technologie die een lichtbron en een fotodetector op het huidoppervlak gebruikt om de volumetrische variaties in de bloedcirculatie te meten. 
+    bron (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6426305/) Techniek die we gebruiken voor het meten van hartslag/zuurstof saturatie
+
+
+    \paragraph{SpO2}
+    Zuurstofsaturatie Perifeer,  het percentage zuurstofrijk hemoglobine (hemoglobine dat zuurstof bevat) in vergelijking met de totale hoeveelheid hemoglobine in het bloed (zuurstofrijk en niet-zuurstofrijk hemoglobine). 
+    Gemeten met een externe sensor op de huid.
+
+    \paragraph{SaO2} 
+    Zuurstofsaturatie Slagaderlijk, dezelfde meeting als SpO2 maar dan verkregen via een Bloedgasmeting 
+
+
+    \section{Literatuurverkenning}\label{sec:literatuur}
+    \paragraph{The Feasibility of Using a Forehead Reflectance Pulse Oximeter for Automated Remote Triage(Wendelken 2004)}Het uiteindelijke doel van The Feasibility of Using a Forehead Reflectance Pulse Oximeter for Automated Remote Triage(Wendelken 2004), namelijk Remote Triage, staat heel dichtbij het doel van ons overkoepelende onderzoek. 
+    Wedelken et al. kijken of het gebruik van een Reflectance Pulse Oximeter in staat is om nauwkeurig metingen van O2 Sats en Hartslag, zelfs bij signaal ruis veroorzaakt door fysieke inspanning van de proefpersoon.
+
+    \paragraph{Mendelson 2006} heeft een portable pulse oximeter systeem ontworpen voor gebruik in Remote Triage situaties. 
+    Het doel van van het systeem komt weer overeen met ons eigen onderzoek. 
+    Dankzij de vooruitgangen op technologisch gebied is het ontwerp van het systeem wat verouderd, maar de uitdagingen en methodes kunnen wij nog steeds in acht nemen voor ons eigen ontwerp.
+
+    \paragraph{Heart rate measurement based on time-lapse image} is een interessant onderzoek om te bekijken voor het bepalen van de research gap. 
+    Hartslag metingen op basis van een camera zijn relevant omdat het automatisch plaatsen van sensoren voor een robot niet triviaal is. 
+    In dit onderzoek is gebruik gemaakt van een toentertijd gangbare handheld camera. 
+    Het type sensor van de camera is tegenwoordig niet goed meer te verkrijgen. 
+    Dit heeft echter geen invloed op de relevantie van het onderzoek sinds de camera slechts werd gebruikt voor het opnemen van een time lapse. 
+    De camera wordt gebruikt om een 30 seconde durende timelapse op te nemen met een interval van 200ms. 
+    Het gezicht van de patiënt wordt in deze timelapse vorm opgenomen. 
+    Hierna wordt voor een vakje van 3 bij 4 centimeter de gemiddelde intensiteit bepaald en hieruit wordt, na verwerking, een hartslagfrequentie uit gehaald.
+
+    \paragraph{The non-contact monitoring of heart and respiratory rates using laser irradiation: an experimental simultaneous monitoring with and without clothes during biochemical hazards} is zeer relevant vanwege het op afstand meten van hartslag. 
+    Dit wordt in dit onderzoek gesimuleerd d.m.v. konijnen. Kleding wordt gesimuleerd door middel van een klein stukje stof op de huid. 
+    De metingen van deze methode zijn geverifieerd d.m.v. een ECG.
+
+    \paragraph{Heart rate monitoring system using finger tip through Arduino and Processing Software} is een paper die gaat over het meten van hartslag op de Arduino met PPG. 
+    Dit paper beschrijft zo goed als de gewenste methode van meten. 
+    PPG sensoren voor de Arduino zijn een kosten effectieve en verkrijgbare hartslagmeter. 
+    In de paper wordt de sensor uit losse componenten opgebouwd en wordt er gebruikt gemaakt van een Processing library.
+
 
     \section{Theorie en hypothese}\label{sec:theorie-en-hypothese}
     \subsection{Saturatie}
@@ -104,7 +150,8 @@
     
     \includegraphics[height=0.2\textheight]{Images/Tamura1.png}
 
-    
+    \citet{tekano2007heart}
+
     Een transmissive PPG kan een relatief goed signaal verkrijgen, maar de meetlocatie is beperkt. 
     Om een meting te doen moet de sensor zich op het lichaam bevinden op een plaats waar doorgelaten licht gemakkelijk kan worden gedetecteerd, zoals de vingertop, het neustussenschot, de wang, de tong of de oorlel. 
     Het plaatsen van de sensor op het neustussenschot, de wang of de tong is alleen effectief onder anesthesie. 
