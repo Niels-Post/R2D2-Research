@@ -1,7 +1,11 @@
 \usepackage{array}
 
-\renewcommand{\contentsname}{Inhoudsopgave}
 
+
+\bibliographystyle{apalike}
+\renewcommand{\refname}{\section{Referenties}}
+
+\renewcommand{\contentsname}{Inhoudsopgave}
 
 \newenvironment{definition}
     {
@@ -10,3 +14,5 @@
     {
         \end{tabular}
     }
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
