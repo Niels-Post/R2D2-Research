@@ -55,41 +55,11 @@
 
     \section{Inleiding}\label{sec:inleiding}
 
-    \emph{R2D2 heeft als bedrijf het doel om multifunctionele, modulaire robots te maken voor gebruik in een rampgebied.
-    Omdat in een rampgebied vaak slachtoffers zijn die door allerlei oorzaken hevige pijn hebben,
-    is het belangrijk dit te indexeren, en hiernaar prioriteiten te stellen.}
-
-    In dit onderzoek willen wij manieren vinden om door middel van Computer Vision in een klein (embedded) systeem pijnniveaus
-    te detecteren.
-    Vanwege mogelijke beperkte connectiviteit in een rampgebied onderzoeken wij methoden die volledig automatisch,
-    zonder netwerkconnectiviteit of zware hardware kunnen werken.
-
-    Tijdens het lezen van dit onderzoek zal de lezer in de eerste plaats meer leren over vision-algoritmes met pijn
-    herkennen als doel.
-    Hierbij gaan wij specifiek in op de effici\"{e}ntie,geschikte hardware, en verwerkingstijden van hardware.
-    Hiernaast bespreken wij welke camera's het meest geschikt zijn voor gebruik bij Computer Vision in het algemeen.
-    Uiteindelijk kiezen wij 1 combinatie van een algoritme en camera die het best passen bij de context van een pijn
-    detectie module binnen een R2D2 robot.
-
-
-    Om dit onderzoek te defini\"{e}ren zullen wij uit gaan van de volgende onderzoekshoofdvraag:\\
-
-    \textbf{Hoofdvraag} \hspace{5pt} \emph{Welke computer methoden op basis van computer vision zonder gebruik van netwerkconnectiviteit high
-    performance hardware bestaan er waarmee je pijn kan kwantificeren in de context van een embedded systeem?}
-
-    \bigskip
-
-    Deze hoofdvraag verdelen wij in de volgende 7 deelvragen:
-
-    \begin{enumerate}
-        \item\label{itm:dv1} Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?
-        \item\label{itm:dv2} Hoeveel foto's per tijdseenheid moeten we minimaal verwerken om zeker te zijn dat we een valide uitspraak kunnen doen over het pijnniveau dat iemand ervaart?
-        \item\label{itm:dv3} Wat zijn de minimale hardwarevereisten van een systeem dat pijnmetingen door middel van Computer Vision uitvoert?
-        \item\label{itm:dv4} Volgt er een toename in accuraatheid uit het langer analyseren van een frame?
-        \item\label{itm:dv5} Wat is de beste camera voor het toepassen van Vision algoritmes die verkrijgbaar is op de markt?
-        \item\label{itm:dv6} Welke bestaande implementaties van een pijnmeting algoritme zijn er, en wat zijn de gebruiksrechten hiervan?
-        \item\label{itm:dv7} Wat is de maximaal bereikbare accuraatheid en snelheid bij gebruik van boven onderzochte methoden?
-    \end{enumerate}
+    Het gebruik van een pulse oximeter geeft je belangrijke informatie over een aantal vitale functies van een slachtoffer. 
+    Afhankelijk van de gekozen manier om deze meting uit te voeren, kan dit op een snelle, goedkope en niet-invasieve manier.
+    In dit onderzoek kijken we naar verschillende meetmethoden en of deze geschikt zijn voor onze applicatie, letters B en C van de ABCDE methode voor eerste hulp. 
+    Letters B en C staan voor breathing en circulation. 
+    Vervolgens zullen wij kijken naar de verschillende sensoren die op de markt beschikbaar zijn, en de meest geschikte kiezen voor ons project.
 
 
     \section{Probleemstelling}\label{sec:probleemstelling}
@@ -104,64 +74,61 @@
 
 
     \section{Theorie en hypothese}\label{sec:theorie-en-hypothese}
-    De hoofdvraag van dit onderzoek vergelijkt methoden die wij nog niet kennen voor het onderzoek.
-    Hierom kunnen wij geen hypothese stellen voor de hoofdvraag.
-    Wel kunnen wij een set kleinere hypotheses stellen, betreffende enkele deelvragen.
+    Een te lage zuurstofsaturatie in het bloed(hypoxemie) kan leiden tot een tekort aan zuurstof toevoer aan organen of weefsel (hypoxie).
+    Na enige tijd veroorzaakt dit cel dood[10], tenzij er weer zuurstof beschikbaar komt voor deze getroffen gebieden van het lichaam.
 
-    \paragraph{\hyperref[itm:dv1]{Deelvraag 1}}
-    Van wat wij zelf weten van pijndetectie en herkenning, is dat dit een moeilijk onderwerp is.
-    Ondanks dat er universele uitingen van pijn zijn (zoals auw zeggen, en een vertrokken gezicht), is het moeilijk om vast te stellen hoe veel pijn iemand heeft.
-    Doktoren vragen hierom dan ook vaak aan mensen om hun pijn een cijfer te geven.\\
+    Lage Zuurstofsaturatie in het bloed kan veroorzaakt worden door een aantal oorzaken [9], in dit onderzoek richten wij ons op oorzaken die zich voordoen na trauma of onderkoeling.
+    Acute respiratory distress syndrome(ARDS) komt vaak voor na trauma of longontsteking, en is behandelbaar door reddingswerkers met zuurstof en ventilatie[8]. 
+    ARDS en andere problemen met ademen/gaswisselingen in de longen zijn vaak te herkennen aan een te lage zuurstofsaturatie.
 
+    Slagaderlijk Zuurstofsaturatie (SaO2) kan het beste gemeten worden door een Bloedgasmeting. 
+    Hierbij wordt een kleine hoeveelheid bloed van een patiënt naar een klinisch-chemisch laboratorium gestuurd en wordt het bloed geanalyseerd en de meting teruggegeven. 
+    [goede bron vinden] Hoewel deze methode de meest nauwkeurige resultaten terug geeft, is dit onpraktisch om een een noodsituatie  te moeten doen, en kost het kostbare tijd als een patiënt in ademnood is.
 
-    \begin{definition}
-        Hypothese & Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk
-    \end{definition}
+    Echter bestaat er een verband tussen en slagaderlijke zuurstofsaturatie(SaO2) en perifere zuurstofsaturatie(SpO2)[7]. 
+    Dit laatste kan gemakkelijk gemeten worden door een sensor aan de buitenkant van de huid(niet invasief). 
+    Er zijn bepaalde chronische /bijzondere omstandigheden waar het verschil tussen SpO2 en SaO2 van belang zijn, maar het meten van de perifere zuurstofsaturatie goed genoeg voor patiënten op de Intensive Care.[11] 
+    Hierdoor zal in de rest van dit document zuurstofsaturatie altijd wijzen naar de perifere en niet de slagaderlijke zuurstofsaturatie.
 
-%    \begin{tabular}{l p{0.7\textwidth}}
-%        \textbf{Hypothese} & \emph{Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk}
-%    \end{tabular}
+    Het meten van de SpO2 wordt gedaan door middel van Photoplethysmography(PPG) Hiervoor wordt een sensor gebruikt die twee LEDs bevat, en een fotodetector. 
+    Het Licht van de ene LED heeft een golflengte van 660 nm (Rood) en de andere 940 nm (InfraRood). Deze twee LEDs sturen het licht door een vinger of oor, met de fotodetector aan de weerszijde. 
+    De LEDs pulseren dit omstebeurt (met pauzes er tussen om te compenseren voor omgevingslicht) ongeveer 30 keer per seconden. 
+    Het geabsorbeerde licht bij deze golflengten verschilt aanzienlijk tussen bloed dat is geladen met zuurstof en bloed zonder zuurstof. 
+    Zuurstofrijk hemoglobine absorbeert meer infrarood licht en laat meer rood licht door. Zuurstofarm hemoglobine laat meer infrarood licht door en absorbeert meer rood licht. 
+    Vervolgens kan een microcontroller in de sensor gebruik maken van de Beer-Lambert wet om de zuurstofsaturatie uit te rekenen[12]
 
-    \paragraph{\hyperref[itm:dv3]{Deelvraag 3}}
-    Wij verwachten dat de belangrijkste vereiste van een systeem een minimale hoeveelheid werkgeheugen is.
-    Omdat er geen directe deadline is voor een berekening, kan een processor hier langer over doen, maar als het geheugen niet toereikend is, kan een afbeelding niet opgeslagen worden voor verwerking.
+    Het hierboven beschreven PPG is een zogenoemde transmissive PPG, hierbij wordt het door het medium uitgezonden licht gedetecteerd door een de photodetector tegenover de LED-bron. 
+    Het alternatief is een Reflective PPG, hierbij wordt het licht gedetecteerd dat terug gereflecteerd wordt door weefsel, botten en bloedvaten.
 
-    Omdat microcontrollers vaak weinig (minder dan 100kB) werkgeheugen hebben, verwachten wij dat de meesten geen Vision algoritmes kunnen draaien.
-    Een limiterende factor voor het bijplaatsen van geheugen is dat microcontrollers vaak een 16 bits processor hebben, en deze niet meer dan +- 131 kB aan geheugen kunnen adresseren.
+    Een transmissive PPG kan een relatief goed signaal verkrijgen, maar de meetlocatie is beperkt. 
+    Om een meting te doen moet de sensor zich op het lichaam bevinden op een plaats waar doorgelaten licht gemakkelijk kan worden gedetecteerd, zoals de vingertop, het neustussenschot, de wang, de tong of de oorlel. 
+    Het plaatsen van de sensor op het neustussenschot, de wang of de tong is alleen effectief onder anesthesie. 
+    De vingertop en de oorlel zijn de voorkeursposities; deze plaatsen hebben echter een beperkte bloedperfusie. 
+    Bovendien zijn de vingertop en de oorlel gevoeliger voor extreme omstandigheden, zoals lage omgevingstemperaturen.
 
-    Extern geheugen kan hierbij dus ook niet extreem veel toevoegen, aangezien dit niet kan worden geadresseerd.\\
+    Een Reflective PPG elimineert de problemen die verband houden met de plaatsing van de sensor en er kunnen verschillende meetlocaties worden gebruikt (zoals besproken in de volgende sectie). 
+    Reflective PPG wordt echter beïnvloed door bewegingsartefacten en druk storingen. 
 
-    \begin{definition}
-        Hypothese & Voor een Vision-gebaseerd pijnmetingsalgoritme is een embedded systeem nodig wat minimaal een 32 bits processor heeft.
-    \end{definition}
+    Op eenzelfde manier kan de hartslag worden gemeten. 
+    Volgens [Heart rate monitoring system using finger tip through Arduino and Processing Software] zetten de haarvaten in de huid van een vinger op als gevolg van een stijging in de bloeddruk tijdens een hartslag. 
+    Deze verandering in formaat kan worden gemeten d.m.v. PPG.
 
-    \paragraph{\hyperref[itm:dv4]{Deelvraag 4}}
-    Wij zijn tot nu toe via lessen bij het vak Computer Vision in aanraking geweest met een aantal Computer Vision algoritmes.
-    Een deel hiervan hebben wij zelf uitgewerkt in de huiswerkopdracht gezichtsdetectie, en een deel hebben wij alleen in theorie kort behandeld.
-    Bij deze algoritmes , was de uitkomst steeds gebaseerd op een vaste set handelingen.
-    Omdat deze handelingen niet afhankelijk zijn van entropie, was het resultaat altijd hetzelfde.
-    Wij denken dat de handelingen voor pijndetectie op dezelfde manier zullen werken, aangezien deze ook te maken zullen hebben met het detecteren van gezichtskenmerken.\\
+    Hartslag is een minstens zo belangrijke metriek als zuurstofsaturatie. Het is algemeen bekend dat zowel een te lage, te hoge als een onregelmatige hartslag kunnen negatieve gevolgen hebben voor de gezondheid. 
+    Ook kan er op deze manier vastgesteld worden of de patiënt überhaupt een hartslag heeft.
+    Daarnaast is het vaststellen van een hartaanval ook mogelijk door het meten van de onderlinge 
 
-    \begin{definition}
-        Hypothese & Het langer analyseren van een videoframe zal geen accuratere resultaten geven bij een pijnmetingsalgoritme op basis van computer vision
-    \end{definition}
+    Te hoge hartslag kan een indicatie zijn van onder andere bloedverlies, koorts, infectie, gebrek. 
+    Deze oorzaken zijn veelvoorkomend tijdens rampsituaties aangezien lichamelijke letsel een veel voorkomend gevolg is van een rampsituatie. 
+    De gevolgen van een te hoge hartslag zijn kortademigheid, duizeligheid, flauwvallen, zwakte en moeheid.
+    [Symptoom Snelle regelmatige hartslag (tachycardie) - Symptomenchecker]
 
-    \paragraph{\hyperref[itm:dv5]{Deelvraag 5}}
-    Computer Vision algoritmes zijn hevig afhankelijk van detectie van kleuren, contrasten en randen.
-    Omdat de verwerking hiervan afhankelijk zijn van het kleurpalet van de gebruikte camera, denken wij dat er camera's zullen zijn die specifiek gericht zijn op Computer Vision.
-    Mogelijk gebruiken deze camera's geen RGB, maar een uitgebreider kleurenschema, zoals bijvoorbeeld ARGB.\\
+    Te lage hartslag is ook een belangrijke metriek. 
+    Dit kan onder andere dienen als indicatie van onderkoeling, bloedingen en een verhoogde hersendruk, naast andere oorzaken. 
+    Een te lage hartslag kan leiden tot duizeligheid, kortademigheid, vermoeidheid, hartkloppingen, flauwvallen, en geheugenstoornissen. 
+    [Bradycardie (te lage hartslag) - hoe herken je het?]
 
-    \begin{definition}
-        Hypothese & Er zijn camera's op de markt beschikbaar die specifiek gericht zijn op Computer Vision algoritmes.
-    \end{definition}
+    misschien nog iets over pleth waves als we dit verder gebruiken.
 
-
-    \section{Begrippenlijst}\label{sec:begrippenlijst}
-
-    \begin{definition}
-        Computer Vision & Een algemene term voor algoritmes die gebruik maken van camerabeelden, en hier conclusies uit trekken\\
-
-    \end{definition}
 
 
     \section{Uitvoering}\label{sec:uitvoering}
@@ -284,136 +251,7 @@
 
 
 
-    \section{Probleemstelling}\label{sec:probleemstelling}
-    In een rampgebied bevinden zich hulpbehoevende slachtoffers. 
-    Er is niet genoeg medisch personeel om iedereen te behandelen. 
-    Sommige slachtoffers bevinden zich op slecht begaanbare locaties. 
-    Het medisch team beschikt niet over de juiste middelen om een beeld te krijgen bij het aantal, de locatie en de toestand van de slachtoffers. 
-    Om snel op afstand de toestand van een slachtoffer te controleren is onder andere het meten van de zuurstofverzadiging en hartslag een vereiste. 
-    Het medisch personeel beschikt niet over voldoende data om systematisch de meest hulpbehoevende slachtoffers hulp te bieden.
-
-
-
-    \subsection{Invullingen onderzoek}\label{subsec:invullingen-onderzoek}
-    \subsubsection{Invulvelden}
-    In het volgende onderdeel beschrijven wij per methode de antwoorden op deze invulvelden.
-    Hierbij interpreteren wij resultaten, en trekken conclusies.
-    Deze resultaten hoeven dus niet direct uit het onderzoek overgenomen te zijn.
-
-    \subsubsection{Methode 1}
-    Deze methode is gebaseerd op het onderzoek (\citet{werner2014automatic}).
-    Deze methode beschrijft pijndetectie door middel van het interpreteren van de afstand tussen specifieke gezichtskenmerken.
-
-    \paragraph{Korte Omschrijving}
-    Het paper omschrijft een bredere methode, maar wij leggen de focus op het gedeelte vision.
-    Deze methode detecteert pijn door te kijken naar de positie van bepaalde gezichtseigenschappen ten opzichte van elkaar.
-    Zo kan pijn zich bijvoorbeeld uiten in een "samengetrokken" gezicht.
-
-    \paragraph{Van welk principe maakt het gebruik?}
-    Relationele positie van gezichtseigenschappen
-
-    \paragraph{Geschatte piek-geheugengebruik per meting}
-    Wij gaan uit van een ruime minimum voor gezichtsdetectie.
-    Gezichtsdetectie en herkenning functioneren beduidend minder onder een resolutie van 50x50 pixels zoals beschreven in \citet{boom2006effect}.
-    Hier gaan wij dan ook vanuit bij het geheugengebruik.
-    Een afbeelding van 50x50 gebruikt +- 7.5kB in ruimte.
-
-    Methoden van facedetection zijn ons niet bekend, hierom is dit moeilijk in te schatten.
-    Ervanuitgaande dat er convolutie-operaties uitgevoerd worden op de afbeelding zal de afbeelding hoogst waarschijnlijk op momenten meerdere keren in het geheugen moeten bestaand.
-    Hiernaast moet de draaiende programmacode, en eventuele image kernels toegevoegd worden.
-    In piek zal dit programma minimaal 50 kB geheugen gebruiken, maar naar alle waarschijnlijkheid meer.
-
-    \paragraph{Geschatte tijdsduur voor 1 conclusie}
-    Wij denken dat er minimaal 2 metingen gedaan moeten worden.
-    Dit omdat het gezicht vergeleken moet worden, en de samentrekking van het gezicht ten opzichte van de eerste meting bepaald moet worden.
-
-    Op een adequate computer hoeft een meting niet veel langer te duren dan 0,1 seconde.
-    Twee metingen zouden dan zo'n 0.2 seconden duren.
-
-    \paragraph{Embedded capaciteit}
-    Zoals wij al enigszins hadden verwacht is het niet redelijkerwijs mogelijk dit te draaien op een Arduino.
-    Dit is voornamelijk omdat het piek-geheugengebruik te groot is hiervoor.
-    Wel is dit prima mogelijk om te draaien op een Raspberry Pi of een mini-pc.
-
-    \paragraph{Maximale geschatte effectieve afstand}
-    Dit is voornamelijk afhankelijk van de tijd die wij besteden aan het herkennen.
-    In combinatie met een camera met een hoge resolutie kunnen afstanden van vele meters gehaald worden (uitgaande van een minimum gezichtsgrootte van 50pxx50px.
-    Hiervoor zou een face detection algoritme wel erg vaak/erg precies uitgevoerd worden, wat de verwerkingstijd flink vergroot.
-    De maximale afstand is in dit geval dus afhankelijk van de maximale verwerkingstijd
-
-    \paragraph{Kosten vereiste specifieke apparatuur}
-    Voor deze methode is alleen een (mini)-pc en een camera vereist.
-    Een (minimale) combinatie van een Raspberry Pi (\euro{}40) en een standaard webcam(\euro{}30) zou ongeveer \euro{}70,- kosten.
-
-    \paragraph{Haalbaarheid}
-    Wij denken dat deze methode voor onze scope haalbaar is, met een paar aanpassingen:
-    \begin{itemize}
-        \item Deze methode projecteert gezichtseigenschappen op een 3d-model van een gezicht.
-        Hier hebben wij noch ervaring, noch tijd voor om uit te werken.
-        Om dit te vermijden zouden wij de aanname doen dat iemand recht in de camera kijkt.
-        Zo kunnen wij toch met zekerheid afstanden tussen gezichtseigenschappen meten.
-        \item Zoals eerder aangegeven richten wij ons enkel op het vision-gedeelte van dit onderzoek, niet op de biomedische sensoren.
-    \end{itemize}
-
-    \paragraph{Mogelijke implementatie}
-    Wij maken gebruik van DLib, een c++ library waar een methode voor facial feature detection in opgenomen is.
-    Uit een eerste foto/meting extraheren wij een aantal afstanden tussen bepaalde gezichtskenmerken, en slaan deze op.
-    Hierna doen wij steeds opnieuw metingen en vergelijken dit met de oorspronkelijke afstandsmetingen,
-    hierbij kijkend naar de specifieke veranderingen zoals genoteerd in de onderzochte papers.
-
-    \subsubsection{Methode 2}
-
-    \emph{\citet{barronperformance} Performance Of Optical Flow Techniques.}\\ \\
-    \emph{\citet{naghsh2006efficient} An Efficient Algorithm for Motion Detection Based Facial Expression Recognition using Optical Flow.}\\ \\
-    \emph{\citet{zainudinfacialexpression} Facial expression change detection algorithm using optical flow technique.}\\ \\
-
-    \paragraph{Korte Omschrijving}
-    Methode 2 draait om de zogenoemde techniek optical flow.
-    Dit is een veel gebruikte techniek om verandering tussen frame in beeld te brengen en te kwantificeren.
-
-    \paragraph{Van welk principe maakt het gebruik?}
-    Deze techniek kijkt naar verschillen tussen frames en probeert de richting van verandering vast te stellen.
-    Er wordt over het gezicht gekeken naar verandering, welke uitgedrukt worden in vectoren.
-    Deze worden dan gematcht tegen een database met de verschillende emoties.
-    Door dat je verandering in mensen hun gezicht registreerd/
-
-    \paragraph{Geschatte piek-geheugengebruik per meting}
-    Gezien de ondergrens 3 frames is voor enige nauwkurigheid zijn de geheugen eisen voor het bewaren van de frames niet groot. 
-
-    \paragraph{Geschatte tijdsduur voor 1 conclusie}
-    De techniek kan met drie frames al een nauwkurigheid van 83\% opleveren volgens \emph{\citet{naghsh2006efficient}}.
-    Deze drie frames zouden echter wel de verschillende staten van de emotie die uitgedrukt worden moeten in beeld moeten brengen.
-    De geschatte tijdsduur zal dan ook grote deels afhankelijk zijn van de tijd die het kost om deze frames te verzamen.
-    De analysetijd is echter wel relatief lang, niet in de buurt van real time op een embedded systeem, echter is dit geen requirement en dus geen probleem.
-
-    \paragraph{Embedded capaciteit}
-    De berekening die uitgevoerd moeten worden zijn een heleboel relatief simpele operaties.
-    Een embedded systeem zou hier relatief lang over doen (seconden), maar het is zeker niet onmogelijk.
-    De precieze capaciteiten moeten worden vast gesteld met testen maar we hebben vertrouwen dat het mogelijk is om deze module te draaien op een Raspberry Pi.
-
-    \paragraph{Maximale geschatte effectieve afstand}
-    Je hebt geen hoge resolutie nodig om de gezichtseigenschappen te kunnen traceren met optical flow.
-    Om deze methode goed uit te kunnen voeren op een embedded systeem wil je bij voorkeur een volledig gezicht zonder achtergrond.
-    Om dit voor elkaar te krijgen zou je moeten het gezicht moeten uitvergroten.
-    Op lage kwaliteit cameras levert dit meer ruis op, wat problemen levert in optical flow berekening.
-    De benodigde berekeningen kunnen tot ongeveer 200x200 pixels uitgevoerd worden en met een standaard wide angle camera zou dit tot enkele meters haalbaar moeten zijn.
-
-    \paragraph{Kosten vereiste specifieke apparatuur}
-    We hebben hiervoor een camera (20 euro) en Raspberry Pi minimaal model 3B+ (35 euro), maar liever een model 4B (40 euro).
-
-    \paragraph{Haalbaarheid}
-    Wij zijn twijfelachtig over de werkelijke Haalbaarheid van deze methode, gezien de complexiteit van implementatie.
-    Het zou haalbaar moeten zijn als we een paar voorwaarden hebben:
-    \begin{itemize}
-        \item Goed belichte, hoog contrast en laag ruis input beeld.
-        \item In het input beeld alleen het gezicht met gezichtseigenschappen al getagt.
-    \end{itemize}
-
-    \paragraph{Mogelijke implementatie}
-    Een mogelijke implementatie zou berusten op enige bestaande libaries zoals libd of opencv.
-    Dit omdat de implementatie van deze methode complex is en we het werk dat wij moeten doen zo veel mogelijk willen inperken tot wat nog niet bestaat.
-    Dubbel werk doen is nooit handig, en al helemaal niet als het werk dat je wel moet doen zo complex is.
-
+    
 
     \bibliography{Include/Main}
 
