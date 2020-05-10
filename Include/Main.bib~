@@ -90,27 +90,6 @@
     year = {n.d.}
 }
 
-@misc{pixy_datasheet,
-  author       = {Unknown},
-  title        = {Pixy 2 CMUcam5 Smart Vision Sensor},
-  howpublished = {\url{https://media.digikey.com/pdf/Data%20Sheets/Seeed%20Technology/102991074_Web.pdf}},
-  year         = {n.d.}
-  }
-
-@misc{c270_datasheet,
-  author       = {Unknown},
-  title        = {HD Webcam C270},
-  howpublished = {\url{http://static.highspeedbackbone.net/pdf/Logitech%20960-000694%20C270%20HD%20Webcam%20Data%20Sheet.pdf}},
-  year         = {n.d.}
-}
-
-@misc{firefly_info,
-  author       = {Unknown},
-  title        = {Firefly DL},
-  howpublished = {\url{https://www.flir.com/products/firefly-dl/}},
-  year         = {n.d.}
-}
-
 
 @article{brower2001treatment,
   title={Treatment of ARDS},
@@ -151,67 +130,3 @@
   year={2019},
   publisher={Springer}
 }
-
-@misc{principlespulsox,
-	title={Principles of pulse oximetry},
-	author={AnaesthesiaUK},
-	howpublished ={\url {https://www.frca.co.uk/article.aspx?articleid=332}},
-	note = {online accessed 20/4/2020}
-	year={2004}
-}
-
-
-@article{tamura2014wearable,
-  title={Wearable photoplethysmographic sensors—past and present},
-  author={Tamura, Toshiyo and Maeda, Yuka and Sekine, Masaki and Yoshida, Masaki},
-  journal={Electronics},
-  volume={3},
-  number={2},
-  pages={282--302},
-  year={2014},
-  publisher={Multidisciplinary Digital Publishing Institute}
-}
-
-@article{mallick2016heart,
-  title={Heart rate monitoring system using finger tip through arduino and processing software},
-  author={Mallick, Bandana and Patro, Ajit Kumar},
-  journal={International Journal of Science, Engineering and Technology Research (IJSETR)},
-  volume={5},
-  number={1},
-  pages={84--89},
-  year={2016}
-}
-
-@article{de2000pilot,
-  title={A pilot study of radiotelemetry for continuous cardiopulmonary monitoring of patients at home},
-  author={De Lusignan, Simon and Althans, Anne and Wells, Sally and Johnson, Paul and Vandenburg, Malcolm and Robinson, Jan},
-  journal={Journal of Telemedicine and Telecare},
-  volume={6},
-  number={1\_suppl},
-  pages={119--122},
-  year={2000},
-  publisher={SAGE Publications Sage UK: London, England}
-}
-
-@article{matsui2003non,
-  title={The non-contact monitoring of heart and respiratory rates using laser irradiation: an experimental simultaneous monitoring with and without clothes during biochemical hazards},
-  author={Matsui, T and Ishizuka, T and Ishihara, M and Ishihara, M and Matsumura, K and Kikuchi, M and Kurita, A},
-  journal={Journal of medical engineering \& technology},
-  volume={27},
-  number={3},
-  pages={133--136},
-  year={2003},
-  publisher={Taylor \& Francis}
-}
-
-
-@article{takano2007heart,
-  title={Heart rate measurement based on a time-lapse image},
-  author={Takano, Chihiro and Ohta, Yuji},
-  journal={Medical engineering \& physics},
-  volume={29},
-  number={8},
-  pages={853--857},
-  year={2007},
-  publisher={Elsevier}
-}⎋
