@@ -4,7 +4,6 @@
 % Preamble
 \documentclass[11pt]{article}
 \usepackage{hyperref}
-\usepackage{natbib}
 \usepackage[official]{eurosym}
 
 \usepackage{graphicx}
@@ -35,8 +34,7 @@
     \clearpage
 
     \section{Abstract}\label{sec:abstract}
-    In deze paper doen we literatuuronderzoek naar verschillende methodes voor pijn herkenning en pogen deze te implementeren.
-    De methodes die overwogen worden zijn een optical flow aanpak en een methode gebaseerd op het tracken van facial features.
+    \todo{TODO, hier de abstract}
 
     \section{Voorwoord}\label{sec:voorwoord}
     Dit onderzoek wordt uitgevoerd in opdracht van de Hogeschool Utrecht, voor het project R2D2 2020.
@@ -54,7 +52,6 @@
     }
 
     \section{Inleiding}\label{sec:inleiding}
-
     Het gebruik van een pulse oximeter geeft je belangrijke informatie over een aantal vitale functies van een slachtoffer. 
     Afhankelijk van de gekozen manier om deze meting uit te voeren, kan dit op een snelle, goedkope en niet-invasieve manier.
     In dit onderzoek kijken we naar verschillende meetmethoden en of deze geschikt zijn voor onze applicatie, letters B en C van de ABCDE methode voor eerste hulp. 
@@ -63,33 +60,31 @@
 
 
     \section{Probleemstelling}\label{sec:probleemstelling}
-    Voor doktoren is het lastig om een objectief pijn vast te stellen.
-    Vaak moet een pati\"{e}nt zelfeen getal tussen de 1 en de 10 geven voor zijn pijn.
-    Echter is deze manier van pijn inschatten niet erg objectief, daarnaast is het niet
-    altijd mogelijk met de pati\"{e}nt te communiceren.
-    In rampscenario's zijn er bijvoorbeeld te veel slachtoffers om aan iedereen te vragen hoeveel pijn hij voelt.
-    Wel is het belangrijk om te weten hoeveel pijn mensen hebben om ze met meer/minder prioriteit te helpen.
-    Hierom, in combinatie met de doelen van het R2D2 bedrijf, bestaat de vraag naar een automatische module die pijn
-    detecteert.
+    \todo{TODO, ik heb hier de probleemstelling van het voorstel gezet. Is dat goed zo?}
+    In een rampgebied bevinden zich hulpbehoevende slachtoffers.
+    Er is niet genoeg medisch personeel om iedereen te behandelen.
+    Sommige slachtoffers bevinden zich op slecht begaanbare locaties.
+    Het medisch team beschikt niet over de juiste middelen om een beeld te krijgen bij het aantal, de locatie en de toestand van de slachtoffers.
+    Om snel de toestand van een slachtoffer te controleren is onder andere het meten van de zuurstofverzadiging en hartslag een vereiste.
+    Het medisch personeel beschikt niet over voldoende data om systematisch de meest hulpbehoevende slachtoffers hulp te bieden.
 
     \section{Begrippenlijst}\label{sec:begrippenlijst}
-    \paragraph{Triage}
-    Triage is een middel om met beperkte capaciteit spoedzorg te organiseren. 
-    In de kern betekent triage dat in een tijdsbestek van enkele minuten op basis van beperkte gegevens een beslissing genomen moet worden over hoe snel de patiënt dient te worden beoordeeld door een hulpverlener, zoals een huisarts, ambulanceverpleegkundige of een SEH-arts.    
-    bron https://de-nts.nl/nts/basisprincipes-nts/
 
-    \paragraph{PPG} 
-    Photoplethysmography (PPG) is een simpele en goedkope optische meetmethode die vaak wordt gebruikt voor het controleren van hartslag doelen. 
-    PPG is een niet-invasieve technologie die een lichtbron en een fotodetector op het huidoppervlak gebruikt om de volumetrische variaties in de bloedcirculatie te meten. 
-    bron (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6426305/) Techniek die we gebruiken voor het meten van hartslag/zuurstof saturatie
+    \begin{definition}
+        Triage & Triage is een middel om met beperkte capaciteit spoedzorg te organiseren.
+        In de kern betekent triage dat in een tijdsbestek van enkele minuten op basis van beperkte gegevens een beslissing genomen moet worden over hoe snel de patiënt dient te worden beoordeeld door een hulpverlener, zoals een huisarts, ambulanceverpleegkundige of een SEH-arts.
+        bron https://de-nts.nl/nts/basisprincipes-nts/\\
+        \hline
+        PPG & Photoplethysmography (PPG) is een simpele en goedkope optische meetmethode die vaak wordt gebruikt voor het controleren van hartslag doelen.
+        PPG is een niet-invasieve technologie die een lichtbron en een fotodetector op het huidoppervlak gebruikt om de volumetrische variaties in de bloedcirculatie te meten.
+        bron (\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6426305/}) Techniek die we gebruiken voor het meten van hartslag/zuurstof saturatie\\
+        \hline
+        Sp02 & Zuurstofsaturatie Perifeer,  het percentage zuurstofrijk hemoglobine (hemoglobine dat zuurstof bevat) in vergelijking met de totale hoeveelheid hemoglobine in het bloed (zuurstofrijk en niet-zuurstofrijk hemoglobine).
+        Gemeten met een externe sensor op de huid.\\
+        \hline
+        Sa02 & Zuurstofsaturatie Slagaderlijk, dezelfde meeting als SpO2 maar dan verkregen via een Bloedgasmeting \\
+    \end{definition}
 
-
-    \paragraph{SpO2}
-    Zuurstofsaturatie Perifeer,  het percentage zuurstofrijk hemoglobine (hemoglobine dat zuurstof bevat) in vergelijking met de totale hoeveelheid hemoglobine in het bloed (zuurstofrijk en niet-zuurstofrijk hemoglobine). 
-    Gemeten met een externe sensor op de huid.
-
-    \paragraph{SaO2} 
-    Zuurstofsaturatie Slagaderlijk, dezelfde meeting als SpO2 maar dan verkregen via een Bloedgasmeting 
 
 
     \section{Literatuurverkenning}\label{sec:literatuur}
@@ -150,7 +145,7 @@
     
     \includegraphics[height=0.2\textheight]{Images/Tamura1.png}
 
-    \citet{tekano2007heart}
+    \citet{takano2007heart}
 
     Een transmissive PPG kan een relatief goed signaal verkrijgen, maar de meetlocatie is beperkt. 
     Om een meting te doen moet de sensor zich op het lichaam bevinden op een plaats waar doorgelaten licht gemakkelijk kan worden gedetecteerd, zoals de vingertop, het neustussenschot, de wang, de tong of de oorlel. 
@@ -188,120 +183,52 @@
 
 
     \section{Uitvoering}\label{sec:uitvoering}
-    \subsection{Deelvraag 1 tot en met deelvraag 4}\label{subsec:deelvraag-1-tot-en-met-deelvraag-4}
-    Voor deze deelvragen zullen wij een literatuuronderzoek
-    verrichten naar methoden van pijndetectie door middel van Vision.
-    Hierbij zullen wij per methode de deelvragen beantwoorden, om zo uiteindelijk een conclusie te kunnen trekken over
-    de meest geschikte methode(n).
-    Voor het aangeven van de hardware-vereisten maken wij een beredenering waarom wij denken dat er een bepaalde hardware-vereiste is.
-    In deze beredenering kijken we vooral naar het geheugengebruik van de methode,
-    aangezien dit de meest limiterende factor is van een embedded systeem.
+    \todo{TODO, ik heb dit overgenomen uit het onderzoeksvoorstel, akkoord zo?}
+    \subsection{Theorie bloed zuurstofsaturatie en hartslag}
+    Voor de lichte verwerking van de data, die deze module zal doen, is een klein beetje context nodig.
+    Het gaat hier dan met name om de medische betekenis van de twee waarden die hier worden onderzocht.
+    Er zal geen complete diagnose gesteld worden, maar het is niet onbelangrijk om overzicht te houden in de verworven data.
+    De patiënten zou bijvoorbeeld kunnen worden gesorteerd op de afwijking van hun data ten opzichte van de verwachte data voor een gezond gemiddeld mens.
 
-    Om de onderzochte methoden inzichtelijk te maken voor onszelf, beantwoorden wij voor onszelf een aantal vragen over elke methode.
-    Omdat de antwoorden op deze vragen niet direct relateren aan de deelvragen, maar een methode inzichtelijk dienen te maken, kan de lezer de antwoorden hierop vinden inde bijlagen.
-    Deze vragen zijn als volgt:
-    \begin{itemize}
-        \item Korte Omschrijving
-        \item Van welk principe maakt het gebruik
-        \item Geschatte piek-geheugengebruik per meting
-        \item Geschatte tijdsduur voor een conclusie
-        \item Mogelijkheid om te draaien op een embedded systeem
-    \end{itemize}
+    Op deze manier kunnen in ieder geval de op het eerste gezicht meer kritieke gevallen het eerst aan de medici voorgelegd worden.
 
+    Hiervoor zal een stuk onderzoek gedaan moeten worden naar de gezonde bereiken voor de hartslag en zuurstofsaturatie en de gevolgen van het afwijken van die waarden.
+    Wellicht resulteert een sterke afwijking in zuurstofsaturatie sneller tot ernstige hulpbehoevendheid dan een sterke afwijking in de hartslag of vice versa.
+    Dit soort informatie is dus essentieel om een goede initiële verwerking van de resultaten mogelijk te kunnen maken, opdat de medici sneller ter plaatse kunnen zijn waar de nood het hoogst is.
 
-    Voor \emph{\hyperref[itm:dv1]{deelvraag 5}} doen wij een vergelijkend onderzoek voor camera's.
-    We onderzoeken het bestaan van camera's specifiek voor vision, en noteren specificaties van deze camera's.
-    Bij dit onderzoek betrekken wij ook een webcam en een actiecamera.
+    Ook is de theorie achter het doen van de metingen belangrijk voor het vergelijken van sensoren, hierdoor kunnen wij geïnformeerd kijken naar de verschillende specificaties van sensoren, en een beslissing maken over welke het beste past bij onze use case.
 
-    Voor deelvraag 6 doen wij experimenteel onderzoek.
-    Door meerdere implementaties te vergelijken, kunnen wij de maximale bereikbare waarden ervan vergelijken.
+    \subsection{Van bestaand Proces naar autonome metingen}
+    We gaan kijken naar hoe deze metingen worden gedaan in de gezondheidszorg, en wat de procedure is en welk materiaal hiervoor wordt gebruikt.
+    Op basis van de kennis die wij opdoen tijdens dit literatuuronderzoek gaan wij dit proberen toe te passen op een module(end effector) die vervolgens deze metingen zo autonoom mogelijk gaat uitvoeren.
+
+    \subsection{Wat maakt een sensor geschikt?}
+    Tijdens het literatuuronderzoek over het meten van de Hartslag en Zuurstofsaturatie komen we meer te weten over hoe deze metingen precies worden gedaan, en dus ook welke specificaties van belang zijn voor een goede sensor.
+    Naast de meting gerelateerde aspecten van de sensor komen wordt er ook gekeken naar de algemene specificaties van een sensor zoals Stroomverbruik, prijs, form factor,beschikbaarheid etc.
+    Er moet gekeken worden bij verschillende chipmakers, distributeurs en bestaande oplossingen om te zien welke sensoren op de markt zijn.
 
 
     \section{Resultaten}\label{sec:resultaten}
-
-    \subsection{Deelvraag 1 t/m 4}\label{subsec:deelvraag-1-t/m-4}
-    \emph{Is het mogelijk om computer vision toe te passen op videobeeld om pijn te kunnen herkennen op het gezicht van een mens?}
-
-    Wij hebben een aantal velden opgesteld die wij per methode hebben onderzocht.
-    De volgende resultaten zijn hieruit gekomen
-
-    \subsection{Onderzoek methoden pain detection}\label{subsec:onderzoek-methoden-pain-detection}
-
-    \subsubsection{Methode 1}
-
-    \emph{\citet{werner2014automatic}} Automatic pain recognition from video and biomedical signals\\
-    \emph{\citet{prkachin1992consistency}} The consistency of facial expressions of pain: a comparison across modalities\\
-    Deze methode combineert het gebruik van Vision algoritmen, met het meten van biomedische data door middel van sensoren.
-    Wij zullen hier alleen kijken naar het gedeelte van de methode met betrekking tot Vision.
-
-    \paragraph{Aantal foto's per tijdseenheid}
-    Deze methode maakt gebruik van veranderingen in gezichtsafstanden ten opzichte van een baseline, en kan dus met 2 foto's een resultaat geven.
-    Deze foto's hoeven dan ook niet extreem snel verwerkt te worden, en het systeem mag hier een aantal seconden over doen.
-
-    \paragraph{Hardware-vereisten}
-    De vereisten voor de berekening zelf zijn weinig: Er moeten slechts een aantal afstanden van coordinaten vergeleken worden.
-    Dit zullen de meeste microcontrollers ook kunnen.
-    Het probleem zit hierom meer in de methode van facial feature detection.
-    Afhankelijk van de gebruikte methode, moet de processor mogelijk meerdere kleurafbeeldingen opslaan, en bij convolutie van een afbeelding moet een afbeelding vaak twee keer aanwezig zijn in het geheugen.
-    
-    \emph{Bij de onderstaande redenering gaan wij uit van onze ervaring in algemene gezichtsdetectie, aangezien wij geen diepgaande ervaring hebben met gezichtseigenschappen-detectie.
-    Mogelijk is zo een algoritme dus meer/minder geheugenintensief dan wij aannemen}
-
-    Bij het opslaan van een kleine kleurafbeelding (50x50) is al gauw 7.5KB per afbeelding nodig. (2500 pixels van 3 bytes (rgb))
-    Omdat naast een aantal van deze afbeeldingen en eventuele afbeeldingsbuffers ook nog de programmacode aanwezig moet zijn op de microcontroller,
-    verwachten wij dat dat deze methode niet zal kunnen draaien op een standaard microcontroller.
-
-    
-    Mogelijk zijn uitgebreidere microcontrollers wel toereikend.
-    Een Arduino Due heeft bijvoorbeeld 96kB werkgeheugen.
-    De marge vinden wij hier echter te klein van.
-    Bij het toevoegen van meer functionaliteit zou ook het geheugen van een Due snel volraken.
-    Om deze reden raden wij aan om deze methode te draaien op een embedded systeem met werkgeheugen op het circuitboard.
-    Denk hierbij aan een Raspberry Pi of een Nvidia Jetson-systeem
-
-    \paragraph{Langer analyseren frame}
-    Of pijn accurater gedetecteerd kan worden is grotendeels afhankelijk van de gebruikte methode voor facial feature recognition.
-    Het langer analyseren kan wel effect hebben op de afstand waarop pijn gedetecteerd kan worden.
-    Dit zou mogelijk zijn door de afbeelding op volledige resolutie te verwerken, en niet omlaag te schalen.
-
-
-
-
-    \section{Evaluatie}\label{sec:evaluatie}
-
-
-    \section{Aanbevelingen}\label{sec:aanbevelingen}
-
-
-    \section{Suggesties voor verder onderzoek}\label{sec:suggesties-voor-verder-onderzoek}
-
-
-    \section{Literatuur}\label{sec:literatuur}
-
+    \todo{TODO, resultaten verzamelen}
 
     
     \section{Conclusie en Discussie}\label{sec:conclusie-en-discussie}
-    De indruk die opgewekt is in dit literatuur onderzoek is dat deze methode complex is in implementatie en eigenlijk niet perfect onze vereisten vervult.
-    Onder andere zijn dus meerdere frames van de transistie tussen neutraal en een een expressie nodig om te kunnen vast stellen welke expressie dit is.
-    Alhoewel optical flow technieken goed werken op lage resolutie beelden moeten deze beelden verder van hoge kwaliteit zijn.
-    Ook dit is een min punt van deze aanpak.
+    \todo{TODO, wat kan er worden geconcludeerd uit dit onderzoek}
 
 
     \section{Evaluatie}\label{sec:evaluatie2}
-    Vanwege meerdere minpunten met als belangrijk dat relatieve verschillen gemeten kunnen worden raden we niet aan om deze methode te gebruiken voor ons doeleinde.
-
+    \todo{TODO, wat voor problemen kwam je tegen tijdens het onderzoek}
 
     \section{Aanbevelingen}\label{sec:aanbevelingen2}
-    Onze aanbeveling is om deze methode niet te gebruiken voor pijn detectie en door te zoeken naar een andere, effectievere methode.
+    \todo{TODO, wat zijn de aanbevelingen uit dit onderzoek}
 
 
     \section{Suggesties voor verder onderzoek}\label{sec:suggesties-voor-verder-onderzoek2}
-    Er is nog veel te lezen over optical flow methodes en hoe je deze effectief implementeert.
-    Er is een \emph{\citet{Readinglist} Reading list}.
-    Hier staan op dit moment 72 artikels in over optical flow technieken.
+    \todo{TODO, wat zijn verdere onderzoekssuggesties}
 
 
     \section{Literatuur}\label{sec:literatuur2}
+    \todo{TODO}
     In dit hoofdstuk beschrijven we de onderzochte literatuur.
     Hierbij geven wij aan wat de relevantie is tot ons eigen onderzoek.
 

@@ -1,6 +1,8 @@
 \usepackage{array}
 
+\usepackage{natbib}
 
+\usepackage{xcolor}
 
 \bibliographystyle{apalike}
 \renewcommand{\refname}{\section{Referenties}}
@@ -9,10 +11,14 @@
 
 \newenvironment{definition}
     {
+        \renewcommand{\arraystretch}{1.2}
         \begin{tabular}{>{\bfseries}l >{\em}p{0.7\textwidth}}
     }
     {
         \end{tabular}
+        \renewcommand{\arraystretch}{1}
     }
 
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\newcommand{\todo}[1]{\textcolor{red}{\emph{#1}}}
