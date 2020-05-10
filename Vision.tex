@@ -302,10 +302,10 @@
     \href{https://pixycam.com/pixy2/}
     De pixy2 is een camera die specifiek gericht is op het gebruiken van Vision algoritmes in microcontrollers.
     Deze camera heeft veel ondersteunde communicatiemethoden die gebruikt kunnen worden met microcontrollers en embedded systemen.
-    De camera heeft zelf een chip die lijnen, kleuren en specifieke objecten kan herkennen. 
+    De camera heeft zelf een chip die lijnen, kleuren en specifieke objecten kan herkennen.
     Hiernaast kan via USB ook een live camerabeeld uitgelezen worden.
 
-    
+
     \emph{Attributen verzameld via [\citenum{pixy_datasheet}]}
 
     \paragraph{Flir Firefly DL}
@@ -316,11 +316,11 @@
 
 
     \emph{Attributen verzameld via [\citenum{firefly_info}]}
-    
+
     \paragraph{Webcam: Logitech C270}
-    De makkelijkst verkrijgbare camera is natuurlijk een webcam. Deze doet niks voor ons in de vorm van Vision, en levert alleen beelden. 
+    De makkelijkst verkrijgbare camera is natuurlijk een webcam. Deze doet niks voor ons in de vorm van Vision, en levert alleen beelden.
     Wel heeft deze een hele toegankelijke interface (USB2) die op veel embedded systemen beschikbaar is.
-    
+
     \emph{Attributen verzameld via [\citenum{c270_datasheet}]}
 
 
@@ -342,9 +342,9 @@
 
     \section{Conclusie en Discussie}\label{sec:conclusie-en-discussie}
     \emph{Work in Progress}
-
+    \subsection{Vergelijking algoritmen}
     Op het moment van schrijven zijn wij nog niet begonnen met de implementatie.
-    In vergelijking met Facial Feature detection is Optical Flow een complexe techniek
+
 
 
     De indruk die opgewekt is in dit literatuur onderzoek is dat deze methode complex is in implementatie en eigenlijk niet perfect onze vereisten vervult.
@@ -355,17 +355,18 @@
     \subsection{Vergelijking camera's}
     Voor de vergelijking van camera's zijn we het erover eens dat voor gebruik bij computer vision de Firefly-DL de meest geschikte camera is.
     Door de Deep Learning mogelijkheden kan een algoritme dat gezichtskenmerken detecteert veel aangepast worden om precieze resultaten te leveren.
-    Deze camera is echter minder geschikt voor embedded systemen door het hogere stroomverbruik en minder bruikbare interface. 
+    Deze camera is echter minder geschikt voor embedded systemen door het hogere stroomverbruik en minder bruikbare interface.
     Er zijn namelijk weinig embedded systemen met een USB 3.1 aansluiting\footnotemark[3]
 
     \footnotetext[3]{Mogelijk werkt de camera wel met USB 2, maar hier konden wij niks over vinden in de gegevens, en wij konden dit niet testen zonder de camera}
 
     De Pixy2 is op dit vlak geschikter, aangezien de interfacemogelijkheden specifiek gericht zijn op embedded systemen.
-    De Pixy voegt echter binnen de scope weinig toe voor gezichtskenmerk-tracking, aangezien het alleen vooraf bekende objecten kan herkennen.
+    De Pixy voegt echter binnen de scope weinig toe voor gezichtskenmerk-tracking, aangezien het alleen vooraf bekende objecten/kleuren kan herkennen.
 
-    Om niet meer functionaliteit te kopen dan nodig is, is daarom onze keuze gevallen op de standaard webcam. 
+    Om niet meer functionaliteit te kopen dan nodig is, is daarom onze keuze gevallen op de standaard webcam.
     Doordat de camera zelf geen Vision mogelijkheden heeft, zal er een sterker embedded systeem nodig zijn \hyperref[meth1-hardware]{(zie hardware-vereisten)} om de algoritmen uit te voeren.
-    
+    Een groot voordeel, zeker in coronatijd is dat de meeste mensen wel een webcam thuis hebben staan, en de resultaten van dit onderzoek daarom goed reproduceerbaar zijn.
+
 
     \section{Evaluatie}\label{sec:evaluatie2}
     \emph{Work in Progress}
@@ -376,7 +377,7 @@
     \emph{Work in Progress}
     Onze aanbeveling is om deze methode niet te gebruiken voor pijn detectie en door te zoeken naar een andere, effectievere methode.
 
-    
+
 
     \section{Suggesties voor verder onderzoek}\label{sec:suggesties-voor-verder-onderzoek2}
     \emph{Work in Progress}
@@ -385,9 +386,9 @@
     Hier staan op dit moment 72 artikels in over optical flow technieken.
 
     \paragraph{Pixy2}
-    Ondanks dat de pixy geen gezichtskenmerken kan herkennen, is het misschien wel mogelijk om een algoritme efficienter te laten werken door de pixy voorwerk te laten doen.
+    Ondanks dat de pixy camera geen gezichtskenmerken kan herkennen, is het misschien wel mogelijk om een algoritme efficienter te laten werken door de pixy voorwerk te laten doen.
     Er kan onderzocht worden of het mogelijk is met de Pixy om oninteressante gebieden uit te sluiten van berekening in een algoritme.
-    Hierdoor kunnen algoritmen mogelijk op minder sterke microcontrollers gedraai worden, of sneller resultaten leveren.
+    Hierdoor kunnen algoritmen mogelijk op minder sterke microcontrollers uitgevoerd worden, of sneller resultaten leveren.
 
 
     \section{Literatuur}\label{sec:literatuur2}
@@ -484,7 +485,7 @@
     3. Voor elke pixel in de eerste frame wordt in de tweede frame gekeken of deze kleur en intensiteit ongeveer te vinden is in de buurt van de oorspronkelijke pixel in de eerste frame.
     4. Op deze manier breng je beweging van pixels tussen frames in beeld.
     5. Vaak zijn er ook passes met grotere bins van 2
-    
+
     \includegraphics[height=0.2\textheight]{Images/Vector-field-examples.jpg}
     Er wordt over het gezicht gekeken naar verandering, welke uitgedrukt worden in vectoren.
     Deze worden dan gematcht tegen een database met de verschillende emoties.
