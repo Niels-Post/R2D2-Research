@@ -7,4 +7,4 @@ bib:
 all:
 	make bib F=Vision
 	make bib F=researchVideoFeed
-	make bib F=photoplethysmograghy
+	make bib F=photoplethysmography
