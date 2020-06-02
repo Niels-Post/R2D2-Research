@@ -163,6 +163,11 @@ Omwille van de leesbaarheid hebben we de deelvragen met hun bijbehorende toetsme
 In dit onderdeel bespreken we de conclusies waartoe we gekomen zijn uit ons deelonderzoek.
 
 \subsubsection{Deelvraag 1 {\&} 2}
+\textit{Bestaan er camera’s op de markt die geschikt zijn voor de Arduino Due, maar onder de 28 euro zijn?}
+
+
+\textit{Welke factoren beïnvloeden welke camera het meest geschikt is voor onze toepassing?}
+
 We hebben een aantal camera's gevonden en hebben de belangrijkste factoren die het antwoord op onze deelvragen beantwoorden.
 Zie figure \ref{fig:deelvragen1en2}.
 
@@ -189,9 +194,13 @@ Wij interpreteren de volgende factoren als van belang voor ons onderzoek:
 \end{itemize}
 
 \subsubsection{Deelvraag 3}
+\textit{Als er camera’s bestaan die aan onze geschiktheidseisen voldoen, welke zou dan het meest geschikt zijn voor deze toepassing? }
+
 Wij hebben gekozen voor de OV7670. Dit was de enige gevonden camera die binnen ons budget viel. We hadden het budget kunnen vergroten, maar deze camera had ook de laagste resolutie. Dit vergroot de kans dat de afbeelding gebufferd kan worden op de Arduino Due. Daarbij moet de camera ook te koop zijn voor andere groepjes ten tijden van de module wisseling.  Deze camera is ook beschikbaar in de webwinkel van een van onze docenten, Wouter van Ooijen. Zo kunnen we hem altijd om hulp vragen als het nodig is. Gezien de corona crisis is dat laatste voor ons wel belangrijk, hulp op afstand. Verder is de camera te benaderen met een I2C interface en beide onderzoekers hebben hier enige ervaring mee, wat het communiceren met de chip makkelijk maakt. Maar de doorslaggevende factor is uiteindelijk de prijs en de levertijd geweest. Ook met het oog op de eventuele module wisseling.
 
 \subsubsection{Deelvraag 4}
+\textit{Heeft de Arduino Due genoeg intern geheugen om één frame te bufferen met de meest geschikte camera? }
+
 De Arduino Due heeft 96kb ram. De OV7670, onze gekozen camera, maakt een afbeelding met een resolutie van 640x480. Dit zijn 307.200 pixels in het totaal. De module gebruikt 1 byte per pixel als een bayer filter die we moeten decoden. In het totaal is dat dus ongeveer 0,3mb. De Arduino Due heeft volgens de berekening dus niet genoeg geheugen voor het opslaan/bufferen van 1 frame.
 
 Onze oorspronkelijke hypothese voorafgaand aan het onderzoek was dat de Arduino wel voldoende geheugen zou hebben. Daarom was ons oorspronkelijke plan ook om daar dan code voor te schrijven. Nu blijkt natuurlijk al dat dat geen zin heeft maar we willen toch code schrijven en een degelijk onderzoek neerzetten.
@@ -201,6 +210,8 @@ Als gevolg daarvan hebben wij besloten onze hypothese aan te passen en aan te ne
 
 
 \subsubsection{Deelvraag 5}
+\textit{Wat is het maximale aantal frames (of deel van een frame) dat wij met de gekozen camera kunnen bufferen op het RAM geheugen van de Arduino Due? }
+
 Voor deze deelvraag hebben we code geschreven. We hebben een basis implementatie die via I2C verbinding maakt met de ov7670, een aantal registers schrijft om instellingen in te stellen en de data uitleest. De foto’s zijn nu alleen nog een verzameling van pixels. De digital pins op een arduino Due zijn intern doorverbonden met een 32 bits register. De OV7670 heeft 8 pinnen die data uit sturen. Wij hebben deze pinnen doorverbonden met 8 digital pins op de Arduino en lezen in 1 keer een 32 bits register uit om de waarde van de byte op te halen. We doen dus niet aan bit bangen, dit is sneller. Verder heeft de ov7670 een 10 mHz pixel clock die we aansturen dmv hardware op de arduino. Op de tendens van de pixel clock stuurt de camera zijn bytes naar de arduino. Dit gaat dus ook met een hoge snelheid.
 
 De huidige code bestaat uit 2 belangrijke functies. de “ get image” en de “ process image.” De get image leest de data steeds weer uit het register en plaatst deze een array. Per RGB waarde geeft de OV7670 2 bytes uit. Dat betekent dat je voor 640 x 480 foto dus 1280 x 960 bytes moet opslaan.
@@ -258,10 +269,26 @@ In onze implementatie liep de Arduino Due na 75\% nog steeds vast, omdat wij hie
 Pas bij 55\% van een frame doet onze implementatie met 2 arrays het pas echt. Hierbij werd de arduino geflashed, de data uitgelezen en in de eerste array gezet, de tweede array aangemaakt en gevuld met RGB waarden.
 
 \subsubsection{Deelvraag 6}
-Voor deelvraag 6 \& 7 hebben we contact opgenomen met een medisch expert. (Frederique Klein, HBO verpleegkundige en zorgregisseur). Zij heeft in haar werk dagelijks te maken met de ABCDE lijst omdat ze als verpleegkundige nog al eens in situaties komt waarin ze mensen in een medische noodtoestand aantreft en ze een triage moet doen. Onder het kopje bijlage is een link te vinden naar korte notulen van dit gesprek. 
+\textit{Wat moet medisch personeel zien op een filmpje of foto om erachter te komen wat er medisch nodig is voor de A \& D van de ABCDE lijst? }
 
-Het antwoord op deelvraag 6 is nee. Voor de D (disability) kan dat nog wel, maar dan moet het wel een filmpje met geluid zijn. Medisch personeel moet kunnen zien of iemand nog beweegt, knippert etc. En het liefst moeten ze iemand kunnen aanspreken of in ieder geval horen of iemand kreunt of praat. 
-Voor de A (airway) kan het niet volledig met een filmpje of foto. Er zouden in ieder geval foto’s moeten zijn van de neus, keel en borst en bij voorkeur ook nog de binnenkant van de mond en keel (zo diep mogelijk). Maar zelfs dan kan een diepe obstructie in de keel niet worden gezien met een foto of filmpje. Een medische handeling hiervoor is simpelweg voelen. Medisch personeel gaat in het geval van een onzichtbare obstructie met de vingers en/of hand de keel in om te voelen waar de de obstructie zit. Ook kunnen ze soms aan de buitenkant van de keel of borst iets voelen. Dat kan niet met een foto of filmpje met of zonder geluid. Dus voor Airway kunnen we niet anders dan concluderen dat alleen een foto of filmpje niet volstaat voor diepere obstructies.
+Voor deelvraag 6, 7 \& 8 hebben we contact opgenomen met een medisch expert. (Frederique Klein, HBO verpleegkundige en zorgregisseur). Zij heeft in haar werk dagelijks te maken met de ABCDE lijst omdat ze als verpleegkundige nog al eens in situaties komt waarin ze mensen in een medische noodtoestand aantreft en ze een triage moet doen. Onder het kopje bijlage is een link te vinden naar korte notulen van dit gesprek. 
+
+Voor het (deels) controleren van de airway moeten wij een foto van de buitenkant van de neus, mond, keel, borst, de binnenkant van de mond en zo diep mogelijk in de keel. 
+Voor het controleren op disability volstaat een foto niet en moet er een kort filmpje zijn met geluid.
+
+\subsubsection{Deelvraag 7}
+\textit{Hoeveel frames moeten we bufferen om het voor medici mogelijk te maken, zover het mogelijk is via beelden, de A \& D controle te doen? }
+
+De verpleegkundige heeft aangegeven dat in ieder geval voor de D (disability) een filmpje met geluid nodig is. Dat zou betekenen dat we voor een 30 fps filmpje, 30x de resolutie van de foto zouden moeten bufferen. Uit de conclusie van deelvraag 5 kunnen we halen dat dat nooit mogelijk is op een Arduino Due. Dus het antwoord op deze vraag is niet echt te geven. 
+De beste optie bij deze deelvraag is om de foto uit de camera te halen, te processen en dan direct door te sturen naar een ontvangende partij. Als je het lokaal bufferen overslaat is er een kans dat we een goed filmpje kunnen maken om de D van de ABCDE lijst te bekijken. 
+Voor de A geldt naar aanleiding van deelvraag 6: In ieder geval 1 van ieder onderdeel (neus, keel, borst etc.). Maar hierbij geldt ook dat dit nooit gebufferd kan worden op het intern geheugen en dus ook de beste optie is om het meteen door te sturen.
+
+\subsubsection{Deelvraag 8}
+\textit{Kan alles van de A & D van de ABCDE lijst gecontroleerd worden met een foto of filmpje? }
+
+Het antwoord op deelvraag 8 is nee. Voor de D (disability) kan dat nog wel, maar dan moet het wel een filmpje met geluid zijn. Medisch personeel moet kunnen zien of iemand nog beweegt, knippert etc. En het liefst moeten ze iemand kunnen aanspreken of in ieder geval horen of iemand kreunt of praat. 
+Voor de A (airway) kan het niet volledig met een filmpje of foto. Er zouden in ieder geval foto’s moeten zijn van de neus, keel en borst en bij voorkeur ook nog de binnenkant van de mond en keel (zo diep mogelijk). Maar zelfs dan kan een diepe obstructie in de keel niet worden gezien met een foto of filmpje. Een medische handeling hiervoor is simpelweg voelen. Medisch personeel gaat in het geval van een onzichtbare obstructie met de vingers en/of hand de keel in om te voelen waar de de obstructie zit. Ook kunnen ze soms aan de buitenkant van de keel of borst iets voelen. Dat kan niet met een foto of filmpje. Dus voor Airway kunnen we niet anders dan concluderen dat alleen een foto of filmpje niet volstaat voor diepere obstructies. Voor Disability is het antwoord dat alles controleerbaar is mits het een filmpje met geluid is.
+
 
 \section{Resultaten}
 De onderzoeksvragen, theorie en hypotheses worden hier kort samengevat. Hier volgen nog geen interpretatie wel getalsmatige conclusies.
