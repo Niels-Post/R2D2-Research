@@ -291,32 +291,98 @@ Voor de A (airway) kan het niet volledig met een filmpje of foto. Er zouden in i
 
 
 \section{Resultaten}
-De onderzoeksvragen, theorie en hypotheses worden hier kort samengevat. Hier volgen nog geen interpretatie wel getalsmatige conclusies.
+Er is onderzoek gedaan naar welke camera in combinatie met de Arduino Due men het beste kan gebruiken om de A \& D van de ABCDE triage lijst vast te kunnen stellen. Hieruit is voortgekomen dat de camera die wij in de context van R2D2 en Corona (bestel mogelijkheden) het beste kunnen gebruiken de OV7670 camera is. Deze hebben wij besteld, code voor geschreven en verder onderzoek mee gedaan.
 
-\section{Conclusie en discussie}
-Hier worden de resultaten in verband gebracht met de vraagstelling en worden de conclusies en verbanden gelegd.
+Verder hebben we onderzoek gedaan naar hoeveel frames wij zouden kunnen bufferen een Arduino Due met gebruik van de OV7670. Wij namen hierbij de hypothese aan dat er niet voldoende geheugen zou zijn om 1 frame te bufferen op de Arduino Due. Dat kon je met een simpele rekensom namelijk al uitrekenen. Uit dit deelonderzoek kwam voort dat een volledige foto bufferen van 640 bij 480 pixels, de hoogste resolutie van de camera, al niet mogelijk is. Met de code die wij hebben geschreven (waarbij 2 grote arrays worden gemaakt en gevuld) is de beste resolutie die we kunnen halen 352 bij 264 pixels. Een vrij kleine foto dus. Daar kunnen we dan ook maar 1 frame van bufferen. Als er meer code op de Arduino geflashed moet worden zou dat formaat nog wat omlaag gaan. We kwamen tijdens het onderzoek doen daarnaar wel tot 2 mogelijke verbeterpunten die we toelichten in de discussie.
+
+Daarnaast is er nog een interview gehouden met een medisch expert om antwoord te krijgen op de vraag wat medisch personeel precies zou willen zien op een foto om de twee letters van de lijst te kunnen bekijken. Hier kwam uit dat er in ieder geval een foto van de buitenkant van de neus, mond, keel en borst moet zijn. En er moet een foto zijn van de binnenkant van de mond en de binnenkant van de keel (zo diep mogelijk). Toch gaf de verpleegkundige hierbij aan dat alleen fotos/filmpjes niet genoeg zijn om de luchtwegen van iemand te controleren en in realiteit men ook vaak voelt aan de binnen en buitenkant van de keel bij een diepere obstructie. Verder kwam naar voren dat om de staat van bewusteloosheid (de D) van iemand te controleren foto’s niet volstaan. Hier zou dan een filmpje met geluid voor moeten zijn. Zodat er kan worden gekeken of iemands pupillen nog reageren, of iemand nog knippert, of iemand kreunt/praat etc. 
+
+\section{Conclusie, discussie \& suggesties}
+Voor dit deelonderzoek hebben wij de volgende hoofdvraag geformuleerd:
+
+\textit{Welke camera, compatibel met de Arduino due en onder de 28 euro, is het meest geschikt om de toestand van een patiënt te fotograferen of filmen en dit zo vlot en accuraat mogelijk lokaal te bufferen op het RAM geheugen van de Arduino due om wanneer het gebufferd kan worden, door te kunnen sturen naar medisch personeel voor de medische vaststelling van de A en D van de ABCDE lijst?}
+\subsection{Conclusie}
+Uit de antwoorden op de deelvragen kunnen we concluderen dat de OV7670 de beste camera is om te gebruiken, om gezien de beperkingen van de Arduino Due zo vlot en accuraat mogelijk een patiënt te fotograferen. Verder kunnen we concluderen dat het niet mogelijk is om een gedetailleerde foto of film, zoals omschreven door de medisch expert, lokaal te bufferen. De foto zou ons inziens een te lage resolutie krijgen en daarbij kan je dan ook maar 1 foto lokaal bufferen. Daar kan de medisch expert niet voldoende mee. Met zo’n lage resolutie achten wij het niet onwaarschijnlijk dat je kleine obstructies/medische problemen niet goed ziet.
+
+\subsection{Discussie \& suggestie}
+Toch hebben we uit dit onderzoek wel een aantal andere nuttige dingen gehaald. Zo weten we nu dat lokaal bufferen niet echt een goede optie is. Onze code die gebruik maakt van 2 arrays voor het opslaan is daar zeker niet geschikt voor. Ons onderzoek heeft deels aangetoond dat bij gebruik van 1 array in plaats van 2 we in ieder geval een iets hogere resolutie foto kunnen bufferen (480 * 360 ipv 352 * 264). Een goed vervolg van dit onderzoek is dus de code herschrijven zodat we gebruik maken van 1 array. Daar volgt dan wel een nieuw onderzoek uit en dat is bekijken of de Arduino Due genoeg processorsnelheid heeft om de data uit z’n register te halen, deze te bitshiften naar RGB waarden en deze op te slaan, voordat een nieuwe byte uit de camera in het register komt.
+
+Als men verder zou gaan met bekijken of de Due daar snel genoeg voor is, zou een andere (nog betere) optie volgens ons zijn om te kijken of je het in plaats van opslaan, direct door kan sturen naar een ontvangende partij. Dan is een lokale buffer denken wij helemaal niet meer nodig en zou je de allerhoogste resolutie foto kunnen versturen en zelfs filmpjes. Daarmee is dan de D (disability) volledig controleerbaar en ook voor de A (airway) kan je dan meer detail zien.
+
+Verder denken wij dat het verstandig is vervolgonderzoek te doen naar het fotograferen in de mond. Zo kwam bij ons tijdens het interview eigenlijk de vraag dan al op, hoe diep moet je dan in de mond/keel fotograferen? Is dat niet te donker en moet daar een lichtje bij? Kortom, nader onderzoek naar fotograferen aan de binnenkant van een mond en keel is niet onverstandig.
+
+Tijdens het interview gaf de verpleegkundige aan dat voor de D een foto niet volstaat. Hiervoor moet in ieder geval een filmpje gemaakt en bekeken kunnen worden. Het liefst ook nog een filmpje met geluid. Daarom lijkt het ons ook verstandig verder onderzoek te doen naar geluid opnemen op de Arduino Due en dat dan ook lokaal te bufferen/mee te versturen.
+
 
 \section{Evaluatie}
-Hier wordt het onderzoek geëvalueerd op product- en procesniveau. Er wordt dus gekeken naar de sterke en zwakke punten van het onderzoek, de leerervaringen en eventuele zaken die verkeerd zijn gegaan en in de toekomst anders zouden moeten. Verder wordt een onderzoekslogboek bijgevoegd waarin de dagelijkse besluiten en gebeurtenissen in staan.
+Het onderzoek is erg goed gegaan gezien de omstandigheden. Door de huidige pandemie en de situatie hieromheen, hebben we slechts 1 camera kunnen vinden en testen.
+De kosten van de camera speelden een erg grote rol in de huidige situatie. Als dit minder had meegeteld, hadden we mogelijk meerdere geschikte camera’s kunnen vinden en testen.
+Door de tijd die we hadden met deze camera, hebben we deze wel uitvoerig kunnen testen. 
+Zo is onze conclusie uitgebreid getest en hebben we een aantal aanbevelingen hieruit kunnen opmaken. 
+Ook hebben we af en toe het uiteindelijke doel uit ogen verloren. Zo waren we veelal bezig met het werkend krijgen van de camera en alle instellingen goed uit te werken. Terwijl hiervan veel niet direct nodig was voor ons onderzoek. Daar zijn we dus ook best veel tijd aan kwijt geraakt. 
+Desondanks was dit onderzoek erg leerzaam. We hebben niet alleen veel geleerd over de camera, maar ook over het doen van onderzoek en samenwerken in een groot team. Zo hebben we taken leren delegeren en geleerd om te communiceren over onze taken, om zo het team op de hoogte te houden. 
+Wat we ook hebben geleerd is het belang van samen in 1 ruimte zijn. Het was door Corona soms erg lastig om simpele taken samen te doen. Zoals code die even niet werkt. Normaal loop je even naar elkaar toe, wijs je naar elkaars scherm, kijk je samen naar de hardware die wel/niet werkt. Dat werd nu wat lastiger en dit heeft met name de tijdsefficiëntie geen goed gedaan.
 
 \section{Aanbevelingen}
-Hier kunnen eventuele aanbevelingen worden gedaan op basis van de conclusies en resultaten.
-
-\section{Suggesties voor verder onderzoek}
-Mochten er tijdens het onderzoek nieuwe vragen naar voren zijn gekomen of nog onbeantwoorde vragen overgebleven zijn dan kunnen hier suggesties worden aangegeven. Deze kunnen dan eventueel in een nieuwe onderzoek meegenomen worden.
+Omdat het geheugen van de Arduino Due toch erg beperkt is en omdat de processor snelheid van de Arduino Due beperkt is. Lijkt het ons een goed idee om eens te kijken of deze implementatie niet veel beter uit te voeren is op een veel snellere microcontroller. Eventueel zelfs eentje die gewoon een OS heeft zoals de Raspberry Pi, de Intel NUC of de Nvidia Jetson. Zo’n computer stelt je namelijk in staat veel grotere (dus hogere resolutie) foto’s te bufferen, zelfs complete filmpjes te bufferen, ingewikkeldere camera’s te gebruiken en bovenal libraries aan te spreken die beter werken dan code die wij in het tweede jaar kunnen programmeren. Zeker als er vervolgonderzoek gaat gebeuren naar het gebruiken van 1 array, of zelfs het direct doorsturen van beelden kan een snellere processor bepalend zijn.
+Verder moesten wij vanwege de kosten, de besteltijd en de Arduino Due gebruik maken van een relatief lage resolutie camera. En had de camera ook niet een eigen buffer of standaard geluid aan boord. Als er gebruik wordt gemaakt van betere/meer middelen zou er gebruik kunnen worden gemaakt van een camera met een lokaal buffer, of zelfs eentje met geluid. 
 
 \section{Literatuur}
-In de literatuurlijst geef je op alfabetische volgorde aan welke literatuur je tijdens je onderzoek hebt gebruikt. Het is dan ook aan te raden om tijdens je onderzoek goed bij te houden welke bronnen je hebt gebruikt en wat je precies uit die bronnen hebt gehaald.
+Baldassari, F. (2020, 22 januari). I2C in a Nutshell. Geraadpleegd op 7 mei 2020, van https://interrupt.memfault.com/blog/i2c-in-a-nutshell
+
+Bosch Sensortec. (2015). BMP280 Digital Pressure Sensor Datasheet. Geraadpleegd van https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf
+
+C. (2014, 10 september). ComputerNerd/ov7670-simple. Geraadpleegd van https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c
+
+DPV TECHNOLOGY. (2019). OV7670 Camera Module With Arduino Step By Step [Videobestand]. YouTube. Geraadpleegd van https://www.youtube.com/watch?v=6bfY9JXOppI
+
+Finch, J. K. (2020, 2 juni). How To Interface the OV7670 Camera Module With Arduino | Arduino. Geraadpleegd op 28 mei 2020, van https://maker.pro/arduino/tutorial/how-to-interface-the-ov7670-camera-module-with-arduino
+
+Hattori, K., Tsutsui, H., Ochi, H., & Nakamura, Y. (2008). An architecture of photo core transform in HD photo coding system for embedded systems of various bandwidths. APCCAS 2008 - 2008 IEEE Asia Pacific Conference on Circuits and Systems, 1. https://doi.org/10.1109/apccas.2008.4746339
+
+I2C Info. (z.d.). Geraadpleegd op 24 april 2020, van https://i2c.info/
+
+Indrek. (2018, 4 februari). OV7670 Camera Module with Arduino: 10fps Video (Step-By-Step guide). Geraadpleegd op 7 april 2020, van https://www.youtube.com/watch?v=Dp3RMb0e1eA
+
+K. (2017a, 30 september). OV7670 Without FIFO Very Simple Framecapture With Arduino, Black/white. Geraadpleegd van https://www.instructables.com/id/OV7670-Without-FIFO-Very-Simple-Framecapture-With-/
+
+Lup Yuen Lee. (2018). Program the STM32 Blue Pill in 6 minutes [Videobestand]. YouTube. Geraadpleegd van https://www.youtube.com/watch?v=P1eFu847D2c
+
+matanbright. (2018, 17 maart). [SOLVED] Problem with camera module OV7670 [Arduino Forum]. Geraadpleegd van https://forum.arduino.cc/index.php?topic=535819.0
+
+Megapixel - Wikipedia. (z.d.). In Wikipedia. Geraadpleegd op 14 april 2020, van https://nl.wikipedia.org/wiki/Megapixel
+
+Micron. (2003). 1/2-inch CMOS Active-Pixel Digital Image Sensor. Geraadpleegd van http://www.arducam.com/downloads/modules/MT9M001/MT9M001_mi1300.pdf
+
+Micron. (2004). 1/3.2-Inch System-On-A-Chip (SOC) CMOS Digital Image Sensor. Geraadpleegd van https://www.uctronics.com/download/Image_Sensor/MT9D111_SOC2010DS.pdf
+
+Mr_Arduino. (2013, 10 april). OV7670 with both arduino uno and now mega. Geraadpleegd van https://forum.arduino.cc/index.php?topic=159557.0
+
+OmniVision Technologies. (2005a). OV7670 Datasheet. Geraadpleegd van https://www.voti.nl/docs/OV7670.pdf
+
+OmniVision Technologies. (2005b). OV7670/OV7171 CMOS VGA (640x480) CameraChipTMImplementation Guide. Geraadpleegd van https://github.com/dalmirdasilva/ArduinoCamera/blob/master/CameraAL422B/datasheet/OV7670%20Implementation%20Guide%20%28V1.0%29.pdf
+
+Open Circuit. (z.d.). VGA Camera Module OV7670, 640x480, FIFO Buffer AL422B, I2C. Geraadpleegd op 16 april 2020, van https://opencircuit.nl/Product/VGA-Camera-Module-OV7670.-640x480.-FIFO-Buffer
+
+Overleaf. (z.d.). Creating a document in LaTeX. Geraadpleegd op 14 april 2020, van https://www.overleaf.com/learn/latex/Creating_a_document_in_LaTeX
+
+Projects, E. G. (2019, 30 april). Interfacing OV7670 digital camera with arduino uno: capturing video and displaying it on TFT Lcd. Geraadpleegd op 8 april 2020, van https://www.engineersgarage.com/arduino/capturing-video-with-arduino-and-camera/
+
+Robot Electronics. (z.d.). I2C tutorial. Geraadpleegd op 7 mei 2020, van https://www.robot-electronics.co.uk/i2c-tutorial
+
+Song, K., Jonckheere, J. D., Zeng, X., Koehl, L., Yuan, X., & Zhao, X. (2019). Development of a data-based interactive medical expert system for supporting pregnancy consultations: general architecture and methodology. IFAC-PapersOnLine, 52(19), 67–72. https://doi.org/10.1016/j.ifacol.2019.12.109
+
+Sri, P. [prajna-sri]. (2016, 27 mei). Accessing configuration registers of OV7670 cam on i2c [Stack Exchange]. Geraadpleegd van https://arduino.stackexchange.com/questions/24645/accessing-configuration-registers-of-ov7670-cam-on-i2c
+
+SurtrTech. (2019, 30 januari). Test of OV7670 (Without FIFO) + Arduino - Taking snaps and store on PC. Geraadpleegd op 7 april 2020, van https://www.youtube.com/watch?v=PYW2WA5Igrc
+
+Vela-Medina, J. C., Guerrero-Sanchez, A. E., Rivas-Araiza, J. E., & Rivas-Araiza, E. A. (2018). Face detection for efficient video-surveillance IoT based embedded system. 2018 IEEE International Conference on Automation/XXIII Congress of the Chilean Association of Automatic Control (ICA-ACCA), 1. https://doi.org/10.1109/ica-acca.2018.8609835
+
+С. (2017b, 26 september). How to Connect OV7670 to Arduino Due. Geraadpleegd van https://www.instructables.com/id/How-to-Connect-OV7670-to-Arduino-Due/
 
 \section{Bijlagen}
-Stukken die niet in je onderzoeksrapport past kan je in de bijlagen plaatsen. Denk hierbij aan vragenlijsten, observatieschema’s, codeerschema’s, brieven aan respondenten, etc.
 
-
-\href{https://forum.arduino.cc/index.php?topic=159557.0}{klein voorbeeld van mensen met vragen over data opslag OV7670}  
-
-\href{https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c}{Stuk met extra code die probleem data opslag tackelt}
-
-\href{https://docs.google.com/document/d/1SsX8LF4RwbH1YNNYjNoLCvhxlJQ-Cs8OT3DVWehyQDE/edit?usp=sharing}{Interview met Frederique klein voor deelvraag 6 & 7}
+\href{https://docs.google.com/document/d/1SsX8LF4RwbH1YNNYjNoLCvhxlJQ-Cs8OT3DVWehyQDE/edit?usp=sharing}{Interview met Frederique klein voor deelvraag 6 \& 7}
 
 
 \bibliography{Include/Main}
