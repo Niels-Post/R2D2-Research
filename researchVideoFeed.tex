@@ -2,6 +2,8 @@
 %\usepackage[table,x11names,dvipsnames,table]{xcolor}
 \usepackage{comment}
 \usepackage{graphicx}
+\usepackage{amsmath}
+
 \graphicspath{ {./Images/} }
 
 
@@ -194,13 +196,70 @@ Wij hebben gekozen voor de OV7670. Dit was de enige gevonden camera die binnen o
 De Arduino Due heeft 96kb ram. De OV7670, onze gekozen camera, maakt een afbeelding met een resolutie van 640x480. Dit zijn 307.200 pixels in het totaal. De module gebruikt 1 byte per pixel als een bayer filter die we moeten decoden. In het totaal is dat dus ongeveer 0,3mb. De Arduino Due heeft volgens de berekening dus niet genoeg geheugen voor het opslaan/bufferen van 1 frame.
 
 Onze oorspronkelijke hypothese voorafgaand aan het onderzoek was dat de Arduino wel voldoende geheugen zou hebben. Daarom was ons oorspronkelijke plan ook om daar dan code voor te schrijven. Nu blijkt natuurlijk al dat dat geen zin heeft maar we willen toch code schrijven en een degelijk onderzoek neerzetten.
-Uit heel kort zoekwerk op internet blijkt beperkt geheugen een bekend probleem en er zijn verschillende mensen te vinden die hier \href{vragen}{https://forum.arduino.cc/index.php?topic=159557.0} over stelde. Op Github hebben we uiteindelijk een persoon gevonden die in zijn \href{main}{https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c} dit probleem oplost. Het probleem wordt hier opgelost door het bestand (de foto) in meerdere delen op te delen en hem dan in delen te bufferen op de Arduino.
+Uit heel kort zoekwerk op internet blijkt beperkt geheugen een bekend probleem en er zijn verschillende mensen te vinden die hier \href{https://forum.arduino.cc/index.php?topic=159557.0}{vragen} over stelde. Op Github hebben we uiteindelijk een persoon gevonden die in zijn \href{https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c}{main} dit probleem oplost. Het probleem wordt hier opgelost door het bestand (de foto) in meerdere delen op te delen en hem dan in delen te bufferen op de Arduino.
 
 Als gevolg daarvan hebben wij besloten onze hypothese aan te passen en aan te nemen dat de Arduino Due niet voldoende geheugen heeft om 1 frame te bufferen.
 
 
 \subsubsection{Deelvraag 5}
-Door het beperkte geheugen op de DUE zijn wij in staat om slechts een deel van een frame te bufferen. Dit deel is XXXX \% van het frame.
+Voor deze deelvraag hebben we code geschreven. We hebben een basis implementatie die via I2C verbinding maakt met de ov7670, een aantal registers schrijft om instellingen in te stellen en de data uitleest. De foto’s zijn nu alleen nog een verzameling van pixels. De digital pins op een arduino Due zijn intern doorverbonden met een 32 bits register. De OV7670 heeft 8 pinnen die data uit sturen. Wij hebben deze pinnen doorverbonden met 8 digital pins op de Arduino en lezen in 1 keer een 32 bits register uit om de waarde van de byte op te halen. We doen dus niet aan bit bangen, dit is sneller. Verder heeft de ov7670 een 10 mHz pixel clock die we aansturen dmv hardware op de arduino. Op de tendens van de pixel clock stuurt de camera zijn bytes naar de arduino. Dit gaat dus ook met een hoge snelheid.
+
+De huidige code bestaat uit 2 belangrijke functies. de “ get image” en de “ process image.” De get image leest de data steeds weer uit het register en plaatst deze een array. Per RGB waarde geeft de OV7670 2 bytes uit. Dat betekent dat je voor 640 x 480 foto dus 1280 x 960 bytes moet opslaan.
+Als dit gebeurd is wordt de process image functie aangeroepen. Deze maakt weer een nieuwe array, met daarin een array van 3 (matrix achtig). De array van 3 representeert een RGB waarde. De functie bit shift 2 bytes uit de eerste array wat heen en weer, maakt daar een RGB waarde van, en gaat door met de volgende 2 bytes tot alle bytes gehad zijn.
+Aan het einde van het hele proces heeft de Arduino Due dus 2 arrays in het geheugen. In het geval van een 640 bij 480 resolutie staat er dus een array van 614400 bytes (614.4 kB) met ruwe data en een array van 912600 bytes ( 912.6 kB) met RGB waarden. 
+Tijdens het coderen kwamen we tot de conclusie dat het hebben van 2 arrays eigenlijk onwenselijk is want op die manier gebruikt de code veel te veel RAM geheugen. Veel efficiënter zou zijn om de data uit te lezen, en dan direct de data om te zetten naar een RGB waarde, en alleen die RGB waarde op te slaan. Toch hebben we voor de minder geheugen efficiënte implementatie gekozen omdat (zoals boven staat omschreven) de snelheid van de camera erg hoog licht. De camera geeft namelijk op 10 mHz een nieuwe byte, die we moeten uitlezen. Als we op die snelheid zouden moeten uitlezen -> verwerken -> opslaan als RGB, dan zou de camera waarschijnlijk alweer een aantal nieuwe bytes hebben gestuurd voor dat proces klaar was, met als gevolg dat we data zouden missen. 
+
+Hieronder vind je een tabel met onze onderzoeksresultaten met de minder efficiënte code. 
+
+\begin{table}[H]\centering
+	\caption{Buffer resultaten}\label{tab: }
+	\scriptsize
+	\begin{tabular}{lrrrr}\toprule
+	\textbf{Percentage} &\textbf{Width(Afgerond)} &\textbf{Height(Afgerond)} &\textbf{Kan bufferen?} \\\midrule
+	1.00 &640 &480 &Nee \\
+	0.95 &608 &456 &Nee \\
+	0.90 &576 &432 &Nee \\
+	0.85 &544 &408 &Nee \\
+	0.80 &512 &384 &Nee \\
+	0.75 &480 &360 &Ja \\
+	0.70 &448 &336 &Ja \\
+	0.65 &416 &312 &Ja \\
+	0.60 &384 &288 &Ja \\
+	0.55 &352 &264 &Ja \\
+	0.50 &312 &240 &Ja \\
+	0.45 &288 &216 &Ja \\
+	0.40 &256 &192 &Ja \\
+	0.35 &224 &168 &Ja \\
+	0.30 &192 &144 &Ja \\
+	0.25 &160 &120 &Ja \\
+	0.20 &128 &96 &Ja \\
+	0.15 &96 &72 &Ja \\
+	0.10 &64 &48 &Ja \\
+	\bottomrule
+	\end{tabular}
+	\end{table}
+
+Om te bepalen wat de verhouding is tussen de breedte en hoogte, moeten we de som weten van de 2. Dit is 640 + 480 = 1120. Nu kun je heel simpel het verhoudingsgetal berekenen voor beide de breedte, en de hoogte.
+Zo is het verhoudingsgetal voor de breedte: \dfrac{640}{1120} = 0.571
+ 
+En het verhoudingsgetal van de hoogte: \dfrac{480}{1120} = 0.4285 
+
+Om nu te berekenen wat de nieuwe hoogte en breedte zijn, kun je de volgende formule gebruiken: \begin{equation}
+    totale pixels \times gewenste percentage \times verhoudingsgetal
+\end{equation}
+Dus in ons geval, om bijvoorbeeld 50\% te berekenen, gebruiken we de volgende formule voor de breedte: \begin{equation}
+   1120 \times 0.5 \times 0.571
+\end{equation} Dit geeft ons een waarde van 320.
+
+Bij 100\%, liep de code helemaal vast. Direct na het flashen van het geheugen deed de Arduino Due niks meer. Dat wil zeggen: Er kwam geen visuele output meer in onze terminal. Dit valt te verklaren doordat wij in de main een matrix maken met de grootte van 640x480 en daardoor de executable code wordt overschreven door de arrays. 
+Dit bleef tot 75\% gebeuren. Vanaf 75\% liep de Arduino pas vast na het printen van de specificaties. Oftewel, de Arduino werd geflashed, de data uit de camera werd gelezen en daarna liep het vast. Dit gebeurde dus na het aanmaken de eerste array in de get image functie. Waarbij we de ruwe 2 bytes per RGB waarde opslaan. De due had dus genoeg geheugen om deze array te bufferen. Dus in theorie kan de Arduino Due 75\% van een frame bufferen mits we die direct zouden omzetten in RGB waarden.
+
+In onze implementatie liep de Arduino Due na 75\% nog steeds vast, omdat wij hierna nog een tweede matrix aanmaken om de RGB waarden op te slaan. Om twee arrays van die grootte te bufferen, heeft de Arduino Due dus niet genoeg geheugen. Als code geschreven wordt die in 1 keer de waardes verwerken en dan pas te bufferen zodat er maar 1 matrix is (zoals bovenstaand omschreven), is 75\% van een frame dus mogelijk. Het deel in de tabel wat met 1 array wel zou werken is met de oranje kleur gemarkeerd.
+
+Pas bij 55\% van een frame doet onze implementatie met 2 arrays het pas echt. Hierbij werd de arduino geflashed, de data uitgelezen en in de eerste array gezet, de tweede array aangemaakt en gevuld met RGB waarden.
+
+
+\subsubsection{Deelvraag 6}
 
 \section{Resultaten}
 De onderzoeksvragen, theorie en hypotheses worden hier kort samengevat. Hier volgen nog geen interpretatie wel getalsmatige conclusies.
