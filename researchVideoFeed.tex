@@ -2,6 +2,7 @@
 %\usepackage[table,x11names,dvipsnames,table]{xcolor}
 \usepackage{comment}
 \usepackage{graphicx}
+
 \usepackage{amsmath}
 \usepackage[official]{eurosym}
 \graphicspath{ {./Images/} }
@@ -29,11 +30,16 @@
 \tableofcontents
 \clearpage
 \section{Samenvatting}
-Hierin worden het onderzoek samengevat. Hier moeten sowieso de conclusies en resultaten in voor komen. De samenvatting moet onafhankelijk te lezen zijn en is bedoeld om een globaal overzicht te bieden.
+Dit onderzoek richt zich op drie gecombineerde aspecten. Het is gedaan voor het R2D2 project van de Hogeschool Utrecht en is onderdeel (deelonderzoek) naar een groter onderzoek over de Health Monitor module binnen het project. Voor dat grotere onderzoek willen we de A.B.C.D.E. triage lijst af kunnen lopen met hardware en dit onderzoek gaat over het bekijken van de ‘Airway’ en ‘Disability’ (A \& D) van de lijst met gebruik van een camera. 
+
+Om dat te bekijken doen we onderzoek naar verschillende aspecten. Zo is het door de tijd heen bepaald dat we binnen R2D2 veel gebruik maken van de Arduino Due. Daarom hebben we onderzoek gedaan welke camera we het beste kunnen gebruiken icm die microcontroller. Verder hebben we een klein interview gehouden met een medisch expert over wat voor beeldmateriaal nodig is om de A \& D te kunnen beoordelen. Het belangrijkste deel van het onderzoek is kijken of we dat beeldmateriaal lokaal op de Arduino Due kunnen bufferen. Dus of de microcontroller daar voldoende geheugen voor heeft en als dat niet kan, op welk formaat dat dan wel kan. 
+
+De OV7670 camera is de camera geworden die we gekozen hebben voor dit onderzoek en verder gebruik bij R2D2. Die viel binnen de prijs en had een vrij lage resolutie waardoor we vooraf dachten dat er een grotere kans was dat het zou passen op de Arduino. 
+Een foto met een resolutie groter dan 352 * 264 pixels past niet op het geheugen van de Arduino Due met de implementatie zoals wij hem hebben geschreven. Als de implementatie veranderd volgens de aanbeveling van dit onderzoek kan je de resolutie verhogen naar 480 * 360 pixels maar wij denken dat een dergelijke foto van te lage kwaliteit zou zijn voor medisch personeel. 
+Uit het interview met de medisch expert bleek dat er behoefte zou zijn aan bewegend beeldmateriaal voor het controleren van de ‘disability’ en foto’s van onder andere de binnenkant van de mond voor de ‘airway’. Omdat een kleine obstructie in de luchtpijp ook al een probleem kan zijn voor een persoon, zijn de mogelijk lokaal te bufferen resoluties volgens dit onderzoek naar verwachting te laag en verder is een filmpje, meerdere fotos of foto’s van hogere resoluties op de Arduino Due ondoenlijk. 
 
 \section{Voorwoord}
-Dit onderzoek wordt gedaan voor het schoolproject R2D2 2020 in opdracht van de Hogeschool Utrecht. Hiervoor willen wij Diederik Yamamoto-Roijers bedanken voor zijn hulp in het ons leren onderzoek te doen en bedanken wij alle leden van Team 3:
-\begin{itemize}
+Dit onderzoek wordt gedaan voor het schoolproject R2D2 2020 in opdracht van de Hogeschool Utrecht. Hiervoor willen wij Diederik Yamamoto-Roijers bedanken voor zijn hulp in het ons leren onderzoek te doen en bedanken wij alle leden van Team 3: \begin{itemize}
 	\item Niels Post
 	\item Otto de Visser
 	\item Amrit Malhi
@@ -55,61 +61,43 @@ Verder willen wij de hogeschool Utrecht bedanken voor de opdracht en iedere doce
 	\item Wouter van Ooijen
 \end{itemize}
 
-Dit deelonderzoek is gedaan door Oscar Kromhout en Vincent van Setten.
+Dit deelonderzoek is gedaan door \textbf{Oscar Kromhout} en \textbf{Vincent van Setten}.
 
 \section{Inleiding}
-De hoofdvraag van ons onderzoek gaat over het afwerken van de medische A.B.C.D.E. lijst. Met deze lijst bepalen medici in wat voor medische noodsituatie iemand verkeerd, en kan worden bepaald hoeveel hulp iemand nodig heeft. Om deze hoofdvraag te beantwoorden hebben wij ons onderzoek weer opgedeeld in een drietal kleinere deelonderzoeken.
-Een aantal van de onderdelen van de A.B.C.D.E lijst kunnen worden gecontroleerd met sensoren. Denk hierbij aan temperatuur, hartslag of zuurstofsaturatie. Maar bij een deel is dit lastig met sensoren op te lossen en is het verstandig daar een menselijk oog aan te pas te laten komen. Het is dus handig als medisch personeel op afstand zou kunnen (mee)kijken via een robot om iemands medische staat te controleren. Hiervoor willen wij deelonderzoek gaan uitvoeren naar de mogelijkheid een Arduino Due te gebruiken in combinatie met een camera. Om de scope van ons onderzoek te verkleinen doen we geen onderzoek naar het versturen van deze beelddata, maar wel naar het bufferen van deze beelddata zodat het in de toekomst verstuurd zou kunnen worden.
-Uit deze context hebben wij de volgende hoofdvraag afgeleid:
+De hoofdvraag van ons onderzoek gaat over het afwerken van de medische A.B.C.D.E. lijst. Met deze lijst bepalen medici in wat voor medische noodsituatie iemand verkeerd, en kan worden bepaald hoeveel hulp iemand nodig heeft. Om deze hoofdvraag te beantwoorden hebben wij ons onderzoek weer opgedeeld in een drietal kleinere deelonderzoeken.  
+Een aantal van de onderdelen van de A.B.C.D.E lijst kunnen worden gecontroleerd met sensoren. Denk hierbij aan temperatuur, hartslag of zuurstofsaturatie. Maar bij een deel is dit lastig met sensoren op te lossen en is het verstandig daar een menselijk oog aan te pas te laten komen. Het is dus handig als medisch personeel op afstand zou kunnen meekijken via een robot om iemands medische staat te controleren. Hiervoor willen wij deelonderzoek gaan uitvoeren naar de mogelijkheid een Arduino Due te gebruiken in combinatie met een camera. Om de scope van ons onderzoek te verkleinen doen we geen onderzoek naar het versturen van deze beelddata, maar wel naar het lokaal bufferen van deze beelddata zodat het in de toekomst verstuurd zou kunnen worden. 
+Uit deze context hebben wij de volgende hoofdvraag voor dit deelonderzoek afgeleid: 
 
-\textit{Welke camera, compatibel met de Arduino due en onder de 28 euro, is het meest geschikt om de toestand van een patiënt te fotograferen of filmen en dit zo vlot en accuraat mogelijk lokaal te bufferen op het RAM geheugen van de Arduino due om wanneer het gebufferd kan worden, door te kunnen sturen naar medisch personeel voor de medische vaststelling van de A en D van de ABCDE lijst?}
+\textit{Welke camera, compatibel met de Arduino due en onder de 28 euro, is het meest geschikt om de toestand van een patiënt te fotograferen of filmen en dit zo vlot en accuraat mogelijk lokaal te bufferen op het RAM geheugen van de Arduino due om wanneer het gebufferd kan worden, door te kunnen sturen naar medisch personeel voor de medische vaststelling van de A en D van de ABCDE lijst? }
 
 Om deze hoofdvraag te beantwoorden hebben wij deze onderverdeeld in 8 deelvragen. Deze vragen lopen we systematisch en volgordelijk af om op die manier tot een antwoord op de hoofdvraag te komen. De deelvragen luiden als volgt:
-
 \begin{enumerate}
 	\item Bestaan er camera’s op de markt die geschikt zijn voor de Arduino Due, maar onder de 28 euro zijn?
-	\item Welke factoren beïnvloeden welke camera het meest geschikt is voor onze toepassing?
-	\item Als er camera’s bestaan die aan onze geschiktheidseisen voldoen, welke zou dan het meest geschikt zijn voor deze toepassing?
-	\item Heeft de Arduino Due genoeg intern geheugen om één frame te bufferen met de meest geschikte camera?
-	\item Wat is het maximale aantal frames (of deel van een frame) dat wij met de gekozen camera kunnen bufferen op het RAM geheugen van de Arduino Due?
-	\item Kan alles van de A {\&} D van de ABCDE lijst gecontroleerd worden met een foto of filmpje?
-	\item Wat moet medisch personeel zien op een filmpje of foto om erachter te komen wat er medisch nodig is voor de A {\&} D van de ABCDE lijst?
-	\item Hoeveel frames moeten we bufferen om het voor medici mogelijk te maken, zover het mogelijk is via beelden, de A {\&} D controle te doen?
+	\item Welke factoren beïnvloeden welke camera het meest geschikt is voor onze toepassing? 
+	\item Als er camera’s bestaan die aan onze geschiktheidseisen voldoen, welke zou dan het meest geschikt zijn voor deze toepassing? 
+	\item Heeft de Arduino Due genoeg intern geheugen om één frame te bufferen met de meest geschikte camera? 
+	\item Wat is het maximale aantal frames (of deel van een frame/andere resolutie) dat wij met de gekozen camera kunnen bufferen op het RAM geheugen van de Arduino Due? 
+	\item Wat moet medisch personeel zien op een filmpje of foto om erachter te komen wat er medisch nodig is voor de A \& D van de ABCDE lijst?
+	\item Hoeveel frames moeten we bufferen om het voor medici mogelijk te maken, zover het mogelijk is via beelden, de A \& D controle te doen? 
+	\item Kan alles van de A \& D van de ABCDE lijst gecontroleerd worden met een foto of filmpje? 
 \end{enumerate}
 De precieze uitwerking van deze deelvragen wordt beschreven in het hoofdstuk “Opzet en Uitvoering van het onderzoek”.
 De doelgroep van ons onderzoek zijn tweedejaars technisch informatica studenten. Dit onderzoek moet immers weer opnieuw worden gebruikt in de hierop volgende jaren tijdens het R2D2 project.
 
-\begin{comment}
-Hier moeten nog 2 referenties naar de research papers!
-\end{comment}
-
 \section{Literatuurverkenning}
 We hebben twee relevante research documenten gevonden.
-De eerste hiervan is "Surveillance robot using arduino microcontroller, android APIs and the internet" \citep{kulkarni2014surveillance}.
-In dit onderzoek wilden men een live video feed gebruiken voor een surveillance robot.
-In dit onderzoek gebruikten ze een android telefoon om de video feed te realiseren(het was gewoon een telefoon verbonden met een robot).
-Het tweede onderzoek is genaamd "Spy Robot Wireless Video Surveillance using Arduino" \citep{maspy}.
-In dit onderzoek willen ze ook een live feed opstellen.
-In dit onderzoek was het doel om een robot te maken die op afstand kon surveilleren, zodat hier geen mensen op het spel worden gezet in, bijvoorbeeld, een oorlog op het terrein van de vijand.
-In dit onderzoek hebben ze deze video feed gerealiseerd met een IP-camera, die zelf de beelden verstuurd via wifi.
-Deze onderzoeken hadden hetzelfde uiteindelijke doel, namelijk het realiseren van een live video feed door middel van een Arduino Due.
-Helaas hebben we weinig gehad aan deze onderzoeken, omdat zij oplossingen gebruiken die niet bruikbaar zijn in ons onderzoek.
-Zij gebruiken een mobiele telefoon en een IP camera.
-Een mobiele telefoon is iets wat wij niet willen gaan doen, omdat wij onze robots modulair willen hebben.
-Een telefoon vastknopen aan een robot is niet erg handig.
-Daarnaast is het ook erg duur. Dat laatste geldt ook voor de IP camera. Het is een stuk duurder dan een gebruikelijke Arduino camera.
-Behalve deze twee literatuur stukken hebben we niet heel veel kunnen vinden dat iets te maken had met ons onderzoek.
+De eerste hiervan is “Surveillance Robot Using Arduino Microcontroller, Android APIs and the Internet” \citep{kulkarni2014surveillance}. In dit onderzoek wilden men een live video feed gebruiken voor een surveillance robot. In dit onderzoek gebruikten ze een android telefoon om de video feed te realiseren(het was gewoon een telefoon verbonden met een robot). 
+Het tweede onderzoek is genaamd “Spy Robot Wireless Video Surveillance using Arduino”.\citep{maspy} 
+In dit onderzoek willen ze ook een live feed opstellen. In dit onderzoek was het doel om een robot te maken die op afstand kon surveilleren, zodat hier geen mensenlevens op het spel worden gezet in bijvoorbeeld een oorlog op het terrein van de vijand. 
+In dit onderzoek hebben ze deze video feed gerealiseerd met een IP-camera, die zelf de beelden verstuurd via wifi. 
+Deze onderzoeken hadden hetzelfde uiteindelijke doel, namelijk het realiseren van een live video feed door middel van een Arduino Due. Helaas hebben we weinig gehad aan deze onderzoeken, omdat zij oplossingen gebruiken die niet bruikbaar zijn in ons onderzoek. Zij gebruiken een mobiele telefoon en een IP camera. Een mobiele telefoon is iets wat wij niet willen gaan doen, omdat wij onze robots modulair willen hebben. Een telefoon vastknopen aan een robot is niet erg handig. Daarnaast is het ook erg duur. Dat laatste geldt ook voor de IP camera. Het is een stuk duurder dan een gebruikelijke Arduino camera.
+Behalve deze twee literatuur stukken hebben we niet heel veel kunnen vinden dat iets te maken had met ons onderzoek. 
+
 
 \section{Probleemstelling}
-Filmen met een camera, deze data verwerken en deze data opslaan zijn zware taken voor een computer.
-We hebben een camera nodig die het mogelijk maakt met een Arduino Due foto’s te maken.
-Deze beelden moeten van voldoende kwaliteit en kwantiteit voor medisch personeel zijn.
-Als we in staat zijn om met een camera geschikte beelden te maken met een Arduino Due, moeten we die beelden ook nog kunnen bufferen om eventueel door te zenden naar een derde partij.
-We doen dus ook onderzoek naar het opslaan van deze data op de geringe dataopslag van een Arduino Due.
-Verder moeten we weten wat dan een geschikte foto is voor medisch personeel, anders weten we niet hoeveel frames we precies moeten bufferen.
-\begin{comment}
-Deze tabel kan volgensmij wat schoner. Kan iemand er even naar kijken. Niels misschien?
-\end{comment}
+Filmen met een camera, deze data verwerken en deze data opslaan zijn zware taken voor een computer. We hebben een camera nodig die het mogelijk maakt met een Arduino Due foto’s te maken. Deze beelden moeten van voldoende kwaliteit en kwantiteit voor medisch personeel zijn. Als we in staat zijn om met een camera geschikte beelden te maken met een Arduino Due, moeten we die beelden ook nog kunnen bufferen om later eventueel door te zenden naar een derde partij. We doen dus ook onderzoek naar het opslaan van deze data op de geringe dataopslag van een Arduino Due. We willen weten hoeveel frames (of delen/lagere resoluties daarvan) we zouden kunnen bufferen op het geheugen van de microcontroller. Verder moeten we weten wat dan een geschikte foto is voor medisch personeel. Anders weten we niet hoeveel frames we precies moeten bufferen. 
+
+
 
 \section{Begrippenlijst}
 
@@ -124,43 +112,31 @@ Deze tabel kan volgensmij wat schoner. Kan iemand er even naar kijken. Niels mis
 \end{definition}
 
 \section{Theorie en hypothese}
-Voor ons hoofdonderzoek hebben wij geen hypothese.
-Voor deelvraag 5 van dit deelonderzoek wel.
-In eerste instantie wilde we als hypothese aannemen dat de Arduino Due voldoende RAM zou hebben om een beeld op te slaan en daar dan ook onze testcode voor schrijven.
-Na het beantwoorden van deelvraag 4 bleek dit na de berekening gelijk niet het geval.
-Dus om deze deelvraag te beantwoorden gaan we gebruik maken van een toetsend onderzoek.
-We stellen de hypothese dat de Arduino Due niet voldoende RAM geheugen heeft om 1 frame op te slaan.
-We gaan proberen om met de Arduino Due zo groot mogelijke delen van een enkel frame te bufferen.
-We willen dus kijken hoeveel procent van 1 frame gebufferd kan worden op het RAM geheugen van de Arduino Due.
-Deze data zouden na het bufferen eventueel verstuurd kunnen worden naar een operator voor de triage.
-Maar het versturen valt buiten de scope van ons onderzoek.
-De hypothese is dus als volgt: \textit{De arduino Due heeft niet voldoende Ram geheugen om 1 frame op te slaan die gemaakt is met de gekozen camera.}
+Voor ons deelonderzoek als geheel hebben wij geen hypothese. Voor deelvraag 5 van dit deelonderzoek wel. In eerste instantie wilde we als hypothese aannemen dat de Arduino Due voldoende RAM zou hebben om een beeld op te slaan en daar dan ook onze testcode voor schrijven. Na het beantwoorden van deelvraag 4 bleek dit na de berekening gelijk niet het geval, al voor we begonnen waren aan het maken van code. Dus om deze deelvraag te beantwoorden gaan we gebruik maken van een toetsend onderzoek. We stellen de hypothese dat de Arduino Due niet voldoende RAM geheugen heeft om 1 frame op te slaan. 
+We gaan proberen om met de Arduino Due een zo groot mogelijke resolutie van een enkel frame te bufferen. We willen dus kijken hoeveel procent van de grootst mogelijke resolutie gebufferd kan worden op het RAM geheugen van de Arduino Due. Deze data zouden na het bufferen eventueel verstuurd kunnen worden naar een operator voor de triage. Maar het versturen valt buiten de scope van ons onderzoek. 
+
+De hypothese is dus als volgt: \textit{De arduino Due heeft niet voldoende Ram geheugen om 1 frame op te slaan die gemaakt is met de gekozen camera in diens hoogste resolutie.}
+
 
 \section{Opzet en uitvoering van het onderzoek}
-Hier geef je een beschrijving van hoe het onderzoek is opgezet en hoe de uitvoering in z’n werk is gegaan.
-Eventueel kunnen onderdelen van dit hoofdstuk naar de bijlagen als het te lang blijkt te worden.
-Onder dit hoofdstuk valt het onderzoekstype en het onderzoeksontwerp, een beschrijving van de populatie en steekproef,
-beschrijving van de onderzoeksinstrumenten, de wijze van materiaalverzameling, verwerking van de gegevens en beschrijving van analysebeslissingen.
-
-De opzet van dit deel onderzoek verloopt volgens de waterval methode.
-We lopen stapsgewijs door de deelvragen heen en beantwoorden de vragen door middel van bijbehorende onderzoeksmethoden.
-Uiteindelijk is er dan een conclusie die we kunnen verbinden aan de hoofdvraag om deze te beantwoorden.
+De opzet van dit deel onderzoek verloopt volgens de waterval methode. We lopen stapsgewijs door de deelvragen heen en beantwoorden de vragen door middel van bijbehorende onderzoeksmethoden. Uiteindelijk is er dan een conclusie die we kunnen verbinden aan de hoofdvraag om deze te beantwoorden.
 
 Omwille van de leesbaarheid hebben we de deelvragen met hun bijbehorende toetsmethode hieronder in kopjes samengevat.
+
 
 \begin{enumerate}
 	\item Bij de eerste deelvraag doen we een exploratief onderzoek. We gaan op het internet zoeken naar camera’s en kiezen 5 camera’s die veel voorkomen om nader te onderzoeken. Als Covid-19 niet had plaatsgevonden waren we ook naar een aantal winkels en school gegaan om experts op het gebied hiernaar te vragen (Wouter van Ooijen bv.). Maar dat werd nu wat lastig dus beperken we ons tot veel voorkomende camera’s op het internet. Via deze \href{https://www.open-electronics.org/a-complete-guide-to-arduino-based-video-camera/}{website} hebben we een hoop goede camera’s kunnen vinden.
 	\item Vraag 2 beantwoorden we door met elkaar te sparren en te beredeneren welke factoren voor het bufferen en gebruik op microcontrollers belangrijk zijn voor een camera.
 	\item Vraag 3 beantwoorden we door bij iedere gekozen factor een eis te stellen waar de camera aan moet voldoen. Dan gaan we beredeneren welke camera we het beste kunnen kiezen voor ons onderzoek.
-	\item Vraag 4 gaan we beantwoorden door een toetsende onderzoek. Met een simpele berekening kunnen we aantonen of een Due voldoende geheugen heeft. We weten na het beantwoorden van de eerst deelvragen welke resolutie de camera heeft, en daarmee ook hoeveel bytes 1 beeld in beslag neemt. We weten ook dat de due 96 kB aan Ram heeft en vanaf daar is het een simpele som.
-	\item Vraag 5 gaan we beantwoorden volgens toetsend onderzoek en met de hypothese zoals beschreven in het hoofdstuk ”Theorie en hypothese.” We nemen aan dat er niet voldoende geheugen is op Arduino om 1 frame op te slaan, dus splitsen we het beeld op in meerdere delen. We splitsen het in opeenvolgende stappen van 5\% op. We bufferen eerst 100\% van het frame, en kijken of het past op het geheugen. Dan 95\% en kijken of dat past, etc. Uiteindelijk weten we dan dus hoeveel procent van één frame gebufferd kan worden op de Arduino Due. Deze 5\% stappen zijn bewust want als de code iets zou uitbreiden moet er ook ruimte op het Ram zijn daarvoor.
-	\item Vraag 6 {\&} 7 gaan we beantwoorden door het aan een medisch expert te vragen. Medisch personeel kan precies vertellen wat men zou willen zien op een foto om de A {\&} D te kunnen beoordelen van de ABCDE lijst.
-	\item Vraag 8 kunnen we beantwoorden nadat we het antwoord hebben op vraag 5 {\&} 6. Dit is dus een observatie onderzoek.
+	\item Vraag 4 gaan we beantwoorden door een toetsende onderzoek. Met een simpele berekening kunnen we aantonen of een Due voldoende geheugen heeft. We weten na het beantwoorden van de eerst deelvragen welke maximale resolutie de camera heeft, en daarmee ook hoeveel bytes 1 beeld in beslag neemt. We weten ook dat de due 96 kB aan Ram heeft en vanaf daar is het een simpele som.
+	\item Vraag 5 gaan we beantwoorden volgens toetsend onderzoek en met de hypothese zoals beschreven in het hoofdstuk ”Theorie en hypothese.” We nemen aan dat er niet voldoende geheugen is op Arduino om 1 frame op te slaan, dus verlagen we in stappen de resolutie. We splitsen het in opeenvolgende stappen van 5% op. We bufferen eerst 100% van de maximale resolutie, en kijken of het past op het geheugen. Dan 95% en kijken of dat past, etc. Uiteindelijk weten we dan dus hoeveel procent van één frame met de maximale resolutie gebufferd kan worden op de Arduino Due. Deze 5 % stappen zijn bewust want als de code iets zou uitbreiden moet er ook ruimte op het Ram zijn daarvoor. We willen dus niet op de 1% nauwkeurig het geheugen gaan vullen.
+	\item Vraag 6 \& 7 gaan we beantwoorden door het aan een medisch expert te vragen. Medisch personeel kan precies vertellen wat men zou willen zien op een foto om de A \& D te kunnen beoordelen van de ABCDE lijst.
+	\item Vraag 8 kunnen we beantwoorden nadat we het antwoord hebben op vraag 5 \& 6. Dit is dus een observatie onderzoek.
 
 \end{enumerate}
 
 \subsection{Conclusies Deelvragen}
-In dit onderdeel bespreken we de conclusies waartoe we gekomen zijn uit ons deelonderzoek.
+In dit onderdeel bespreken we de conclusies waartoe we gekomen zijn uit ons deelonderzoek. 
 
 \subsubsection{Deelvraag 1 {\&} 2}
 \textit{Bestaan er camera’s op de markt die geschikt zijn voor de Arduino Due, maar onder de 28 euro zijn?}
@@ -168,7 +144,7 @@ In dit onderdeel bespreken we de conclusies waartoe we gekomen zijn uit ons deel
 
 \textit{Welke factoren beïnvloeden welke camera het meest geschikt is voor onze toepassing?}
 
-We hebben een aantal camera's gevonden en hebben de belangrijkste factoren die het antwoord op onze deelvragen beantwoorden.
+Bij deelvraag 1 \& 2 zijn we tot de volgende camera’s en factoren gekomen.
 Zie figure \ref{fig:deelvragen1en2}.
 
 
@@ -179,9 +155,9 @@ Zie figure \ref{fig:deelvragen1en2}.
 	\label{fig:deelvragen1en2}
 	\end{figure}
 
-In figure \ref{fig:deelvragen1en2} zie je een tabel met in de linkerkolom de 5 gekozen camera's. In de overige kolommen zie je de eigenschappen en in welke mate de betreffende camera deze eigenschap bezit.
+In figure \ref{fig:deelvragen1en2} zie je een tabel met in de linkerkolom de 5 gekozen camera'sen in de overige kolommen de eigenschappen en of de betreffende camera deze eigenschap bezit en/of andere informatie. 
 
-Wij interpreteren de volgende factoren als van belang voor ons onderzoek:
+Op de bovenste rij zien we de volgende factoren van belang:
 \begin{itemize}
 	\item \textbf{Beschikbaar}, is de camera beschikbaar in Nederland?
 	\item \textbf{Prijs}, de prijs van de camera. Dit is een belangrijke factor omdat we tijdens de corona crisis maar \euro{}28,- per persoon te besteden hebben aan electronica. Daar kunnen we nog wel iets overheen omdat niet alle teamgenoten dat bedrag uitgeven maar we kunnen niet heel ver uitschieten.
@@ -196,122 +172,125 @@ Wij interpreteren de volgende factoren als van belang voor ons onderzoek:
 \subsubsection{Deelvraag 3}
 \textit{Als er camera’s bestaan die aan onze geschiktheidseisen voldoen, welke zou dan het meest geschikt zijn voor deze toepassing? }
 
-Wij hebben gekozen voor de OV7670. Dit was de enige gevonden camera die binnen ons budget viel. We hadden het budget kunnen vergroten, maar deze camera had ook de laagste resolutie. Dit vergroot de kans dat de afbeelding gebufferd kan worden op de Arduino Due. Daarbij moet de camera ook te koop zijn voor andere groepjes ten tijden van de module wisseling.  Deze camera is ook beschikbaar in de webwinkel van een van onze docenten, Wouter van Ooijen. Zo kunnen we hem altijd om hulp vragen als het nodig is. Gezien de corona crisis is dat laatste voor ons wel belangrijk, hulp op afstand. Verder is de camera te benaderen met een I2C interface en beide onderzoekers hebben hier enige ervaring mee, wat het communiceren met de chip makkelijk maakt. Maar de doorslaggevende factor is uiteindelijk de prijs en de levertijd geweest. Ook met het oog op de eventuele module wisseling.
-
+Wij hebben gekozen voor de OV7670. Dit was de enige gevonden camera die binnen ons budget viel. We hadden het budget kunnen vergroten, maar deze camera had ook de laagste resolutie. Dit vergroot de kans dat de afbeelding gebufferd kan worden op de Arduino Due. Daarbij moet de camera ook te koop zijn voor andere groepjes ten tijde van de module wisseling.  Deze camera is ook beschikbaar in de webwinkel van een van onze docenten, Wouter van Ooijen. Zo kunnen we hem altijd om hulp vragen als het nodig is. Gezien de corona crisis is dat laatste voor ons wel belangrijk, hulp op afstand. Verder is de camera te benaderen met een I2C interface en beide onderzoekers hebben hier enige ervaring mee, wat het communiceren met de chip makkelijk maakt. Maar de doorslaggevende factor is uiteindelijk de prijs en de levertijd geweest. Ook met het oog op de eventuele module wisseling.
 \subsubsection{Deelvraag 4}
 \textit{Heeft de Arduino Due genoeg intern geheugen om één frame te bufferen met de meest geschikte camera? }
 
-De Arduino Due heeft 96kb ram. De OV7670, onze gekozen camera, maakt een afbeelding met een resolutie van 640x480. Dit zijn 307.200 pixels in het totaal. De module gebruikt 1 byte per pixel als een bayer filter die we moeten decoden. In het totaal is dat dus ongeveer 0,3mb. De Arduino Due heeft volgens de berekening dus niet genoeg geheugen voor het opslaan/bufferen van 1 frame.
+De Arduino Due heeft 96kb ram. De OV7670, onze gekozen camera, maakt een afbeelding met een maximale resolutie van 640x480. Dit zijn 307.200 pixels in het totaal. De module gebruikt 1 byte per pixel als een bayer filter die we moeten decoden. In het totaal is dat dus ongeveer 0,3mb. De Arduino Due heeft volgens de berekening dus niet genoeg geheugen voor het opslaan/bufferen van 1 frame.
 
 Onze oorspronkelijke hypothese voorafgaand aan het onderzoek was dat de Arduino wel voldoende geheugen zou hebben. Daarom was ons oorspronkelijke plan ook om daar dan code voor te schrijven. Nu blijkt natuurlijk al dat dat geen zin heeft maar we willen toch code schrijven en een degelijk onderzoek neerzetten.
-Uit heel kort zoekwerk op internet blijkt beperkt geheugen een bekend probleem en er zijn verschillende mensen te vinden die hier \href{https://forum.arduino.cc/index.php?topic=159557.0}{vragen} over stelde. Op Github hebben we uiteindelijk een persoon gevonden die in zijn \href{https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c}{main} dit probleem oplost. Het probleem wordt hier opgelost door het bestand (de foto) in meerdere delen op te delen en hem dan in delen te bufferen op de Arduino.
+Uit heel kort zoekwerk op internet blijkt beperkt geheugen een bekend probleem en er zijn verschillende mensen te vinden die hier \href{https://forum.arduino.cc/index.php?topic=159557.0}{vragen} over stelde. Op Github hebben we uiteindelijk een persoon gevonden die in zijn \href{https://github.com/ComputerNerd/ov7670-simple/blob/master/main.c}{main} dit probleem oplost. Het probleem wordt hier opgelost door het bestand (de foto) in meerdere delen op te delen en hem dan in delen te bufferen op de Arduino. 
 
-Als gevolg daarvan hebben wij besloten onze hypothese aan te passen en aan te nemen dat de Arduino Due niet voldoende geheugen heeft om 1 frame te bufferen.
+Als gevolg daarvan hebben wij besloten onze hypothese aan te passen en aan te nemen dat de Arduino Due niet voldoende geheugen heeft om 1 frame te bufferen. 
 
 
 \subsubsection{Deelvraag 5}
-\textit{Wat is het maximale aantal frames (of deel van een frame) dat wij met de gekozen camera kunnen bufferen op het RAM geheugen van de Arduino Due? }
+\textit{Wat is het maximale aantal frames (of deel van een frame/andere resolutie) dat wij met de gekozen camera kunnen bufferen op het RAM geheugen van de Arduino Due?  }
 
-Voor deze deelvraag hebben we code geschreven. We hebben een basis implementatie die via I2C verbinding maakt met de ov7670, een aantal registers schrijft om instellingen in te stellen en de data uitleest. De foto’s zijn nu alleen nog een verzameling van pixels. De digital pins op een arduino Due zijn intern doorverbonden met een 32 bits register. De OV7670 heeft 8 pinnen die data uit sturen. Wij hebben deze pinnen doorverbonden met 8 digital pins op de Arduino en lezen in 1 keer een 32 bits register uit om de waarde van de byte op te halen. We doen dus niet aan bit bangen, dit is sneller. Verder heeft de ov7670 een 10 mHz pixel clock die we aansturen dmv hardware op de arduino. Op de tendens van de pixel clock stuurt de camera zijn bytes naar de arduino. Dit gaat dus ook met een hoge snelheid.
+Voor deze deelvraag hebben we flink wat code geschreven en ook nog een beetje samengewerkt met team 9 van R2D2. We hebben een basis implementatie die via I2C verbinding maakt met de ov7670, een aantal registers schrijft om instellingen in te stellen en de data uitleest. De foto’s zijn nu alleen nog een verzameling van pixels, het is nog geen zinnige foto. Dat maakt voor dit onderzoek niet uit. Het gaat immers om de geheugenopslag en een byte is een byte.
+De digital pins op een arduino Due zijn intern doorverbonden met een 32 bits register. De OV7670 heeft 8 pinnen die data uit sturen. Wij hebben deze pinnen doorverbonden met 8 digital pins op de Arduino en lezen in 1 keer een 32 bits register uit om de waarde van de byte op te halen. We doen dus niet aan bit bangen, dit is sneller. Verder heeft de ov7670 een 10 mHz pixel clock die we aansturen dmv hardware op de arduino. Op de tendens van de pixel clock stuurt de camera zijn bytes naar de arduino. Dit gaat dus met een zeer hoge snelheid.
 
-De huidige code bestaat uit 2 belangrijke functies. de “ get image” en de “ process image.” De get image leest de data steeds weer uit het register en plaatst deze een array. Per RGB waarde geeft de OV7670 2 bytes uit. Dat betekent dat je voor 640 x 480 foto dus 1280 x 960 bytes moet opslaan.
-Als dit gebeurd is wordt de process image functie aangeroepen. Deze maakt weer een nieuwe array, met daarin een array van 3 (matrix achtig). De array van 3 representeert een RGB waarde. De functie bit shift 2 bytes uit de eerste array wat heen en weer, maakt daar een RGB waarde van, en gaat door met de volgende 2 bytes tot alle bytes gehad zijn.
+De huidige code bestaat uit 2 belangrijke functies. de ‘get image’ en de ‘process image.’ De get image leest de data steeds weer uit het register en plaatst deze een array. Per RGB waarde geeft de OV7670 2 bytes uit. Dat betekent dat je voor 640 x 480 foto dus 1280 x 960 bytes moet opslaan.
+Als dit gebeurd is wordt de process image functie aangeroepen. Deze maakt weer een nieuwe array, met daarin een array van 3 groot (matrix achtig). De array van 3 representeert een RGB waarde. De functie bit shift 2 bytes uit de eerste array wat heen en weer, maakt daar een RGB waarde van, en gaat door met de volgende 2 bytes tot alle bytes langs gelopen zijn.
 Aan het einde van het hele proces heeft de Arduino Due dus 2 arrays in het geheugen. In het geval van een 640 bij 480 resolutie staat er dus een array van 614400 bytes (614.4 kB) met ruwe data en een array van 912600 bytes ( 912.6 kB) met RGB waarden. 
-Tijdens het coderen kwamen we tot de conclusie dat het hebben van 2 arrays eigenlijk onwenselijk is want op die manier gebruikt de code veel te veel RAM geheugen. Veel efficiënter zou zijn om de data uit te lezen, en dan direct de data om te zetten naar een RGB waarde, en alleen die RGB waarde op te slaan. Toch hebben we voor de minder geheugen efficiënte implementatie gekozen omdat (zoals boven staat omschreven) de snelheid van de camera erg hoog licht. De camera geeft namelijk op 10 mHz een nieuwe byte, die we moeten uitlezen. Als we op die snelheid zouden moeten uitlezen, verwerken en opslaan als RGB, dan zou de camera waarschijnlijk alweer een aantal nieuwe bytes hebben gestuurd voor dat proces klaar was, met als gevolg dat we data zouden missen. 
+Tijdens het coderen kwamen we tot de conclusie dat het hebben van 2 arrays eigenlijk onwenselijk is want op die manier gebruikt de code veel RAM geheugen. Veel efficiënter zou zijn om de data uit te lezen, en dan direct de data om te zetten naar een RGB waarde, en alleen die RGB waarde op te slaan. Toch hebben we voor de minder geheugen efficiënte implementatie gekozen omdat (zoals boven staat omschreven) de snelheid van de camera erg hoog licht. De camera geeft namelijk op 10 mHz een nieuwe byte, die we moeten uitlezen. Als we op die snelheid zouden moeten uitlezen -> verwerken -> opslaan als RGB, dan zou de camera waarschijnlijk alweer een aantal nieuwe bytes hebben gestuurd voor dat het verwerkingsproces klaar was, met als gevolg dat er data gemist zou kunnen worden. 
 
 Hieronder vind je een tabel met onze onderzoeksresultaten met de minder efficiënte code. 
+Het in rood gemarkeerde deel kan zeker niet. Het oranje gekleurde deel zou kunnen als de geimplementeerde code van 1 array naar 2 arrays gaat. Het groene deel kan sowieso met de huidige implementatie.
 Zie tabel \ref{tab: tabel 1}
 \begin{table}[H]\centering
 	\caption{Buffer resultaten}\label{tab: tabel 1}
 	\scriptsize
-	\begin{tabular}{lrrrr}\toprule
-	\textbf{Percentage} &\textbf{Width(Afgerond)} &\textbf{Height(Afgerond)} &\textbf{Kan bufferen?} \\\midrule
-	1.00 &640 &480 &Nee \\
-	0.95 &608 &456 &Nee \\
-	0.90 &576 &432 &Nee \\
-	0.85 &544 &408 &Nee \\
-	0.80 &512 &384 &Nee \\
-	0.75 &480 &360 &Ja \\
-	0.70 &448 &336 &Ja \\
-	0.65 &416 &312 &Ja \\
-	0.60 &384 &288 &Ja \\
-	0.55 &352 &264 &Ja \\
-	0.50 &312 &240 &Ja \\
-	0.45 &288 &216 &Ja \\
-	0.40 &256 &192 &Ja \\
-	0.35 &224 &168 &Ja \\
-	0.30 &192 &144 &Ja \\
-	0.25 &160 &120 &Ja \\
-	0.20 &128 &96 &Ja \\
-	0.15 &96 &72 &Ja \\
-	0.10 &64 &48 &Ja \\
-	\bottomrule
+	\begin{tabular}{lrrrr}\hline
+	\textbf{Percentage} &\textbf{Width(Afgerond)} &\textbf{Height(Afgerond)} &\textbf{Kan bufferen?} \\\hline
+	\rowcolor{red}1.00 &640 &480 &Nee \\
+	\rowcolor{red}0.95 &608 &456 &Nee \\
+	\rowcolor{red}0.90 &576 &432 &Nee \\
+	\rowcolor{red}0.85 &544 &408 &Nee \\
+	\rowcolor{red}0.80 &512 &384 &Nee \\
+	\rowcolor{orange}0.75 &480 &360 &Ja \\
+	\rowcolor{orange}0.70 &448 &336 &Ja \\
+	\rowcolor{orange}0.65 &416 &312 &Ja \\
+	\rowcolor{orange}0.60 &384 &288 &Ja \\
+	\rowcolor{green}0.55 &352 &264 &Ja \\
+	\rowcolor{green}0.50 &312 &240 &Ja \\
+	\rowcolor{green}0.45 &288 &216 &Ja \\
+	\rowcolor{green}0.40 &256 &192 &Ja \\
+	\rowcolor{green}0.35 &224 &168 &Ja \\
+	\rowcolor{green}0.30 &192 &144 &Ja \\
+	\rowcolor{green}0.25 &160 &120 &Ja \\
+	\rowcolor{green}0.20 &128 &96 &Ja \\
+	\rowcolor{green}0.15 &96 &72 &Ja \\
+	\rowcolor{green}0.10 &64 &48 &Ja \\
+	\hline
 	\end{tabular}
 	\end{table}
 
-Om te bepalen wat de verhouding is tussen de breedte en hoogte, moeten we de som weten van de 2. Dit is 640 + 480 = 1120. Nu kun je heel simpel het verhoudingsgetal berekenen voor beide de breedte, en de hoogte.
-Zo is het verhoudingsgetal voor de breedte: \dfrac{640}{1120} = 0.571
- 
-En het verhoudingsgetal van de hoogte: \dfrac{480}{1120} = 0.4285 
+We moeten voor deze deelvraag de resolutie steeds in stappen van 5% verlagen. Daarbij kunnen we niet gewoon ${(640 \times 480) \times 0,95 = 29.184}$ doen. Want je moet de verhouding tussen de hoogte en breedte nog steeds hebben om een fatsoenlijk zichtbare foto te maken.
+Om te bepalen wat de verhouding is tussen de breedte en hoogte, moeten we de som weten van de 2. Dit is ${640 + 480 = 1120}$. Nu kun je het verhoudingsgetal berekenen voor beide de breedte, en de hoogte.
 
-Om nu te berekenen wat de nieuwe hoogte en breedte zijn, kun je de volgende formule gebruiken: \begin{equation}
-    $\text{totale pixels} \times \text{ gewenste percentage} \times \text{verhoudingsgetal}$
-\end{equation}
-Dus in ons geval, om bijvoorbeeld 50\% te berekenen, gebruiken we de volgende formule voor de breedte: \begin{equation}
-   1120 \times 0.5 \times 0.571
-\end{equation} Dit geeft ons een waarde van 320.
+Zo is het verhoudingsgetal voor de breedte: ${\dfrac{640}{1120} = 0,571}$
+En het verhoudingsgetal van de hoogte: ${\dfrac{480}{1120} = 0,4285}$
 
-Bij 100\%, liep de code helemaal vast. Direct na het flashen van het geheugen deed de Arduino Due niks meer. Dat wil zeggen: Er kwam geen visuele output meer in onze terminal. Dit valt te verklaren doordat wij in de main een matrix maken met de grootte van 640x480 en daardoor de executable code wordt overschreven door de arrays. 
-Dit bleef tot 75\% gebeuren. Vanaf 75\% liep de Arduino pas vast na het printen van de specificaties. Oftewel, de Arduino werd geflashed, de data uit de camera werd gelezen en daarna liep het vast. Dit gebeurde dus na het aanmaken de eerste array in de get image functie. Waarbij we de ruwe 2 bytes per RGB waarde opslaan. De due had dus genoeg geheugen om deze array te bufferen. Dus in theorie kan de Arduino Due 75\% van een frame bufferen mits we die direct zouden omzetten in RGB waarden.
+Om nu te berekenen wat de nieuwe hoogte en breedte zijn, kun je de volgende formule gebruiken: ${\text{totale pixels} \times \text{ gewenste percentage} \times \text{verhoudingsgetal}}$.
+Dus in ons geval, om bijvoorbeeld 50% te berekenen, gebruiken we de volgende formule voor de breedte: ${1120 \times 0,5 \times 0,571}$. Dit geeft ons een waarde van 320.
 
-In onze implementatie liep de Arduino Due na 75\% nog steeds vast, omdat wij hierna nog een tweede matrix aanmaken om de RGB waarden op te slaan. Om twee arrays van die grootte te bufferen, heeft de Arduino Due dus niet genoeg geheugen. Als code geschreven wordt die in 1 keer de waardes verwerken en dan pas te bufferen zodat er maar 1 matrix is (zoals bovenstaand omschreven), is 75\% van een frame dus mogelijk. Het deel in de tabel wat met 1 array wel zou werken is met de oranje kleur gemarkeerd.
+Bij het maken en opslaan van een foto in de maximale resolutie ${(640 x 480)}$, liep de code helemaal vast. Direct na het flashen van het geheugen deed de Arduino Due niks meer. Dat wil zeggen: Er kwam geen visuele output meer in onze terminal. Dit valt te verklaren doordat wij in de main een matrix maken met de grootte van ${640 \times 480}$ en daardoor de executable code wordt overschreven door de arrays. 
+Dit bleef tot 75% gebeuren. Vanaf 75% liep de Arduino pas vast na het printen van de specificaties. Oftewel, de Arduino werd geflashed, de data uit de camera werd gelezen en daarna liep het vast. Dit gebeurde dus na het aanmaken de eerste array in de get image functie. Waarbij we de ruwe 2 bytes per RGB waarde opslaan. De due had dus genoeg geheugen om deze array te bufferen. Dus in theorie kan de Arduino Due 75% van een frame bufferen mits we die direct zouden omzetten in RGB waarden.
 
-Pas bij 55\% van een frame doet onze implementatie met 2 arrays het pas echt. Hierbij werd de arduino geflashed, de data uitgelezen en in de eerste array gezet, de tweede array aangemaakt en gevuld met RGB waarden.
+In onze implementatie liep de Arduino Due na 75% nog steeds vast, omdat wij hierna nog een tweede matrix aanmaken om de RGB waarden op te slaan. Om twee arrays van die grootte te bufferen, heeft de Arduino Due dus niet genoeg geheugen. Als code geschreven wordt die in 1 keer de waardes verwerkt en dat dan buffert zodat er maar 1 matrix is (zoals bovenstaand omschreven), is het bufferen van 1 frame met een resolutie van 75% van 640 x 480 mogelijk. Het deel in de tabel wat met een enkele array van RGB waarden wel zou werken is met de oranje kleur gemarkeerd.
 
-\subsubsection{Deelvraag 6}
-\textit{Wat moet medisch personeel zien op een filmpje of foto om erachter te komen wat er medisch nodig is voor de A \& D van de ABCDE lijst? }
+Pas bij een resolutie van 55% van het maximum van een frame doet onze implementatie met 2 arrays het pas echt. Hierbij werd de arduino geflashed, de data uitgelezen en in de eerste array gezet, de tweede array aangemaakt en gevuld met RGB waarden.
 
-Voor deelvraag 6, 7 \& 8 hebben we contact opgenomen met een medisch expert. (Frederique Klein, HBO verpleegkundige en zorgregisseur). Zij heeft in haar werk dagelijks te maken met de ABCDE lijst omdat ze als verpleegkundige nog al eens in situaties komt waarin ze mensen in een medische noodtoestand aantreft en ze een triage moet doen. Onder het kopje bijlage is een link te vinden naar korte notulen van dit gesprek. 
+\subsubsection{Deelvraag 6}Voor deelvraag 6, 7 \& 8 hebben we contact opgenomen met een medisch expert. (Frederique Klein, HBO verpleegkundige en zorgregisseur). Zij heeft in haar werk dagelijks te maken met de ABCDE lijst omdat ze als verpleegkundige nog al eens in situaties komt waarin ze mensen in een medische noodtoestand aantreft en ze een triage moet doen. Onder het kopje bijlage is een link te vinden naar korte notulen van dit gesprek. 
 
 Voor het (deels) controleren van de airway moeten wij een foto van de buitenkant van de neus, mond, keel, borst, de binnenkant van de mond en zo diep mogelijk in de keel. 
 Voor het controleren op disability volstaat een foto niet en moet er een kort filmpje zijn met geluid.
+\& 8 hebben we contact opgenomen met een medisch expert. (Frederique Klein, HBO verpleegkundige en zorgregisseur). Zij heeft in haar werk dagelijks te maken met de ABCDE lijst omdat ze als verpleegkundige nog al eens in situaties komt waarin ze mensen in een medische noodtoestand aantreft en ze een triage moet doen. Onder het kopje bijlage is een link te vinden naar korte notulen van dit gesprek. 
+
+Voor het (deels) controleren van de airway moeten wij een foto van de buitenkant van de neus, mond, keel, borst, de binnenkant van de mond en zo diep mogelijk in de keel. Voor het controleren op disability volstaat een foto niet en moet er een kort filmpje zijn met geluid.
 
 \subsubsection{Deelvraag 7}
-\textit{Hoeveel frames moeten we bufferen om het voor medici mogelijk te maken, zover het mogelijk is via beelden, de A \& D controle te doen? }
+\textit{Hoeveel frames moeten we bufferen om het voor medici mogelijk te maken, zover het mogelijk is via beelden, de A \& D controle te doen?}
 
-De verpleegkundige heeft aangegeven dat in ieder geval voor de D (disability) een filmpje met geluid nodig is. Dat zou betekenen dat we voor een 30 fps filmpje, 30x de resolutie van de foto zouden moeten bufferen. Uit de conclusie van deelvraag 5 kunnen we halen dat dat nooit mogelijk is op een Arduino Due. Dus het antwoord op deze vraag is niet echt te geven. 
-De beste optie bij deze deelvraag is om de foto uit de camera te halen, te processen en dan direct door te sturen naar een ontvangende partij. Als je het lokaal bufferen overslaat is er een kans dat we een goed filmpje kunnen maken om de D van de ABCDE lijst te bekijken. 
-Voor de A geldt naar aanleiding van deelvraag 6: In ieder geval 1 van ieder onderdeel (neus, keel, borst etc.). Maar hierbij geldt ook dat dit nooit gebufferd kan worden op het intern geheugen en dus ook de beste optie is om het meteen door te sturen.
+De verpleegkundige heeft aangegeven dat in ieder geval voor de D (disability) een filmpje met geluid nodig is. Dat zou betekenen dat we voor een 30 fps filmpje, 30 x de resolutie van de foto zouden moeten bufferen. Uit de conclusie van deelvraag 5 kunnen we halen dat dat nooit mogelijk is op een Arduino Due. Dus het antwoord op deze vraag is niet echt te geven. 
+De beste optie bij deze deelvraag is om de foto uit de camera te halen, te processen en dan direct door te sturen naar een ontvangende partij. Als je het lokaal bufferen overslaat is er een kans dat we een goed filmpje kunnen maken om de D van de ABCDE lijst te bekijken. Dit gaf het literatuuronderzoek eigenlijk ook aan. Bij de onderzoeken die al gedaan zijn is gebruik gemaakt van camera’s die het doorsturen.
+Voor de A geldt naar aanleiding van deelvraag 6: In ieder geval 1 van ieder onderdeel (neus, keel, borst etc.). Maar hierbij geldt ook dat meerdere foto’s nooit gebufferd kunnen worden op het intern geheugen en het dus ook de beste optie is om het meteen door te sturen.
+
 
 \subsubsection{Deelvraag 8}
-\textit{Kan alles van de A & D van de ABCDE lijst gecontroleerd worden met een foto of filmpje? }
+\textit{Kan alles van de A \& D van de ABCDE lijst gecontroleerd worden met een foto of filmpje? }
 
 Het antwoord op deelvraag 8 is nee. Voor de D (disability) kan dat nog wel, maar dan moet het wel een filmpje met geluid zijn. Medisch personeel moet kunnen zien of iemand nog beweegt, knippert etc. En het liefst moeten ze iemand kunnen aanspreken of in ieder geval horen of iemand kreunt of praat. 
 Voor de A (airway) kan het niet volledig met een filmpje of foto. Er zouden in ieder geval foto’s moeten zijn van de neus, keel en borst en bij voorkeur ook nog de binnenkant van de mond en keel (zo diep mogelijk). Maar zelfs dan kan een diepe obstructie in de keel niet worden gezien met een foto of filmpje. Een medische handeling hiervoor is simpelweg voelen. Medisch personeel gaat in het geval van een onzichtbare obstructie met de vingers en/of hand de keel in om te voelen waar de de obstructie zit. Ook kunnen ze soms aan de buitenkant van de keel of borst iets voelen. Dat kan niet met een foto of filmpje. Dus voor Airway kunnen we niet anders dan concluderen dat alleen een foto of filmpje niet volstaat voor diepere obstructies. Voor Disability is het antwoord dat alles controleerbaar is mits het een filmpje met geluid is.
 
 
 \section{Resultaten}
-Er is onderzoek gedaan naar welke camera in combinatie met de Arduino Due men het beste kan gebruiken om de A \& D van de ABCDE triage lijst vast te kunnen stellen. Hieruit is voortgekomen dat de camera die wij in de context van R2D2 en Corona (bestel mogelijkheden) het beste kunnen gebruiken de OV7670 camera is. Deze hebben wij besteld, code voor geschreven en verder onderzoek mee gedaan.
+Er is onderzoek gedaan naar welke camera in combinatie met de Arduino Due men het beste kan gebruiken om de A \& D van de ABCDE triage lijst vast te kunnen stellen. Hieruit is voortgekomen dat de camera die wij in de context van R2D2 het beste kunnen gebruiken de OV7670 camera is. Deze hebben wij besteld, code voor geschreven en verder onderzoek mee gedaan.
 
-Verder hebben we onderzoek gedaan naar hoeveel frames wij zouden kunnen bufferen een Arduino Due met gebruik van de OV7670. Wij namen hierbij de hypothese aan dat er niet voldoende geheugen zou zijn om 1 frame te bufferen op de Arduino Due. Dat kon je met een simpele rekensom namelijk al uitrekenen. Uit dit deelonderzoek kwam voort dat een volledige foto bufferen van 640 bij 480 pixels, de hoogste resolutie van de camera, al niet mogelijk is. Met de code die wij hebben geschreven (waarbij 2 grote arrays worden gemaakt en gevuld) is de beste resolutie die we kunnen halen 352 bij 264 pixels. Een vrij kleine foto dus. Daar kunnen we dan ook maar 1 frame van bufferen. Als er meer code op de Arduino geflashed moet worden zou dat formaat nog wat omlaag gaan. We kwamen tijdens het onderzoek doen daarnaar wel tot 2 mogelijke verbeterpunten die we toelichten in de discussie.
+Verder hebben we onderzoek gedaan naar hoeveel frames (en hoe grote frames) wij zouden kunnen bufferen een Arduino Due met gebruik van de OV7670. Wij namen hierbij de hypothese aan dat er niet voldoende geheugen zou zijn om 1 frame te bufferen op de Arduino Due. Dat kon je met een simpele rekensom namelijk al uitrekenen. Uit dit deelonderzoek kwam voort dat een volledige foto bufferen van 640 bij 480 pixels, de hoogste resolutie van de camera, niet mogelijk is. Met de code die wij hebben geschreven (waarbij 2 grote arrays worden gemaakt en gevuld) is de beste resolutie die we kunnen halen 352 bij 264 pixels. Een vrij slecht gedetailleerde foto. Daar kunnen we dan ook maar 1 frame van bufferen. Als er meer code op de Arduino geflashed moet worden zou dat formaat nog wat omlaag gaan. We kwamen tijdens het onderzoek wel tot 2 mogelijke verbeterpunten/vervolgonderzoeken die we toelichten in de discussie.
 
 Daarnaast is er nog een interview gehouden met een medisch expert om antwoord te krijgen op de vraag wat medisch personeel precies zou willen zien op een foto om de twee letters van de lijst te kunnen bekijken. Hier kwam uit dat er in ieder geval een foto van de buitenkant van de neus, mond, keel en borst moet zijn. En er moet een foto zijn van de binnenkant van de mond en de binnenkant van de keel (zo diep mogelijk). Toch gaf de verpleegkundige hierbij aan dat alleen fotos/filmpjes niet genoeg zijn om de luchtwegen van iemand te controleren en in realiteit men ook vaak voelt aan de binnen en buitenkant van de keel bij een diepere obstructie. Verder kwam naar voren dat om de staat van bewusteloosheid (de D) van iemand te controleren foto’s niet volstaan. Hier zou dan een filmpje met geluid voor moeten zijn. Zodat er kan worden gekeken of iemands pupillen nog reageren, of iemand nog knippert, of iemand kreunt/praat etc. 
 
 \section{Conclusie, discussie \& suggesties}
 Voor dit deelonderzoek hebben wij de volgende hoofdvraag geformuleerd:
 
-\textit{Welke camera, compatibel met de Arduino due en onder de 28 euro, is het meest geschikt om de toestand van een patiënt te fotograferen of filmen en dit zo vlot en accuraat mogelijk lokaal te bufferen op het RAM geheugen van de Arduino due om wanneer het gebufferd kan worden, door te kunnen sturen naar medisch personeel voor de medische vaststelling van de A en D van de ABCDE lijst?}
+\textit{Welke camera, compatibel met de Arduino due en onder de 28 euro, is het meest geschikt om de toestand van een patiënt te fotograferen of filmen en dit zo vlot en accuraat mogelijk lokaal te bufferen op het RAM geheugen van de Arduino due om wanneer het gebufferd kan worden, door te kunnen sturen naar medisch personeel voor de medische vaststelling van de A en D van de ABCDE lijst? }
 \subsection{Conclusie}
-Uit de antwoorden op de deelvragen kunnen we concluderen dat de OV7670 de beste camera is om te gebruiken, om gezien de beperkingen van de Arduino Due zo vlot en accuraat mogelijk een patiënt te fotograferen. Verder kunnen we concluderen dat het niet mogelijk is om een gedetailleerde foto of film, zoals omschreven door de medisch expert, lokaal te bufferen. De foto zou ons inziens een te lage resolutie krijgen en daarbij kan je dan ook maar 1 foto lokaal bufferen. Daar kan de medisch expert niet voldoende mee. Met zo’n lage resolutie achten wij het niet onwaarschijnlijk dat je kleine obstructies/medische problemen niet goed ziet.
+Uit de antwoorden op de deelvragen kunnen we concluderen dat de OV7670 de beste camera is om te gebruiken, om gezien de beperkingen van de Arduino Due zo vlot en accuraat mogelijk een patiënt te fotograferen. Verder kunnen we concluderen dat het niet mogelijk is om een gedetailleerde foto of film, zoals omschreven door de medisch expert, lokaal te bufferen. De foto zou ons inziens een te lage resolutie krijgen en daarbij kan je dan ook maar 1 foto lokaal bufferen. Daar kan de medisch expert niet voldoende mee. Met zo’n lage resolutie achten wij het niet onwaarschijnlijk dat je kleine obstructies/medische problemen niet goed ziet en daarmee in staat bent de A of D te kunnen controleren.
 
 \subsection{Discussie \& suggestie}
-Toch hebben we uit dit onderzoek wel een aantal andere nuttige dingen gehaald. Zo weten we nu dat lokaal bufferen niet echt een goede optie is. Onze code die gebruik maakt van 2 arrays voor het opslaan is daar zeker niet geschikt voor. Ons onderzoek heeft deels aangetoond dat bij gebruik van 1 array in plaats van 2 we in ieder geval een iets hogere resolutie foto kunnen bufferen (480 * 360 ipv 352 * 264). Een goed vervolg van dit onderzoek is dus de code herschrijven zodat we gebruik maken van 1 array. Daar volgt dan wel een nieuw onderzoek uit en dat is bekijken of de Arduino Due genoeg processorsnelheid heeft om de data uit z’n register te halen, deze te bitshiften naar RGB waarden en deze op te slaan, voordat een nieuwe byte uit de camera in het register komt.
+Toch hebben we uit dit onderzoek wel een aantal andere nuttige dingen gehaald. Zo weten we nu dat lokaal bufferen niet echt een goede optie is. Onze code die gebruik maakt van 2 arrays voor het opslaan is daar zeker niet geschikt voor. Ons onderzoek heeft deels aangetoond dat bij gebruik van 1 array in plaats van 2 we in ieder geval een iets hogere resolutie foto kunnen bufferen (480x360 ipv 352x264). Een goed vervolg van dit onderzoek is dus de code herschrijven zodat we gebruik maken van 1 array. Daar volgt dan wel een nieuw onderzoek uit en dat is bekijken of de Arduino Due genoeg processorsnelheid heeft om de data uit het register te halen, deze te bitshiften naar RGB waarden en deze op te slaan, voordat een nieuwe byte uit de camera in het register komt op de 10 mHz klok.
 
-Als men verder zou gaan met bekijken of de Due daar snel genoeg voor is, zou een andere (nog betere) optie volgens ons zijn om te kijken of je het in plaats van opslaan, direct door kan sturen naar een ontvangende partij. Dan is een lokale buffer denken wij helemaal niet meer nodig en zou je de allerhoogste resolutie foto kunnen versturen en zelfs filmpjes. Daarmee is dan de D (disability) volledig controleerbaar en ook voor de A (airway) kan je dan meer detail zien.
+Als men verder zou gaan met bekijken of de Due daar snel genoeg voor is, zou een andere (nog betere) optie volgens ons zijn om te kijken of je het in plaats van opslaan, direct door kan sturen naar een ontvangende partij. Dan is een lokale buffer denken wij helemaal niet meer nodig en zou je de allerhoogste resolutie foto kunnen versturen en zelfs filmpjes. Daarmee is dan de D (disability) volledig controleerbaar en ook voor de A (airway) kan je dan meer detail zien en is er meer kans op slagen.
 
-Verder denken wij dat het verstandig is vervolgonderzoek te doen naar het fotograferen in de mond. Zo kwam bij ons tijdens het interview eigenlijk de vraag dan al op, hoe diep moet je dan in de mond/keel fotograferen? Is dat niet te donker en moet daar een lichtje bij? Kortom, nader onderzoek naar fotograferen aan de binnenkant van een mond en keel is niet onverstandig.
+Verder denken wij dat het verstandig is vervolgonderzoek te doen naar het fotograferen in de mond. Zo kwam bij ons tijdens het interview eigenlijk de vraag dan al op, hoe diep moet je dan in de mond/keel fotograferen? Is dat niet te donker en moet daar een lichtje bij? Kortom, nader onderzoek naar fotograferen aan de binnenkant van een mond en keel is niet onverstandig voor het vervolg van deze module.
 
 Tijdens het interview gaf de verpleegkundige aan dat voor de D een foto niet volstaat. Hiervoor moet in ieder geval een filmpje gemaakt en bekeken kunnen worden. Het liefst ook nog een filmpje met geluid. Daarom lijkt het ons ook verstandig verder onderzoek te doen naar geluid opnemen op de Arduino Due en dat dan ook lokaal te bufferen/mee te versturen.
+
+\section{Aanbevelingen}
+Omdat het geheugen van de Arduino Due toch erg beperkt is en omdat de processor snelheid van de Arduino Due beperkt is. Lijkt het ons een goed idee om eens te kijken of deze implementatie niet veel beter uit te voeren is op een veel snellere microcontroller. Eventueel eentje die een OS heeft zoals de Raspberry Pi, de Intel NUC of de Nvidia Jetson. Zo’n computer stelt je namelijk in staat veel grotere (dus hogere resolutie) foto’s te bufferen, zelfs complete filmpjes te bufferen, ingewikkeldere camera’s te gebruiken en bovenal libraries aan te spreken die beter werken dan code die wij in het tweede jaar kunnen programmeren. Zeker als er vervolgonderzoek gaat gebeuren naar het gebruiken van 1 array, of zelfs het direct doorsturen van beelden kan een snellere processor bepalend zijn.
+Verder moesten wij vanwege de kosten, de besteltijd en de Arduino Due gebruik maken van een relatief lage resolutie camera. En had de camera ook niet een eigen buffer of standaard geluid aan boord. Als er gebruik wordt gemaakt van betere/meer middelen zou er gebruik kunnen worden gemaakt van een camera met een lokaal buffer, of zelfs eentje met geluid. 
 
 
 \section{Evaluatie}
@@ -319,19 +298,41 @@ Het onderzoek is erg goed gegaan gezien de omstandigheden. Door de huidige pande
 De kosten van de camera speelden een erg grote rol in de huidige situatie. Als dit minder had meegeteld, hadden we mogelijk meerdere geschikte camera’s kunnen vinden en testen.
 Door de tijd die we hadden met deze camera, hebben we deze wel uitvoerig kunnen testen. 
 Zo is onze conclusie uitgebreid getest en hebben we een aantal aanbevelingen hieruit kunnen opmaken. 
-Ook hebben we af en toe het uiteindelijke doel uit ogen verloren. Zo waren we veelal bezig met het werkend krijgen van de camera en alle instellingen goed uit te werken. Terwijl hiervan veel niet direct nodig was voor ons onderzoek. Daar zijn we dus ook best veel tijd aan kwijt geraakt. 
+Ook hebben we af en toe het uiteindelijke doel uit ogen verloren. Zo waren we veelal bezig met het werkend krijgen van de camera en alle instellingen goed uit te werken. Terwijl hiervan veel niet direct nodig was voor ons onderzoek. Daar zijn we dus ook best veel tijd aan kwijt geraakt. Dat kwam deels omdat de datasheet en implementation guide van de camera erg summier/lastig te begrijpen is.
 Desondanks was dit onderzoek erg leerzaam. We hebben niet alleen veel geleerd over de camera, maar ook over het doen van onderzoek en samenwerken in een groot team. Zo hebben we taken leren delegeren en geleerd om te communiceren over onze taken, om zo het team op de hoogte te houden. 
 Wat we ook hebben geleerd is het belang van samen in 1 ruimte zijn. Het was door Corona soms erg lastig om simpele taken samen te doen. Zoals code die even niet werkt. Normaal loop je even naar elkaar toe, wijs je naar elkaars scherm, kijk je samen naar de hardware die wel/niet werkt. Dat werd nu wat lastiger en dit heeft met name de tijdsefficiëntie geen goed gedaan.
 
-\section{Aanbevelingen}
-Omdat het geheugen van de Arduino Due toch erg beperkt is en omdat de processor snelheid van de Arduino Due beperkt is. Lijkt het ons een goed idee om eens te kijken of deze implementatie niet veel beter uit te voeren is op een veel snellere microcontroller. Eventueel zelfs eentje die gewoon een OS heeft zoals de Raspberry Pi, de Intel NUC of de Nvidia Jetson. Zo’n computer stelt je namelijk in staat veel grotere (dus hogere resolutie) foto’s te bufferen, zelfs complete filmpjes te bufferen, ingewikkeldere camera’s te gebruiken en bovenal libraries aan te spreken die beter werken dan code die wij in het tweede jaar kunnen programmeren. Zeker als er vervolgonderzoek gaat gebeuren naar het gebruiken van 1 array, of zelfs het direct doorsturen van beelden kan een snellere processor bepalend zijn.
-Verder moesten wij vanwege de kosten, de besteltijd en de Arduino Due gebruik maken van een relatief lage resolutie camera. En had de camera ook niet een eigen buffer of standaard geluid aan boord. Als er gebruik wordt gemaakt van betere/meer middelen zou er gebruik kunnen worden gemaakt van een camera met een lokaal buffer, of zelfs eentje met geluid. 
 
-\section{Literatuur}
+\section{Gelezen Literatuur}
+\citet{i2cmemfault}
 \citet{bmp280adafruit}
+\citet{computernerdgithub}
+\citet{dpvtechyoutube}
+\citet{makerpro}
+\citet{hattori2008architecture}
+\citet{i2cinfo}
+\citet{indrekyoutube}
+\citet{ov7670instructables}
+\citet{lupyuenyoutube}
+\citet{matanbrightarduino}
+\citet{wiki:megapixel}
+\citet{mt9m001arducam}
+\citet{mt9m001utronics}
+\citet{mrarduinoarduino}
+\citet{ov7670voti}
+\citet{ov7670implementationgithub}
+\citet{ov7670opencircuit}
+\citet{latexoverleaf}
+\citet{ov7670interfaceegprojects}
+\citet{i2crobotelectronics}
+\citet{song2019development}
+\citet{configregistersstackexchange}
+\citet{surtrtechyoutube}
+\citet{vela2018face}
+\citet{connectov7670instructables}
+
 
 \section{Bijlagen}
-
 \href{https://docs.google.com/document/d/1SsX8LF4RwbH1YNNYjNoLCvhxlJQ-Cs8OT3DVWehyQDE/edit?usp=sharing}{Interview met Frederique klein voor deelvraag 6 \& 7}
 
 \bibliography{Include/Main}
