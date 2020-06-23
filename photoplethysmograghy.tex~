@@ -195,7 +195,12 @@ Het gebruik van een specifieke sensor voor Hartslag en Pulse Oximetry vereist mi
 Dit onderzoek begint met een literatuuronderzoek naar eerder gebruikten methoden voor het meten van hartslag en zuurstofsaturatie. Er zal worden bekeken of deze eventueel geschikt zijn. Daarnaast zal er naar sensoren gezocht worden die goed verkrijgbaar zijn en ingezet kunnen worden voor de gestelde doeleinden.
 
 \subsection{Gekozen Sensoren}
-HIER IETS OVER MAX 102 100 WAT VERSCHIL IS EN WAROM WE HEBBEN GEKOZEN
+De twee sensoren zijn gevonden door een simpele zoektocht naar goed beschikbare pulse oximeters. Hieruit volgden de MAX30100 en 30102. Deze zijn goedkoop, werken met een arduino compatible protocol (i2c) en breakout boards waren online in voorraad.
+Uit de datasheets bleek dat de MAX30102 de sensor is die Samsung gebruikt in hun smartphones.
+
+De MAX30102 is nieuwer en geavanceerder dan de 30100. Ook is de MAX30102 in staat om hartslag en zuurstofverzadiging tegelijk te meten, waar de 30100 dit niet kan.
+
+De MAX30100 is echter eenvoudiger in gebruik en zou potentieel schoner kunnen meten. Welke van de twee sensoren consistenter blijkt is alleen te bepalen door beide te testen. Om  deze reden is er besloten de MAX30100 toch open te houden als optie. 
 
 \subsection{Gebruik van de Sensor}\label{subsec:gebruik van de sensor}
 Beide sensoren zijn geïmplementeerd door middel van C++. Dit wordt gedaan door middel van de hwlib. Een in C++ geschreven software library ontworpen voor het zo dicht mogelijk op de hardware programmeren. De communicatie met de Arduino gaat via een i2c bus. Hiervoor is een wrapper geschreven om de bij het project bijgeleverde i2c bus gebruiksvriendelijker te maken. Alle gebruikte code is te vinden op https://gitlab.com/r2d2-2020/modules/health_monitor/-/tree/feature-max3010x
@@ -217,6 +222,7 @@ MAX30102
 - Losse Pulse Oximeter
 
 
+    \includegraphics[height=0.2\textheight]{Images/los.jpg}
 FOTO HIER ZETTEN
 FOTO HIER ZETTEN
 FOTO HIER ZETTEN
@@ -228,6 +234,22 @@ De MAX sensoren zullen helaas niet kunnen worden geïmplementeerd als SpO2 meter
 
 [72] Piotrowski, Z., & Różanowski, K. (2010). Robust algorithm for heart rate (HR) detection and heart rate variability (HRV) estimation. Acta Physica Polonica A, 118(1), 131-135.
 
+\subsection{Algorithme voor Hartslag BPM}
+De ruwe data van de sensor is geen directe bpm waarde. Dit deel van het meetproces is voor het onderzoek geïmplementeerd in de docker omgeving van het bedrijf door middel van C++ en de hwlib. 
+
+Om te beginnen wordt er naast de meting ook een tijd geregistreerd waarop de meting gedaan is. Door deze tijden vast te leggen kan de eerste afgeleide van het ruwe signaal berekend worden. Pieken in deze eerste afgeleide wijzen op een steile helling in het signaal. Dit duidt op een gedetecteerde hartslag.
+
+Nadat de eerste afgeleide berekend is, wordt er een eendimensionaal gaussian filter over de metingen gelegd met mask {0.25, 0.50, 0.25}. Op deze manier worden de kleine schommelingen in het signaal uitgemiddeld.
+
+Na het berekenen van de afgeleide zal uit deze afgeleide het signaal gehaald moeten worden.
+Dit gebeurt volgens de volgende methode:
+Zet alle waarden onder filterwaarde (initieel: 0,5) op 0.
+Noteer punten met een positieve waarde en een 0 als voorgaande waarde (rising edge) de tijd waarop deze waarde gemeten is.
+Bereken de gemiddelde tijd delta tussen alle gevonden waarden en sla deze op.
+Verhoog de filterwaarde met 0,5 en ga terug naar stap 1.
+Selecteer uit de opgeslagen gemiddelde tijd delta’s de mediaan.
+Bereken op basis van deze geselecteerde tijd de frequentie. (f = 1 / t)
+
 
 \subsection{Testmethode voor max30102}
 Elke Proefpersoon heeft na enkele minuten rust op een stoel, alle 4 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
@@ -238,7 +260,7 @@ De controle Sensoren bestaan uit: Polar H10 Hartslagband(op basis van elektrocar
 
 De tabel hieronder laat het absolute procentueel verschil van elke meting van de MAX30102 ten opzichte van het gemiddelde van de 3 controle metingen.
 
- -percentage Var =Abs((((Polar + Bip+ Losse)/3)-MAX30102)/MAX30102)
+\% Var =Abs((((Polar + Bip+ Losse)/3)-MAX30102)/MAX30102)*100\%
 
 Vervolgens zijn er 5 tot 10 Metingen gedaan per Proefpersoon
 Elk van de Controle sensoren is ook vergeleken met de andere twee controle sensoren voor referentie om de nauwkeurigheid commerciële sensoren te tonen.
@@ -363,7 +385,8 @@ Er wordt gekeken naar de afwijking van de MAX3010x sensoren ten opzichte van het
 Uit de resultaten is gebleken dat de MAX30102 een lagere variance had ten opzichte van de controle sensoren op de betreffende proefpersonen dan de MAX30100. De conclusie is dus dat de MAX30102 geschikter is voor de robots dan de MAX30100.
 
 	
-    \section{Discussie}\label{sec:discussie}
+    \section{Evaluatie}\label{sec:evaluatie}
+    \subsection{Discussie}\label{subsec:discussie}
 
 Hoewel Beide MAX3010x Sensoren een hogere afwijking hebben dan individuele sensoren in onze tests, is het verschil niet extreem groot(2-4\% afwijking voor onze controle sensoren, en 4-13\% voor onze implementatie). Een Andere Algoritme of Verdere verfijning aan ons algoritme zou hoogstwaarschijnlijk dit verschil kunnen verkleinen.
 
@@ -374,7 +397,6 @@ Gezien het gebruikte aantal samples in de library (1000) is dit niet goed haalba
 
 
 
-    \section{Evaluatie}\label{sec:evaluatie}
 
 
     \subsection{Aanbevelingen}\label{subsec:aanbevelingen}
@@ -402,9 +424,43 @@ Andere Sensoren naast Max3010X.
 
 
     \section{Literatuur}\label{sec:literatuur}
-
-    
-
     \bibliography{Include/Main}
+    \pagebreak
+
+    \section{Bijlagen}\label{sec:bijlagen}
+    \textbf{Sensor Red LED Reflectance Values op Y-as, per sample X-as (meestal 500 samples)}
+
+\begin{figure}[h]
+	\centering
+	\caption{Initiele meetwardes van sensor,IR led in rood,slechte configuratie parameters voor de sensor, geen post processing}
+    \includegraphics[height=0.4\textheight]{Images/r1.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Boven: Scaling(en 0 Adjusten) met een bin size van 50, onder: orignele meting}
+   \hfill\includegraphics[height=0.75\textheight]{Images/r2.png}
+\end{figure}
+
+
+\begin{figure}
+	\caption{Zelfs bij veranderde amplitude(verschil van druk op sensor tijdens meeting) kan dit in post processing gecorrigeert worden}
+	\centering
+    \includegraphics[height=0.7\textheight]{Images/r6.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Te veel noise bij de raw meting veroorzaakt slechte scaling(b.v. extra piek bij x=316)}
+	\centering
+    \includegraphics[height=0.7\textheight]{Images/r3.png}
+\end{figure}
+
+
+
+\begin{figure}
+	\caption{Door een Gausian Filer toe te passen op de orignele meetwaardes om ruis mee te verminderen,is de gescalede versie ook een stuk duidelijker.}
+	\centering
+    \includegraphics[height=0.4\textheight]{Images/r5.png}
+\end{figure}
+
 
 \end{document}
