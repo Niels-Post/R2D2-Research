@@ -9,6 +9,7 @@
 
 \usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{float}
 \graphicspath{ {./Images/} }
 
 \input{Include/main.tex}
@@ -180,52 +181,229 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
     Te lage hartslag is ook een belangrijke metriek. 
     Dit kan onder andere dienen als indicatie van onderkoeling, bloedingen en een verhoogde hersendruk, naast andere oorzaken. 
     Een te lage hartslag kan leiden tot duizeligheid, kortademigheid, vermoeidheid, hartkloppingen, flauwvallen, en geheugenstoornissen. 
-    [Bradycardie (te lage hartslag) - hoe herken je het?]
+    [Bradycardie (te lage hartslag) - hoe herken je het?WELKE BRON IS DIT YOURI]
+
+	\section{Hypothese}\label{sec:hypothese}
+
+Wij verwachten dat een reflectieve sensor is waarschijnlijk beter geschikt voor onze gestelde use case. Reflectieve sensoren kunnen op de huid worden gedrukt en dus met relatief minimale moeite door de robot geplaatst worden om zo een meting te doen. Relatief minimaal verwijst naar het monteren van een transmissieve sensor op iemand die bewusteloos is. Voor deze sensor moet een vinger of teen door de robot gevonden worden om de sensor te monteren. Dit is in verhouding significant minder triviaal dan het duwen van de sensor op een arm of been. 
+
+Het gebruik van een specifieke sensor voor Hartslag en Pulse Oximetry vereist minder implementatie en waarschijnlijk is dit daarom de betere optie over een sensor zoals de TRCT5000. Dit is in essentie ook een reflectieve emitter met light activated transistor, maar deze moet zelf ingesteld worden met weerstanden om parameters aan te passen zoals de stroom die door de LED loopt. Ook zouden er 2 van deze sensoren moeten worden gebruikt omdat een enkele TRCT5000 alleen maar 1 golflengte licht uitstraalt, en voor het meten van Zuurstof saturatie moet er gebruik gemaakt worden van twee verschillende golflengtes.
 
 
 
+\section{Methode}\label{sec:methode}
+Dit onderzoek begint met een literatuuronderzoek naar eerder gebruikten methoden voor het meten van hartslag en zuurstofsaturatie. Er zal worden bekeken of deze eventueel geschikt zijn. Daarnaast zal er naar sensoren gezocht worden die goed verkrijgbaar zijn en ingezet kunnen worden voor de gestelde doeleinden.
 
-    \section{Uitvoering}\label{sec:uitvoering}
-    \subsection{Deelvraag 1 tot en met deelvraag 4}\label{subsec:deelvraag-1-tot-en-met-deelvraag-4}
+\subsection{Gekozen Sensoren}
+HIER IETS OVER MAX 102 100 WAT VERSCHIL IS EN WAROM WE HEBBEN GEKOZEN
+
+\subsection{Gebruik van de Sensor}\label{subsec:gebruik van de sensor}
+Beide sensoren zijn geïmplementeerd door middel van C++. Dit wordt gedaan door middel van de hwlib. Een in C++ geschreven software library ontworpen voor het zo dicht mogelijk op de hardware programmeren. De communicatie met de Arduino gaat via een i2c bus. Hiervoor is een wrapper geschreven om de bij het project bijgeleverde i2c bus gebruiksvriendelijker te maken. Alle gebruikte code is te vinden op https://gitlab.com/r2d2-2020/modules/health_monitor/-/tree/feature-max3010x
+
+\paragraph{tests} De werking van de research code zal worden getest. Dit zal worden gedaan door middel van unit tests. Hieronder vallen tests of de sensor succesvol aangesloten is en deze i2c communicatie accepteert. Dit wordt getest door naar de interne registers van de sensor te schrijven en deze vervolgens uit te lezen. Ook zal er worden getest of de waarden die worden gemeten realistisch zijn(b.v. Revision ID is gelijk of  kleiner dan de meest recent revision van de sensor, of dat bepaalde config registers veranderd kunnen worden)
+
+
+Vergelijken met andere Sensoren
+
+Het vergelijken van de sensoren wordt door COVID-19 bemoeilijkt. Om de implementatie spoedig te laten verlopen is de hardware onder de onderzoekers verspreid. De sensoren kunnen dus niet op dezelfde persoon getest worden. In plaats hiervan zullen de sensoren worden vergeleken met andere hartslagmeters in het bezit van de onderzoekers.
+
+MAX30100
+- Samsung Galaxy S8+ ingebouwde hartslagmeter
+- Xiaomi Mi Band 2
+
+MAX30102
+- Sport Horloge Met Optische Sensor(Amazfit Bip)
+- Niet Optische hartslagband ( POLAR H10)
+- Losse Pulse Oximeter
+
+
+FOTO HIER ZETTEN
+FOTO HIER ZETTEN
+FOTO HIER ZETTEN
+
+/subsection{SpO2 Metingen}
+
+De MAX sensoren zullen helaas niet kunnen worden geïmplementeerd als SpO2 meters. Voor het meten van deze waarden is, naar wat wij gevonden hebben. Een fourier transformatie en verdere verwerking nodig. Dit is goed mogelijk, maar de Arduino Due heeft niet veel rekenkracht. Er zou ook gebruik kunnen worden gemaakt van Autocorrelatie[72] voor hartslag en SpO2. Of dit computationeel goedkoper is moet blijken uit verder onderzoek. 
+
+
+[72] Piotrowski, Z., & Różanowski, K. (2010). Robust algorithm for heart rate (HR) detection and heart rate variability (HRV) estimation. Acta Physica Polonica A, 118(1), 131-135.
+
+
+\subsection{Testmethode voor max30102}
+Elke Proefpersoon heeft na enkele minuten rust op een stoel, alle 4 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
+
+Sommige Metingen zijn geschrapt uit het onderzoek omdat een van de sensoren een abnormale(meer dan het dubbele van andere sensoren of 0) meting weergeeft. Opmerkenswaardig is dat alle sensoren af en toe een slechte meting gaven, en dat ook de commerciële producten vatbaar waren voor ruis of slechte meettechniek.
+
+De controle Sensoren bestaan uit: Polar H10 Hartslagband(op basis van elektrocardiografie), Losse Pulse Oximeter Sensor (Transmissive PPG), Een Amazfit Bip Watch(Reflective PPG 530 nm), MAX30102(Reflective PPG 660 nm)
+
+De tabel hieronder laat het absolute procentueel verschil van elke meting van de MAX30102 ten opzichte van het gemiddelde van de 3 controle metingen.
+
+ -percentage Var =Abs((((Polar + Bip+ Losse)/3)-MAX30102)/MAX30102)
+
+Vervolgens zijn er 5 tot 10 Metingen gedaan per Proefpersoon
+Elk van de Controle sensoren is ook vergeleken met de andere twee controle sensoren voor referentie om de nauwkeurigheid commerciële sensoren te tonen.
+
+
+\subsection{Testmethode voor max30100}
+
+Elke Proefpersoon heeft na enkele minuten rust op een stoel, alle 3 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
+
+Sommige Metingen zijn geschrapt uit het onderzoek omdat een van de sensoren een abnormale(meer dan het dubbele van andere sensoren of 0) meting weergeeft.
+
+De controle Sensoren bestaan uit: Samsung Galaxy S8+ (Reflective PPG), Xiaomi Mi Band 2 (Reflective PPG)
+
+De tabel hieronder laat het absolute procentueel verschil van elke meting van de MAX30100 ten opzichte van het gemiddelde van de 2 controle metingen.
+
+\% Var =Abs((((S8+XMB2)/2)-MAX30100)/MAX30100)*100\%
+
+Er 7 tot 10 Metingen gedaan per Proefpersoon. De variatie tussen de controle sensoren is ook bekeken om vast te stellen hoeveel significantie de variatie met de controlegroep houdt. Dit is een iets minder viabele berekening gezien het feit dat er bij deze test slechts twee controle sensoren beschikbaar waren.
+
+
     \section{Resultaten}\label{sec:resultaten}
-
-    \subsection{Deelvraag 1 t/m 4}\label{subsec:deelvraag-1-t/m-4}
-
-    \subsubsection{Methode 1}
+Er wordt gekeken naar de afwijking van de MAX3010x sensoren ten opzichte van het gemiddelde van onze controle groep.
 
 
-    \paragraph{Aantal foto's per tijdseenheid}
+\subsection{MAX30102 resultaten}\label{subsec:max30102 resultaten}
 
-    \paragraph{Hardware-vereisten}
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+\textbf{Proefpersoon 1}  & \%var  \\
+	\hline
+	MAX30102	& 4.247  \\
+	POLAR		& 4.056  \\
+	BIP		& 2.376  \\
+	LOS		& 2.101  \\
+	\end{tabular}
+	\end{table}
 
-    \paragraph{Langer analyseren frame}
+
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+		\textbf{Proefpersoon 2}  & \%var  \\
+	\hline
+	MAX30102	& 11.021 \\
+	POLAR		& 2.192  \\
+	BIP		& 1.788  \\
+	LOS		& 2.002  \\
+	\end{tabular}
+	\end{table}
+
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+		\textbf{Proefpersoon 3}  & \%var  \\
+	\hline
+	MAX30102	& 4.584  \\
+	POLAR		& 4.201  \\
+	BIP		& 3.050  \\
+	LOS		& 3.952  \\
+	\end{tabular}
+	\end{table}
+
+
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+		\textbf{Gemiddeld   }\hspace{0.7cm}  & \%var  \\
+		\hline
+	MAX30102	& 5.837  \\
+	POLAR		& 3.701  \\
+	BIP		& 2.483  \\
+	LOS		& 2.723  \\
+	\end{tabular}
+	\end{table}
+	
+
+\subsection{MAX30100 resultaten}\label{subsec:max30100 resultaten}
+
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+\textbf{Proefpersoon 1}  & \%var  \\
+	\hline
+	MAX30100	& 3.932  \\
+	S8+		& 2.191  \\
+	XMB2		& 2.163  \\
+	\end{tabular}
+	\end{table}
+
+
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+\textbf{Proefpersoon 2}  & \%var  \\
+	\hline
+	MAX30100	& 10.803  \\
+	S8+		& 2.189  \\
+	XMB2		& 2.332  \\
+	\end{tabular}
+	\end{table}
+
+
+
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+\textbf{Proefpersoon 3}  & \%var  \\
+	\hline
+	MAX30100	& 13.428  \\
+	S8+		& 1.469  \\
+	XMB2		& 1.494  \\
+	\end{tabular}
+	\end{table}
+
+
+	\begin{table}[H]
+	\begin{tabular}{l|r}
+		\textbf{Gemiddeld}\hspace{0.8cm}  & \%var  \\
+	\hline
+	MAX30100	& 8.939  \\
+	S8+		& 2.003  \\
+	XMB2		& 2.052  \\
+	\end{tabular}
+	\end{table}
+
+
+    \section{Conclusie}\label{sec:conclusie}
+Uit de resultaten is gebleken dat de MAX30102 een lagere variance had ten opzichte van de controle sensoren op de betreffende proefpersonen dan de MAX30100. De conclusie is dus dat de MAX30102 geschikter is voor de robots dan de MAX30100.
+
+	
+    \section{Discussie}\label{sec:discussie}
+
+Hoewel Beide MAX3010x Sensoren een hogere afwijking hebben dan individuele sensoren in onze tests, is het verschil niet extreem groot(2-4\% afwijking voor onze controle sensoren, en 4-13\% voor onze implementatie). Een Andere Algoritme of Verdere verfijning aan ons algoritme zou hoogstwaarschijnlijk dit verschil kunnen verkleinen.
+
+Deze conclusie is echter gebaseerd op niet ideale metingen. De sensoren zijn immers niet gemeten op dezelfde proefpersonen en ook niet vergeleken met dezelfde controle sensoren. Dit komt met name door de huidige pandemie. Er is van beide sensoren in eerste instantie 1 aangeschaft en wij als onderzoekers hadden dus elk een andere sensor om mee te testen.
+
+De SpO2 metingen missen ook in de resultaten. De implementatie van SpO2 meten op de MAX sensoren maakt gebruik van fast fourier transform. 
+Gezien het gebruikte aantal samples in de library (1000) is dit niet goed haalbaar op een arduino due binnen triviale tijd. De robots zijn dan te lang bezig met de berekening en dit is niet het doel van de health monitor. Het doel is een snelle meting die kan worden gebruikt als inventarisatie van de gevonden slachtoffers. 
+
 
 
     \section{Evaluatie}\label{sec:evaluatie}
 
 
-    \section{Aanbevelingen}\label{sec:aanbevelingen}
+    \subsection{Aanbevelingen}\label{subsec:aanbevelingen}
+Tijdens dit onderzoek is er gevonden dat het verwerken van SpO2 data niet ideaal is op de Arduino Due. Er zijn twee alternatieven:
+De metingen verwerken op een externe server
+Meer rekenkracht aan boord van de robot
+Efficiëntere Algoritmes
+
+De Arduino Due heeft te weinig processing power om Discrete Fourier transformaties(DFT) uit te rekenen, om deze wel te doen is er andere hardware nodig.
+
+Andere Algoritmes die een computationeel snellere benadering van een DFT kunnen doen is een Fast Fourier transformation(FFT)of een Fast Hartley transformation(FHT) 
+
+Deze efficiëntere algoritmes implementeren lag niet binnen de scope van dit project.
 
 
-    \section{Suggesties voor verder onderzoek}\label{sec:suggesties-voor-verder-onderzoek}
+
+
+    \subsection{Suggesties voor verder onderzoek}\label{subsec:suggesties-voor-verder-onderzoek}
+
+
+Algoritmes voor betere Hartslag detectie
+SpO2 Algoritmes die op embedded  hardware functioneren.
+Andere Sensoren naast Max3010X.
+
 
 
     \section{Literatuur}\label{sec:literatuur}
 
-
     
-    \section{Conclusie en Discussie}\label{sec:conclusie-en-discussie}
-    \section{Evaluatie}\label{sec:evaluatie2}
-
-
-    \section{Aanbevelingen}\label{sec:aanbevelingen2}
-
-
-    \section{Suggesties voor verder onderzoek}\label{sec:suggesties-voor-verder-onderzoek2}
-
-
-    \section{Literatuur}\label{sec:literatuur2}
-
 
     \bibliography{Include/Main}
 
