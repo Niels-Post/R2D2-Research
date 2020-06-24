@@ -25,7 +25,6 @@
     \begin{titlepage}
         \centering
         \maketitle
-        \includegraphics[height=0.6\textheight]{Images/vision.jpg}
         \clearpage
     \end{titlepage}
 
@@ -92,14 +91,14 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
 
 
     \section{Literatuurverkenning}\label{sec:literatuur}
-    \paragraph{The Feasibility of Using a Forehead Reflectance Pulse Oximeter for Automated Remote Triage(Wendelken 2004)}Het uiteindelijke doel van The Feasibility of Using a Forehead Reflectance Pulse Oximeter for Automated Remote Triage(Wendelken 2004), namelijk Remote Triage, staat heel dichtbij het doel van ons overkoepelende onderzoek. 
+    \paragraph{The Feasibility of Using a Forehead Reflectance Pulse Oximeter for Automated Remote Triage(Wendelken 2004)}Het uiteindelijke doel van deze paper, namelijk Remote Triage, staat heel dichtbij het doel van ons overkoepelende onderzoek. 
     Wedelken et al. kijken of het gebruik van een Reflectance Pulse Oximeter in staat is om nauwkeurig metingen van O2 Sats en Hartslag, zelfs bij signaal ruis veroorzaakt door fysieke inspanning van de proefpersoon.
 
-    \paragraph{Mendelson 2006} heeft een portable pulse oximeter systeem ontworpen voor gebruik in Remote Triage situaties. 
+    \paragraph{A Wearable Reflectance Pulse Oximeter for Remote Physiological Monitoring(Mendelson 2006)} heeft een portable pulse oximeter systeem ontworpen voor gebruik in Remote Triage situaties. 
     Het doel van van het systeem komt weer overeen met ons eigen onderzoek. 
     Dankzij de vooruitgangen op technologisch gebied is het ontwerp van het systeem wat verouderd, maar de uitdagingen en methodes kunnen wij nog steeds in acht nemen voor ons eigen ontwerp.
 
-    \paragraph{Heart rate measurement based on time-lapse image} is een interessant onderzoek om te bekijken voor het bepalen van de research gap. 
+    \paragraph{Heart rate measurement based on time-lapse image(Takano 2007)} is een interessant onderzoek om te bekijken voor het bepalen van de research gap. 
     Hartslag metingen op basis van een camera zijn relevant omdat het automatisch plaatsen van sensoren voor een robot niet triviaal is. 
     In dit onderzoek is gebruik gemaakt van een toentertijd gangbare handheld camera. 
     Het type sensor van de camera is tegenwoordig niet goed meer te verkrijgen. 
@@ -108,33 +107,33 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
     Het gezicht van de patiënt wordt in deze timelapse vorm opgenomen. 
     Hierna wordt voor een vakje van 3 bij 4 centimeter de gemiddelde intensiteit bepaald en hieruit wordt, na verwerking, een hartslagfrequentie uit gehaald.
 
-    \paragraph{The non-contact monitoring of heart and respiratory rates using laser irradiation: an experimental simultaneous monitoring with and without clothes during biochemical hazards} is zeer relevant vanwege het op afstand meten van hartslag. 
+    \paragraph{The non-contact monitoring of heart and respiratory rates using laser irradiation: an experimental simultaneous monitoring with and without clothes during biochemical hazards(Matsui 2003)} is zeer relevant vanwege het op afstand meten van hartslag. 
     Dit wordt in dit onderzoek gesimuleerd d.m.v. konijnen. Kleding wordt gesimuleerd door middel van een klein stukje stof op de huid. 
     De metingen van deze methode zijn geverifieerd d.m.v. een ECG.
 
-    \paragraph{Heart rate monitoring system using finger tip through Arduino and Processing Software} is een paper die gaat over het meten van hartslag op de Arduino met PPG. 
+    \paragraph{Heart rate monitoring system using finger tip through Arduino and Processing Software(Mallick 2016)} is een paper die gaat over het meten van hartslag op de Arduino met PPG. 
     Dit paper beschrijft zo goed als de gewenste methode van meten. 
     PPG sensoren voor de Arduino zijn een kosten effectieve en verkrijgbare hartslagmeter. 
     In de paper wordt de sensor uit losse componenten opgebouwd en wordt er gebruikt gemaakt van een Processing library.
 
-    \paragraph{Robust Algorithm for Heart Rate (HR) Detection and Heart Rate Variability (HRV) Estimation} geeft inzage over de stappen die ondernomen moeten worden om van raw meetwaardes van een sensor naar een ecg-achtige grafiek.
+    \paragraph{Robust Algorithm for Heart Rate (HR) Detection and Heart Rate Variability (HRV) Estimation(Piotrowski 2010)} geeft inzage over de stappen die ondernomen moeten worden om van raw meetwaardes van een sensor naar een ecg-achtige grafiek.
 
     \section{Theorie en hypothese}\label{sec:theorie-en-hypothese}
     \subsection{Saturatie}
     Een te lage zuurstofsaturatie in het bloed(hypoxemie) kan leiden tot een tekort aan zuurstof toevoer aan organen of weefsel (hypoxie).
-    Na enige tijd veroorzaakt dit cel dood[10], tenzij er weer zuurstof beschikbaar komt voor deze getroffen gebieden van het lichaam.
+    Na enige tijd veroorzaakt dit cel dood \citep[]{fulda2010cellular}, tenzij er weer zuurstof beschikbaar komt voor deze getroffen gebieden van het lichaam.
 
-    Lage Zuurstofsaturatie in het bloed kan veroorzaakt worden door een aantal oorzaken [9], in dit onderzoek richten wij ons op oorzaken die zich voordoen na trauma of onderkoeling.
-    Acute respiratory distress syndrome(ARDS) komt vaak voor na trauma of longontsteking, en is behandelbaar door reddingswerkers met zuurstof en ventilatie[8]. 
+    Lage Zuurstofsaturatie in het bloed kan veroorzaakt worden door een aantal oorzaken \citep{sarkar2017mechanisms}, in dit onderzoek richten wij ons op oorzaken die zich voordoen na trauma of onderkoeling.
+    Acute respiratory distress syndrome(ARDS) komt vaak voor na trauma of longontsteking, en is behandelbaar door reddingswerkers met zuurstof en ventilatie\citep{brower2001treatment}. 
     ARDS en andere problemen met ademen/gaswisselingen in de longen zijn vaak te herkennen aan een te lage zuurstofsaturatie.
 
     Slagaderlijk Zuurstofsaturatie (SaO2) kan het beste gemeten worden door een Bloedgasmeting. 
     Hierbij wordt een kleine hoeveelheid bloed van een patiënt naar een klinisch-chemisch laboratorium gestuurd en wordt het bloed geanalyseerd en de meting teruggegeven. 
     [goede bron vinden] Hoewel deze methode de meest nauwkeurige resultaten terug geeft, is dit onpraktisch om een een noodsituatie  te moeten doen, en kost het kostbare tijd als een patiënt in ademnood is.
 
-    Echter bestaat er een verband tussen en slagaderlijke zuurstofsaturatie(SaO2) en perifere zuurstofsaturatie(SpO2)[7]. 
+    Echter bestaat er een verband tussen en slagaderlijke zuurstofsaturatie(SaO2) en perifere zuurstofsaturatie(SpO2)\citep{louw2001accuracy}. 
     Dit laatste kan gemakkelijk gemeten worden door een sensor aan de buitenkant van de huid(niet invasief). 
-    Er zijn bepaalde chronische /bijzondere omstandigheden waar het verschil tussen SpO2 en SaO2 van belang zijn, maar het meten van de perifere zuurstofsaturatie goed genoeg voor patiënten op de Intensive Care.[11] 
+    Er zijn bepaalde chronische of bijzondere omstandigheden waar het verschil tussen SpO2 en SaO2 van belang zijn, maar het meten van de perifere zuurstofsaturatie goed genoeg voor patiënten op de Intensive Care.\citep{thijssen2019facing} 
     Hierdoor zal in de rest van dit document zuurstofsaturatie altijd wijzen naar de perifere en niet de slagaderlijke zuurstofsaturatie.
 
     Het meten van de SpO2 wordt gedaan door middel van Photoplethysmography(PPG) Hiervoor wordt een sensor gebruikt die twee LEDs bevat, en een fotodetector. 
@@ -142,7 +141,7 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
     De LEDs pulseren dit omstebeurt (met pauzes er tussen om te compenseren voor omgevingslicht) ongeveer 30 keer per seconden. 
     Het geabsorbeerde licht bij deze golflengten verschilt aanzienlijk tussen bloed dat is geladen met zuurstof en bloed zonder zuurstof. 
     Zuurstofrijk hemoglobine absorbeert meer infrarood licht en laat meer rood licht door. Zuurstofarm hemoglobine laat meer infrarood licht door en absorbeert meer rood licht. 
-    Vervolgens kan een microcontroller in de sensor gebruik maken van de Beer-Lambert wet om de zuurstofsaturatie uit te rekenen[12]
+    Vervolgens kan een microcontroller in de sensor gebruik maken van de Beer-Lambert wet om de zuurstofsaturatie uit te rekenen\citep{principlespulsox}
 
     Het hierboven beschreven PPG is een zogenoemde transmissive PPG, hierbij wordt het door het medium uitgezonden licht gedetecteerd door een de photodetector tegenover de LED-bron. 
     Het alternatief is een Reflective PPG, hierbij wordt het licht gedetecteerd dat terug gereflecteerd wordt door weefsel, botten en bloedvaten.
@@ -150,7 +149,7 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
     
     \includegraphics[height=0.2\textheight]{Images/Tamura1.png}
 
-    \citet{tekano2007heart}
+    \citep[Image from][]{tamura2014wearable}
 
     Een transmissive PPG kan een relatief goed signaal verkrijgen, maar de meetlocatie is beperkt. 
     Om een meting te doen moet de sensor zich op het lichaam bevinden op een plaats waar doorgelaten licht gemakkelijk kan worden gedetecteerd, zoals de vingertop, het neustussenschot, de wang, de tong of de oorlel. 
@@ -163,11 +162,12 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
 
     \subsection{Hartslag}
     Op eenzelfde manier kan de hartslag worden gemeten. 
-    Volgens [Heart rate monitoring system using finger tip through Arduino and Processing Software] zetten de haarvaten in de huid van een vinger op als gevolg van een stijging in de bloeddruk tijdens een hartslag. 
+    Volgens \citet{mallick2016heart} zetten de haarvaten in de huid van een vinger op als gevolg van een stijging in de bloeddruk tijdens een hartslag. 
     Deze verandering in formaat kan worden gemeten d.m.v. PPG.
 
     \includegraphics[height=0.5\textheight]{Images/Tamura2.png}
 
+    \citep[Image from][]{tamura2014wearable}
     
     Hartslag is een minstens zo belangrijke metriek als zuurstofsaturatie. Het is algemeen bekend dat zowel een te lage, te hoge als een onregelmatige hartslag kunnen negatieve gevolgen hebben voor de gezondheid. 
     Ook kan er op deze manier vastgesteld worden of de patiënt überhaupt een hartslag heeft.
@@ -212,34 +212,33 @@ Vergelijken met andere Sensoren
 
 Het vergelijken van de sensoren wordt door COVID-19 bemoeilijkt. Om de implementatie spoedig te laten verlopen is de hardware onder de onderzoekers verspreid. De sensoren kunnen dus niet op dezelfde persoon getest worden. In plaats hiervan zullen de sensoren worden vergeleken met andere hartslagmeters in het bezit van de onderzoekers.
 
-MAX30100
-- Samsung Galaxy S8+ ingebouwde hartslagmeter
-- Xiaomi Mi Band 2
+\pagebreak
 
-MAX30102
-- Sport Horloge Met Optische Sensor(Amazfit Bip)
-- Niet Optische hartslagband ( POLAR H10)
-- Losse Pulse Oximeter
+\textbf{MAX30100}
+\begin{itemize}
+	\item Samsung Galaxy S8+ ingebouwde hartslagmeter
+	\item Xiaomi Mi Band 2
+\end{itemize}
 
+\textbf{MAX30102}
+\begin{itemize}
+\item Horloge Met Optische Sensor(Amazfit Bip)
+\item Niet Optische hartslagband ( POLAR H10)
+\item Losse Pulse Oximeter
+\end{itemize}
 
     \includegraphics[height=0.2\textheight]{Images/los.jpg}
-FOTO HIER ZETTEN
-FOTO HIER ZETTEN
-FOTO HIER ZETTEN
 
-/subsection{SpO2 Metingen}
+\subsection{SpO2 Metingen}
 
-De MAX sensoren zullen helaas niet kunnen worden geïmplementeerd als SpO2 meters. Voor het meten van deze waarden is, naar wat wij gevonden hebben. Een fourier transformatie en verdere verwerking nodig. Dit is goed mogelijk, maar de Arduino Due heeft niet veel rekenkracht. Er zou ook gebruik kunnen worden gemaakt van Autocorrelatie[72] voor hartslag en SpO2. Of dit computationeel goedkoper is moet blijken uit verder onderzoek. 
-
-
-[72] Piotrowski, Z., & Różanowski, K. (2010). Robust algorithm for heart rate (HR) detection and heart rate variability (HRV) estimation. Acta Physica Polonica A, 118(1), 131-135.
+De MAX sensoren zullen helaas niet kunnen worden geïmplementeerd als SpO2 meters. Voor het meten van deze waarden is, naar wat wij gevonden hebben. Een fourier transformatie en verdere verwerking nodig. Dit is goed mogelijk, maar de Arduino Due heeft niet veel rekenkracht. Er zou ook gebruik kunnen worden gemaakt van Autocorrelatie\citep{piotrowski2010robust} voor hartslag en SpO2. Of dit computationeel goedkoper is moet blijken uit verder onderzoek. 
 
 \subsection{Algorithme voor Hartslag BPM}
 De ruwe data van de sensor is geen directe bpm waarde. Dit deel van het meetproces is voor het onderzoek geïmplementeerd in de docker omgeving van het bedrijf door middel van C++ en de hwlib. 
 
 Om te beginnen wordt er naast de meting ook een tijd geregistreerd waarop de meting gedaan is. Door deze tijden vast te leggen kan de eerste afgeleide van het ruwe signaal berekend worden. Pieken in deze eerste afgeleide wijzen op een steile helling in het signaal. Dit duidt op een gedetecteerde hartslag.
 
-Nadat de eerste afgeleide berekend is, wordt er een eendimensionaal gaussian filter over de metingen gelegd met mask {0.25, 0.50, 0.25}. Op deze manier worden de kleine schommelingen in het signaal uitgemiddeld.
+Nadat de eerste afgeleide berekend is, wordt er een eendimensionaal gaussian filter over de metingen gelegd met mask \{0.25, 0.50, 0.25\}. Op deze manier worden de kleine schommelingen in het signaal uitgemiddeld.
 
 Na het berekenen van de afgeleide zal uit deze afgeleide het signaal gehaald moeten worden.
 Dit gebeurt volgens de volgende methode:
@@ -248,25 +247,26 @@ Noteer punten met een positieve waarde en een 0 als voorgaande waarde (rising ed
 Bereken de gemiddelde tijd delta tussen alle gevonden waarden en sla deze op.
 Verhoog de filterwaarde met 0,5 en ga terug naar stap 1.
 Selecteer uit de opgeslagen gemiddelde tijd delta’s de mediaan.
-Bereken op basis van deze geselecteerde tijd de frequentie. (f = 1 / t)
+Bereken op basis van deze geselecteerde tijd de frequentie \(f = 1 / t\).
+\emph{(Een aantal stappen uit ons algoritme zijn geplot , zie voor daar de \hyperref[sec:bijlagen]{Bijlage})}
 
 
-\subsection{Testmethode voor max30102}
+\subsection{Testmethode voor MAX30102}
 Elke Proefpersoon heeft na enkele minuten rust op een stoel, alle 4 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
 
 Sommige Metingen zijn geschrapt uit het onderzoek omdat een van de sensoren een abnormale(meer dan het dubbele van andere sensoren of 0) meting weergeeft. Opmerkenswaardig is dat alle sensoren af en toe een slechte meting gaven, en dat ook de commerciële producten vatbaar waren voor ruis of slechte meettechniek.
 
 De controle Sensoren bestaan uit: Polar H10 Hartslagband(op basis van elektrocardiografie), Losse Pulse Oximeter Sensor (Transmissive PPG), Een Amazfit Bip Watch(Reflective PPG 530 nm), MAX30102(Reflective PPG 660 nm)
 
-De tabel hieronder laat het absolute procentueel verschil van elke meting van de MAX30102 ten opzichte van het gemiddelde van de 3 controle metingen.
+De tabelen bij de resultaten laten het absolute procentueel verschil van elke meting van de MAX30102 ten opzichte van het gemiddelde van de 3 controle metingen.Dit wordt berekend door middel van de volgende formule:
 
-\% Var =Abs((((Polar + Bip+ Losse)/3)-MAX30102)/MAX30102)*100\%
+\[\% Var =Abs(\frac{(Polar + Bip+ Los)/3-MAX30102}{MAX30102})*100 \]
 
 Vervolgens zijn er 5 tot 10 Metingen gedaan per Proefpersoon
 Elk van de Controle sensoren is ook vergeleken met de andere twee controle sensoren voor referentie om de nauwkeurigheid commerciële sensoren te tonen.
 
 
-\subsection{Testmethode voor max30100}
+\subsection{Testmethode voor MAX30100}
 
 Elke Proefpersoon heeft na enkele minuten rust op een stoel, alle 3 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
 
@@ -274,9 +274,10 @@ Sommige Metingen zijn geschrapt uit het onderzoek omdat een van de sensoren een 
 
 De controle Sensoren bestaan uit: Samsung Galaxy S8+ (Reflective PPG), Xiaomi Mi Band 2 (Reflective PPG)
 
-De tabel hieronder laat het absolute procentueel verschil van elke meting van de MAX30100 ten opzichte van het gemiddelde van de 2 controle metingen.
 
-\% Var =Abs((((S8+XMB2)/2)-MAX30100)/MAX30100)*100\%
+De tabelen bij de resultaten laten het absolute procentueel verschil van elke meting van de MAX30102 ten opzichte van het gemiddelde van de 3 controle metingen.Dit wordt berekend door middel van de volgende formule:
+
+\[\% Var =Abs(\frac{(S8+XMB2)/2-MAX30100}{MAX30100)})*100 \]
 
 Er 7 tot 10 Metingen gedaan per Proefpersoon. De variatie tussen de controle sensoren is ook bekeken om vast te stellen hoeveel significantie de variatie met de controlegroep houdt. Dit is een iets minder viabele berekening gezien het feit dat er bij deze test slechts twee controle sensoren beschikbaar waren.
 
@@ -416,19 +417,17 @@ Deze efficiëntere algoritmes implementeren lag niet binnen de scope van dit pro
 
     \subsection{Suggesties voor verder onderzoek}\label{subsec:suggesties-voor-verder-onderzoek}
 
+\begin{itemize}
+	\item Algoritmes voor betere Hartslag detectie
+	\item SpO2 Algoritmes die op embedded  hardware functioneren.
+	\item Andere Sensoren naast Max3010X.
+\end{itemize}
 
-Algoritmes voor betere Hartslag detectie
-SpO2 Algoritmes die op embedded  hardware functioneren.
-Andere Sensoren naast Max3010X.
-
-
-
-    \section{Literatuur}\label{sec:literatuur}
     \bibliography{Include/Main}
     \pagebreak
 
     \section{Bijlagen}\label{sec:bijlagen}
-    \textbf{Sensor Red LED Reflectance Values op Y-as, per sample X-as (meestal 500 samples)}
+    \textbf{Plots van Sensor Red LED Reflectance Values op Y-as, per sample X-as (meestal 500 samples)}
 
 \begin{figure}[h]
 	\centering
