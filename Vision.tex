@@ -81,7 +81,7 @@
     Om dit onderzoek te defini\"{e}ren zullen wij uit gaan van de volgende onderzoekshoofdvraag:\\
 
     \begin{definition}
-        Hoofdvraag & Welke computer methoden op basis van computer vision zonder gebruik van netwerkconnectiviteit high performance hardware bestaan er waarmee je pijn kan kwantificeren in de context van een embedded systeem?
+        Hoofdvraag & Welke methoden op basis van computer vision bestaan er zonder gebruik van netwerkconnectiviteit en high performance hardware waarmee je pijn kan kwantificeren in de context van een embedded systeem?
     \end{definition}
 
 
@@ -125,9 +125,6 @@
         Hypothese & Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk
     \end{definition}
 
-    %    \begin{tabular}{l p{0.7\textwidth}}
-    %        \textbf{Hypothese} & \emph{Pijn detecteren met Vision is in algemene zin mogelijk, maar het niveau classificeren is waarschijnlijk lastig of onmogelijk}
-    %    \end{tabular}
 
     \paragraph{\hyperref[itm:dv3]{Deelvraag 3}}
     Wij verwachten dat de belangrijkste vereiste van een systeem een minimale hoeveelheid werkgeheugen is.
@@ -196,13 +193,17 @@
     \end{itemize}
 
 
+    \subsection{Deelvraag 5}\label{subsec:uitvoering-deelvraag-5}
+
     Voor \emph{\hyperref[itm:dv1]{deelvraag 5}} doen wij een vergelijkend onderzoek voor camera's.
     We onderzoeken het bestaan van camera's specifiek voor vision, en noteren specificaties van deze camera's.
     Bij dit onderzoek betrekken wij ook een webcam en een actiecamera.
     In dit onderzoek bepalen wij een aantal attributen die de camera moet/mag hebben voor werking bij computer vision op een embedded systeem.
     Volgens deze attributen maken wij een vergelijking van de camera's.
 
-    Voor deelvraag 6 doen wij experimenteel onderzoek.
+    \subsection{Deelvraag 7}\label{subsec:uitvoering-deelvraag-6}
+
+    Voor deelvraag 7 doen wij experimenteel onderzoek.
     Door meerdere implementaties te vergelijken, kunnen wij de maximale bereikbare waarden ervan vergelijken.
 
 
@@ -323,8 +324,9 @@
     \emph{Attributen verzameld via [\citenum{c270_datasheet}]}
 
 
-    \scriptsize{
+
     \makebox[0.9\textwidth]{
+        \scriptsize{
         \begin{tabular}{l|c|c|c|c|c|c|c}
             \textbf{Camera} & \textbf{Resolutie} & \textbf{Stroomverbruik} & \textbf{Universeel} & \textbf{Lichtgewicht} & \textbf{Formaat} & \textbf{Vision} & \textbf{Monteren}\\
             \hline
@@ -337,19 +339,45 @@
     \footnotetext[1]{Op een computer wordt een neural network getraind, wat geladen kan worden op de camera}
     \footnotetext[2]{Afmetingen uit het datasheet leken niet te kloppen, dus wij hebben dit handmatig opgemeten}
 
+    \subsection{Deelvraag 6}\label{subsec:deelvraag-6}
+    \emph{Welke bestaande implementaties van een pijnmeting algoritme zijn er, en wat zijn de gebruiksrechten hiervan?}
+    \emph{Work in progress}
+
+    \subsection{Deelvraag 7}\label{subsec:deelvraag-7}
+    \emph{Wat is de maximaal bereikbare accuraatheid en snelheid bij gebruik van boven onderzochte methoden?}
+
+    Tijdens het implementeren van de gekozen opties hebben we helaas voor beiden opties geen werkende implementatie kunnen realiseren.
+    In dit onderdeel beschrijven wij per implementatie waarom dit was.
+
+    \subsubsection{Landmark Detection}
+    Binnen de methode op basis van landmark detection is het gelukt om aan de hand van DLIB een landmark detection wrapper te schrijven.
+    Na begonnen te zijn met de implementatie bleek echter dat deze methode gevoelig is voor beweging van het hoofd ten opzichte van de camera.
+    Om dit te corrigeren hebben wij referentieafstanden ingesteld. Hierbij maken we gebruik van punten op het gezicht die altijd dezelfde onderlinge afstand hebben.
+    Dit hebben wij opgesplitst in een horizontaal en een verticaal aspect. Het horizontale aspect is berekend vanuit de middelpunten van beiden ogen.
+    Het verticale aspect is berekend op basis van de afstand van het puntje van de neus, tot de neusbrug.
+    Dit hielp bij het corrigeren van de afstand van het gezicht tot de camera, maar bleek niet toereikend te zijn voor het corrigeren van de hoek van het gezicht tot de camera.
+
+    \vspace{1em}
+
+    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
+
+
+    \vspace{1em}
+    In de bovenstaande afbeelding is te zien welke effect dit heeft op de meetwaarden.
+    Gebied A is de tijd waarin de persoon de ogen sterk samenknijpt. Alhoewel dit goed geregistreerd word, is het verschil met gebied B niet groot.
+    Gebied B zijn hierbij de meetwaarden die opgepikt worden door het subtiel bewegen van het hoofd. Hierbij wordt het hoofd niet meer
+    dan +- 10 graden in elke richting bewogen. Omdat de persoon in gebied A de ogen sterk samenknijpt verwachten wij niet accuraat te kunnen meten
+    wanneer de ogen lichter samengeknepen worden.
+
 
 
     \section{Conclusie en Discussie}\label{sec:conclusie-en-discussie}
     \emph{Work in Progress}
     \subsection{Vergelijking algoritmen}
-    Op het moment van schrijven zijn wij nog niet begonnen met de implementatie.
+    Tijdens het vergelijken van de twee algoritmen zijn we bij allebei de implementaties tegen problemen aangelopen.
+    Hierdoor kunnen wij geen accurate conclusie trekken over het geschiktere algoritme.
 
 
-
-    De indruk die opgewekt is in dit literatuur onderzoek is dat deze methode complex is in implementatie en eigenlijk niet perfect onze vereisten vervult.
-    Onder andere zijn dus meerdere frames van de transistie tussen neutraal en een een expressie nodig om te kunnen vast stellen welke expressie dit is.
-    Alhoewel optical flow technieken goed werken op lage resolutie beelden moeten deze beelden verder van hoge kwaliteit zijn.
-    Ook dit is een min punt van deze aanpak.
 
     \subsection{Vergelijking camera's}
     Voor de vergelijking van camera's zijn we het erover eens dat voor gebruik bij computer vision de Firefly-DL de meest geschikte camera is.
@@ -369,7 +397,9 @@
 
     \section{Evaluatie}\label{sec:evaluatie2}
     \emph{Work in Progress}
-    Vanwege meerdere minpunten met als belangrijk dat relatieve verschillen gemeten kunnen worden raden we niet aan om deze methode te gebruiken voor ons doeleinde.
+    \subsection{Implementaties}
+    \subsubsection{Landmark Detection}
+
 
 
     \section{Aanbevelingen}\label{sec:aanbevelingen2}
