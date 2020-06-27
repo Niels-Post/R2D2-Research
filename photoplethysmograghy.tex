@@ -11,11 +11,12 @@
 \usepackage{tabularx}
 \usepackage{float}
 \graphicspath{ {./Images/} }
+\bibliographystyle{ieeetr}
 
 \input{Include/main.tex}
 
 
-\title{Gebruik van Photoplethysmography om hartslag en zuurstofsaturatie te meten in rampgebieden}
+\title{Het gebruik van Photoplethysmography om hartslag en zuurstofsaturatie te meten}
 
 \author{\emph{R2D2 Team 3} \and Finn Fonteijn \and Youri de Vor}
 
@@ -35,7 +36,8 @@
     \clearpage
 
     \section{Abstract}\label{sec:abstract}
-In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo medische zorg te geven aan degenen die het het meest nodig hebben. Twee belangrijke vitale functies, Hartslag en Zuurstofsaturatie, kunnen gemeten worden door een Pulse Oximetry sensor. Deze Research paper geeft kijkt op de theorie achter het gebruik van Photoplethysmography sensoren en vergelijkt onze hartslag implementatie van twee sensoren de MAX30100 en MAX30102, met als controle andere commerciële beschikbare sensoren. Hieruit bleek dat de MAX30102 minder variatie toonde ten opzichte van de MAX30100. Ook bleken beide sensoren een acceptabele afwijking te hebben vergeleken met onze commerciële controle producten.	
+In een Rampscenario moet de staat van elk slachtoffer gemeten worden, om zo medische zorg te geven aan degenen die dat het meest nodig hebben. Twee belangrijke vitale functies,hartslag en zuurstofsaturatie, kunnen gemeten worden door een pulse oximetry sensor. Deze research paper gaat in op de theorie achter het gebruik van Photoplethysmography sensoren en vergelijkt onze hartslag implementatie van twee sensoren; de MAX30100 en MAX30102, met als controle andere commerciële beschikbare sensoren. Hieruit bleek dat de MAX30102 minder variatie toonde ten opzichte van de MAX30100. Ook bleken beide sensoren een acceptabele afwijking te hebben vergeleken met onze commerciële controle producten.	
+
     \section{Voorwoord}\label{sec:voorwoord}
     Dit onderzoek wordt uitgevoerd in opdracht van de Hogeschool Utrecht, voor het project R2D2 2020.
     Bij dit project wordt er een ICT-bedrijf gesimuleerd.
@@ -53,33 +55,30 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
 
     \section{Inleiding}\label{sec:inleiding}
 
-    Het gebruik van een pulse oximeter geeft je belangrijke informatie over een aantal vitale functies van een slachtoffer. 
+    Het gebruik van een pulse oximeter geeft belangrijke informatie over een aantal vitale functies van een slachtoffer. 
     Afhankelijk van de gekozen manier om deze meting uit te voeren, kan dit op een snelle, goedkope en niet-invasieve manier.
-    In dit onderzoek kijken we naar verschillende meetmethoden en of deze geschikt zijn voor onze applicatie, letters B en C van de ABCDE methode voor eerste hulp. 
-    Letters B en C staan voor breathing en circulation. 
+    In dit onderzoek kijken we naar verschillende meetmethoden en de geschiktheid voor onze applicatie: de onderdelen Breathing en Circulation van de ABCDE methode voor eerste hulp.
     Vervolgens zullen wij kijken naar de verschillende sensoren die op de markt beschikbaar zijn, en de meest geschikte kiezen voor ons project.
 
 
     \section{Probleemstelling}\label{sec:probleemstelling}
-    Voor doktoren is het lastig om een objectief pijn vast te stellen.
-    Vaak moet een pati\"{e}nt zelfeen getal tussen de 1 en de 10 geven voor zijn pijn.
+    Voor doktoren is het lastig om pijn vast te stellen.
+    Vaak moet een pati\"{e}nt zelf een getal tussen de 1 en de 10 geven voor zijn pijn.
     Echter is deze manier van pijn inschatten niet erg objectief, daarnaast is het niet
     altijd mogelijk met de pati\"{e}nt te communiceren.
-    In rampscenario's zijn er bijvoorbeeld te veel slachtoffers om aan iedereen te vragen hoeveel pijn hij voelt.
-    Wel is het belangrijk om te weten hoeveel pijn mensen hebben om ze met meer/minder prioriteit te helpen.
+    In rampscenario's zijn er bijvoorbeeld te veel slachtoffers om aan iedereen te vragen hoeveel pijnde persoon lijdt.
+    Het is belangrijk om te weten hoeveel pijn mensen hebben om een prioriteit voor hulp vast te stellen.
     Hierom, in combinatie met de doelen van het R2D2 bedrijf, bestaat de vraag naar een automatische module die pijn
     detecteert.
 
     \section{Begrippenlijst}\label{sec:begrippenlijst}
     \paragraph{Triage}
     Triage is een middel om met beperkte capaciteit spoedzorg te organiseren. 
-    In de kern betekent triage dat in een tijdsbestek van enkele minuten op basis van beperkte gegevens een beslissing genomen moet worden over hoe snel de patiënt dient te worden beoordeeld door een hulpverlener, zoals een huisarts, ambulanceverpleegkundige of een SEH-arts.    
-    bron https://de-nts.nl/nts/basisprincipes-nts/
+    In de kern betekent triage dat in een tijdsbestek van enkele minuten op basis van beperkte gegevens een beslissing genomen moet worden over hoe snel de patiënt dient te worden beoordeeld door een hulpverlener, zoals een huisarts, ambulanceverpleegkundige of een SEH-arts \citep{ntstriage}.    
 
     \paragraph{PPG} 
     Photoplethysmography (PPG) is een simpele en goedkope optische meetmethode die vaak wordt gebruikt voor het controleren van hartslag doelen. 
-    PPG is een niet-invasieve technologie die een lichtbron en een fotodetector op het huidoppervlak gebruikt om de volumetrische variaties in de bloedcirculatie te meten. 
-    bron (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6426305/) Techniek die we gebruiken voor het meten van hartslag/zuurstof saturatie
+    PPG is een niet-invasieve technologie die een lichtbron en een fotodetector op het huidoppervlak gebruikt om de volumetrische variaties in de bloedcirculatie te meten \citep{castaneda2018review}. 
 
 
     \paragraph{SpO2}
@@ -128,8 +127,8 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
     ARDS en andere problemen met ademen/gaswisselingen in de longen zijn vaak te herkennen aan een te lage zuurstofsaturatie.
 
     Slagaderlijk Zuurstofsaturatie (SaO2) kan het beste gemeten worden door een Bloedgasmeting. 
-    Hierbij wordt een kleine hoeveelheid bloed van een patiënt naar een klinisch-chemisch laboratorium gestuurd en wordt het bloed geanalyseerd en de meting teruggegeven. 
-    [goede bron vinden] Hoewel deze methode de meest nauwkeurige resultaten terug geeft, is dit onpraktisch om een een noodsituatie  te moeten doen, en kost het kostbare tijd als een patiënt in ademnood is.
+    Hierbij wordt een kleine hoeveelheid bloed van een patiënt naar een klinisch-chemisch laboratorium gestuurd en wordt het bloed geanalyseerd en de meting teruggegeven \citep{saunders1976ear}. 
+   Hoewel deze methode de meest nauwkeurige resultaten terug geeft, is dit onpraktisch om een een noodsituatie  te moeten doen, en kost het kostbare tijd als een patiënt in ademnood is.
 
     Echter bestaat er een verband tussen en slagaderlijke zuurstofsaturatie(SaO2) en perifere zuurstofsaturatie(SpO2)\citep{louw2001accuracy}. 
     Dit laatste kan gemakkelijk gemeten worden door een sensor aan de buitenkant van de huid(niet invasief). 
@@ -139,7 +138,7 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
     Het meten van de SpO2 wordt gedaan door middel van Photoplethysmography(PPG) Hiervoor wordt een sensor gebruikt die twee LEDs bevat, en een fotodetector. 
     Het Licht van de ene LED heeft een golflengte van 660 nm (Rood) en de andere 940 nm (InfraRood). Deze twee LEDs sturen het licht door een vinger of oor, met de fotodetector aan de weerszijde. 
     De LEDs pulseren dit omstebeurt (met pauzes er tussen om te compenseren voor omgevingslicht) ongeveer 30 keer per seconden. 
-    Het geabsorbeerde licht bij deze golflengten verschilt aanzienlijk tussen bloed dat is geladen met zuurstof en bloed zonder zuurstof. 
+    Het geabsorbeerde licht bij deze golflengten verschilt aanzienlijk tussen bloed dat is geladen met zuurstof en bloed zonder zuurstofi \citep{tamura2014wearable}. 
     Zuurstofrijk hemoglobine absorbeert meer infrarood licht en laat meer rood licht door. Zuurstofarm hemoglobine laat meer infrarood licht door en absorbeert meer rood licht. 
     Vervolgens kan een microcontroller in de sensor gebruik maken van de Beer-Lambert wet om de zuurstofsaturatie uit te rekenen\citep{principlespulsox}
 
@@ -162,32 +161,30 @@ In een Rampscenario is moet de staat van elk slachtoffer gemeten worden, om zo m
 
     \subsection{Hartslag}
     Op eenzelfde manier kan de hartslag worden gemeten. 
-    Volgens \citet{mallick2016heart} zetten de haarvaten in de huid van een vinger op als gevolg van een stijging in de bloeddruk tijdens een hartslag. 
+    Volgens Mallick \citep{mallick2016heart} zetten de haarvaten in de huid van een vinger op als gevolg van een stijging in de bloeddruk tijdens een hartslag. 
     Deze verandering in formaat kan worden gemeten d.m.v. PPG.
 
     \includegraphics[height=0.5\textheight]{Images/Tamura2.png}
 
     \citep[Image from][]{tamura2014wearable}
     
-    Hartslag is een minstens zo belangrijke metriek als zuurstofsaturatie. Het is algemeen bekend dat zowel een te lage, te hoge als een onregelmatige hartslag kunnen negatieve gevolgen hebben voor de gezondheid. 
-    Ook kan er op deze manier vastgesteld worden of de patiënt überhaupt een hartslag heeft.
+    Hartslag is  minstens zo belangrijke metriek als zuurstofsaturatie om iemands vitale status te meten. Het is algemeen bekend dat zowel een te lage of te hoge hartslag kunnen negatieve gevolgen hebben voor de gezondheid. 
+    Het meten van hartlag kan er vastgesteld worden of de patiënt überhaupt een hartslag heeft.
     Daarnaast is het vaststellen van een hartaanval ook mogelijk door het meten van de onderlinge tussenposes. 
 
     Te hoge hartslag kan een indicatie zijn van onder andere bloedverlies, koorts, infectie, gebrek. 
-    Deze oorzaken zijn veelvoorkomend tijdens rampsituaties aangezien lichamelijke letsel een veel voorkomend gevolg is van een rampsituatie. 
-    De gevolgen van een te hoge hartslag zijn kortademigheid, duizeligheid, flauwvallen, zwakte en moeheid.
-    [Symptoom Snelle regelmatige hartslag (tachycardie) - Symptomenchecker]
+    Deze oorzaken zijn veelvoorkomend tijdens rampsituaties aangezien lichamelijke letsel veel voorkomt. 
+    De gevolgen van een te hoge hartslag zijn kortademigheid, duizeligheid, flauwvallen, zwakte en moeheid \citep{low2012postural}.
 
     Te lage hartslag is ook een belangrijke metriek. 
     Dit kan onder andere dienen als indicatie van onderkoeling, bloedingen en een verhoogde hersendruk, naast andere oorzaken. 
-    Een te lage hartslag kan leiden tot duizeligheid, kortademigheid, vermoeidheid, hartkloppingen, flauwvallen, en geheugenstoornissen. 
-    [Bradycardie (te lage hartslag) - hoe herken je het?WELKE BRON IS DIT YOURI]
+    Een te lage hartslag kan leiden tot duizeligheid, kortademigheid, vermoeidheid, hartkloppingen, flauwvallen, en geheugenstoornissen.\citep{bradycardie} 
 
 	\section{Hypothese}\label{sec:hypothese}
 
-Wij verwachten dat een reflectieve sensor is waarschijnlijk beter geschikt voor onze gestelde use case. Reflectieve sensoren kunnen op de huid worden gedrukt en dus met relatief minimale moeite door de robot geplaatst worden om zo een meting te doen. Relatief minimaal verwijst naar het monteren van een transmissieve sensor op iemand die bewusteloos is. Voor deze sensor moet een vinger of teen door de robot gevonden worden om de sensor te monteren. Dit is in verhouding significant minder triviaal dan het duwen van de sensor op een arm of been. 
+Wij verwachten dat een reflectieve sensor beter geschikt is voor onze gestelde use case. Reflectieve sensoren kunnen op de huid worden gedrukt en dus met relatief weinig  moeite door de robot geplaatst worden om zo een meting te doen. Relatief verwijst naar de moeilijkheid van het  monteren van een transmissieve sensor op iemand die bewusteloos is. Voor deze sensor moet een vinger of teen door de robot gevonden worden om de sensor te monteren. Dit is in verhouding moeilijker dan het duwen van een reflectieve sensor op een arm of been. 
 
-Het gebruik van een specifieke sensor voor Hartslag en Pulse Oximetry vereist minder implementatie en waarschijnlijk is dit daarom de betere optie over een sensor zoals de TRCT5000. Dit is in essentie ook een reflectieve emitter met light activated transistor, maar deze moet zelf ingesteld worden met weerstanden om parameters aan te passen zoals de stroom die door de LED loopt. Ook zouden er 2 van deze sensoren moeten worden gebruikt omdat een enkele TRCT5000 alleen maar 1 golflengte licht uitstraalt, en voor het meten van Zuurstof saturatie moet er gebruik gemaakt worden van twee verschillende golflengtes.
+Het gebruik van een specifieke sensor voor Hartslag en Pulse Oximetry vereist minder implementatie en waarschijnlijk is dit daarom de betere optie dan een sensor zoals de TRCT5000. Dit is in essentie ook een reflectieve emitter met light activated transistor, maar deze moet zelf ingesteld worden met weerstanden om parameters aan te passen zoals de stroom die door de LED loopt. Ook zouden er 2 van deze sensoren moeten worden gebruikt omdat een enkele TRCT5000 alleen maar 1 golflengte licht uitstraalt, en voor het meten van Zuurstof saturatie moet er gebruik gemaakt worden van twee verschillende golflengtes.
 
 
 
@@ -203,13 +200,13 @@ De MAX30102 is nieuwer en geavanceerder dan de 30100. Ook is de MAX30102 in staa
 De MAX30100 is echter eenvoudiger in gebruik en zou potentieel schoner kunnen meten. Welke van de twee sensoren consistenter blijkt is alleen te bepalen door beide te testen. Om  deze reden is er besloten de MAX30100 toch open te houden als optie. 
 
 \subsection{Gebruik van de Sensor}\label{subsec:gebruik van de sensor}
-Beide sensoren zijn geïmplementeerd door middel van C++. Dit wordt gedaan door middel van de hwlib. Een in C++ geschreven software library ontworpen voor het zo dicht mogelijk op de hardware programmeren. De communicatie met de Arduino gaat via een i2c bus. Hiervoor is een wrapper geschreven om de bij het project bijgeleverde i2c bus gebruiksvriendelijker te maken. Alle gebruikte code is te vinden op https://gitlab.com/r2d2-2020/modules/health_monitor/-/tree/feature-max3010x
+Beide sensoren zijn geïmplementeerd door middel van C++. Dit wordt gedaan door middel van de hwlib. Een in C++ geschreven software library ontworpen voor het zo dicht mogelijk op de hardware programmeren. De communicatie met de Arduino gaat via een i2c bus. Hiervoor is een wrapper geschreven om de bij het project bijgeleverde i2c bus gebruiksvriendelijker te maken. Alle gebruikte code is te vinden op \url{https://gitlab.com/r2d2-2020/modules/health_monitor/-/tree/feature-max3010x}
 
-\paragraph{tests} De werking van de research code zal worden getest. Dit zal worden gedaan door middel van unit tests. Hieronder vallen tests of de sensor succesvol aangesloten is en deze i2c communicatie accepteert. Dit wordt getest door naar de interne registers van de sensor te schrijven en deze vervolgens uit te lezen. Ook zal er worden getest of de waarden die worden gemeten realistisch zijn(b.v. Revision ID is gelijk of  kleiner dan de meest recent revision van de sensor, of dat bepaalde config registers veranderd kunnen worden)
+\paragraph{Tests}
+De werking van de research code zal worden getest. Dit zal worden gedaan door middel van unit tests. Hieronder vallen tests of de sensor succesvol aangesloten is en deze i2c communicatie accepteert. Dit wordt getest door naar de interne registers van de sensor te schrijven en deze vervolgens uit te lezen. Ook zal er worden getest of de waarden die worden gemeten realistisch zijn(b.v. Revision ID is gelijk of  kleiner dan de meest recent revision van de sensor, of dat bepaalde config registers veranderd kunnen worden)
 
 
-Vergelijken met andere Sensoren
-
+\paragraph{Vergelijken met andere Sensoren}
 Het vergelijken van de sensoren wordt door COVID-19 bemoeilijkt. Om de implementatie spoedig te laten verlopen is de hardware onder de onderzoekers verspreid. De sensoren kunnen dus niet op dezelfde persoon getest worden. In plaats hiervan zullen de sensoren worden vergeleken met andere hartslagmeters in het bezit van de onderzoekers.
 
 \pagebreak
@@ -252,7 +249,7 @@ Bereken op basis van deze geselecteerde tijd de frequentie \(f = 1 / t\).
 
 
 \subsection{Testmethode voor MAX30102}
-Elke Proefpersoon heeft na enkele minuten rust op een stoel, alle 4 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
+Elke Proefpersoon neemt na enkele minuten rust plaat op een stoel, krijgt alle 4 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
 
 Sommige Metingen zijn geschrapt uit het onderzoek omdat een van de sensoren een abnormale(meer dan het dubbele van andere sensoren of 0) meting weergeeft. Opmerkenswaardig is dat alle sensoren af en toe een slechte meting gaven, en dat ook de commerciële producten vatbaar waren voor ruis of slechte meettechniek.
 
@@ -268,7 +265,7 @@ Elk van de Controle sensoren is ook vergeleken met de andere twee controle senso
 
 \subsection{Testmethode voor MAX30100}
 
-Elke Proefpersoon heeft na enkele minuten rust op een stoel, alle 3 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
+Elke Proefpersoon neemt na enkele minuten rust plaat op een stoel, krijgt alle 3 de sensoren aangesloten gekregen, en is er om de 30 seconden een meting gedaan. Na elke meting wordt de bpm die elke sensor aangeeft vastgelegd.
 
 Sommige Metingen zijn geschrapt uit het onderzoek omdat een van de sensoren een abnormale(meer dan het dubbele van andere sensoren of 0) meting weergeeft.
 
@@ -389,7 +386,7 @@ Uit de resultaten is gebleken dat de MAX30102 een lagere variance had ten opzich
     \section{Evaluatie}\label{sec:evaluatie}
     \subsection{Discussie}\label{subsec:discussie}
 
-Hoewel Beide MAX3010x Sensoren een hogere afwijking hebben dan individuele sensoren in onze tests, is het verschil niet extreem groot(2-4\% afwijking voor onze controle sensoren, en 4-13\% voor onze implementatie). Een Andere Algoritme of Verdere verfijning aan ons algoritme zou hoogstwaarschijnlijk dit verschil kunnen verkleinen.
+Hoewel Beide MAX3010x sensoren een hogere afwijking hebben dan individuele sensoren in onze tests, is het verschil niet extreem groot(2-4\% afwijking voor onze controle sensoren, en 4-13\% voor onze implementatie). Een andere algoritme of verdere verfijning aan ons algoritme zou hoogstwaarschijnlijk dit verschil kunnen verkleinen.
 
 Deze conclusie is echter gebaseerd op niet ideale metingen. De sensoren zijn immers niet gemeten op dezelfde proefpersonen en ook niet vergeleken met dezelfde controle sensoren. Dit komt met name door de huidige pandemie. Er is van beide sensoren in eerste instantie 1 aangeschaft en wij als onderzoekers hadden dus elk een andere sensor om mee te testen.
 
@@ -401,10 +398,8 @@ Gezien het gebruikte aantal samples in de library (1000) is dit niet goed haalba
 
 
     \subsection{Aanbevelingen}\label{subsec:aanbevelingen}
-Tijdens dit onderzoek is er gevonden dat het verwerken van SpO2 data niet ideaal is op de Arduino Due. Er zijn twee alternatieven:
-De metingen verwerken op een externe server
-Meer rekenkracht aan boord van de robot
-Efficiëntere Algoritmes
+Tijdens dit onderzoek is er gevonden dat het verwerken van SpO2 data niet ideaal is op de Arduino Due. Er zijn een aantal alternatieven:
+de metingen verwerken op een externe server verwerken,meer rekenkracht aan boord van de robot of een efficiëntere algoritme gebruiken.
 
 De Arduino Due heeft te weinig processing power om Discrete Fourier transformaties(DFT) uit te rekenen, om deze wel te doen is er andere hardware nodig.
 
