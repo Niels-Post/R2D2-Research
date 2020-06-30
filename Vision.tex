@@ -518,19 +518,32 @@
     \paragraph{Van welk principe maakt het gebruik?}
     Deze techniek kijkt naar verschillen tussen frames en probeert de richting van verandering vast te stellen.
     De stappen die uitgevoerd worden zijn alsvolgd:
-    1. Er wordt een frame gebufferd.
-    2. Er wordt een tweede frame gebufferd.
-    3. Voor elke pixel in de eerste frame wordt in de tweede frame gekeken of deze kleur en intensiteit ongeveer te vinden is in de buurt van de oorspronkelijke pixel in de eerste frame.
-    4. Op deze manier breng je beweging van pixels tussen frames in beeld.
-    5. Vaak zijn er ook passes met grotere bins van 2
-
+    \begin{enumerate}
+        \item Er wordt een frame gebufferd.
+        \item Er wordt een tweede frame gebufferd.
+        \item Voor elke pixel in de eerste frame wordt in de tweede frame gekeken of deze kleur en intensiteit ongeveer te vinden is in de buurt van de oorspronkelijke pixel in de eerste frame.
+        \item Op deze manier breng je beweging van pixels tussen frames in beeld.
+        \item Vaak zijn er ook passes met grotere bins van pixels. Bijvoorbeeld van twee bij twee.
+    \end{enumerate}
+    Uiteraard is de werkelijke implementatie van dit soort algoritme veel complexer dan de bovenstaande stappen, maar in essentie komen ze bijna allemaal hier op neer.
+    \newline
     \includegraphics[height=0.2\textheight]{Images/Vector-field-examples.jpg}
+    \newline
+    Bovenstaand is een voorbeeld te zien van hoe een array van vectoren voor te stellen is. 
+    \newline
+    \includegraphics[height=0.2\textheight]{Images/An-example-of-optical-flow-detection-of-face-and-gesture-Detected-optical-flow-vectors.jpg}
+    \newline
+    \emph{\citet{Exact_Algebraic_Method_of_Optical_Flow_Detection}}
+    \newline
+    Bovenstaand is een visualisatie van hoe dit er uit zou zien in een frame van een persoon en zijn beweging.
     Er wordt over het gezicht gekeken naar verandering, welke uitgedrukt worden in vectoren.
     Deze worden dan gematcht tegen een database met de verschillende emoties.
-    Door dat je verandering in mensen hun gezicht registreerd/
+    Door dat je verandering in mensen hun gezicht kwantificeren. 
 
     \paragraph{Geschatte piek-geheugengebruik per meting}
-    Gezien de ondergrens 3 frames is voor enige nauwkurigheid zijn de geheugen eisen voor het bewaren van de frames niet groot.
+    in \emph{\citet{barronperformance}} wordt gesproken over een 94\% nauwkurigheid bij een analyse van 5 frames en een 83,3\% nauwkurigheid.
+    Gezien de ondergrens dus 3 frames is voor enige nauwkurigheid zijn de geheugen eisen voor het bewaren van de frames niet groot. 
+    Dit moet prima te doen zijn op een Pi, zelfs met relatief grote frames. Ook laat het de ruimte om met meer frames meer 
 
     \paragraph{Geschatte tijdsduur voor 1 conclusie}
     De techniek kan met drie frames al een nauwkurigheid van 83\% opleveren volgens \emph{\citet{naghsh2006efficient}}.
