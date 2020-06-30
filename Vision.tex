@@ -341,7 +341,8 @@
 
     \subsection{Deelvraag 6}\label{subsec:deelvraag-6}
     \emph{Welke bestaande implementaties van een pijnmeting algoritme zijn er, en wat zijn de gebruiksrechten hiervan?}
-    \emph{Work in progress}
+
+    Tijdens het onderzoek hebben wij helaas geen bestaande, bruikbare implementaties kunnen vinden van een van de onderzochte algoritmes.
 
     \subsection{Deelvraag 7}\label{subsec:deelvraag-7}
     \emph{Wat is de maximaal bereikbare accuraatheid en snelheid bij gebruik van boven onderzochte methoden?}
@@ -372,10 +373,16 @@
 
 
     \section{Conclusie en Discussie}\label{sec:conclusie-en-discussie}
-    \emph{Work in Progress}
+
     \subsection{Vergelijking algoritmen}
-    Tijdens het vergelijken van de twee algoritmen zijn we bij allebei de implementaties tegen problemen aangelopen.
-    Hierdoor kunnen wij geen accurate conclusie trekken over het geschiktere algoritme.
+    Zoals aangegeven bij de resultaten, hebben wij beiden methoden helaas niet volledig kunnen implementeren.
+    Op basis van de code kunnen wij daarom geen conclusie trekken over de meest geschikte methode.
+
+    Wel is de indruk gewekt dat, alhoewel de methode met landmark detection in de huidige implementatie niet toereikend is,
+    de optical flow methode los van de implementatie ook niet goed zou werken. Dit denken wij, omdat de problemen waar wij met optical
+    flow tegenaan zijn gelopen gerelateerd zijn aan het lage contrast tussen gezichtsvlakken, en niet aan de implementatie zelf.
+
+
 
 
 
@@ -396,34 +403,36 @@
 
 
     \section{Evaluatie}\label{sec:evaluatie2}
-    \emph{Work in Progress}
-    \subsection{Implementaties}
-    \subsubsection{Landmark Detection}
 
 
 
-    \section{Aanbevelingen}\label{sec:aanbevelingen2}
-    \emph{Work in Progress}
-    Onze aanbeveling is om deze methode niet te gebruiken voor pijn detectie en door te zoeken naar een andere, effectievere methode.
 
 
 
-    \section{Suggesties voor verder onderzoek}\label{sec:suggesties-voor-verder-onderzoek2}
-    \emph{Work in Progress}
-    Er is nog veel te lezen over optical flow methodes en hoe je deze effectief implementeert.
-    Er is een \emph{\citet{Readinglist} Reading list}.
+    \section{Aanbevelingen en Suggesties voor verder onderzoek}\label{sec:aanbevelingen2}
+    Omdat uit dit onderzoek geen beschreven werkende implementatie is voortgekomen, en wij niet denken dat wij met dit onderzoek alle
+    mogelijkheden voor pijndetectie op basis van Vision hebben uitgeput, raden wij een lezer
+    aan om een vervolgonderzoek te organiseren als zij daarin geïnteresseerd zijn.
+
+    \paragraph{Andere methoden} Een eerste mogelijke vervolgonderzoek zou niet besproken methoden beschrijven. Alhoewel wij deze niet hebben kunnen
+    vinden verwachten wij dat er meer methoden zijn om door middel van Computer Vision een pijndetectie-algoritme te implementeren.
+
+    \paragraph{Landmark Detection} Verder zou de lezer een onderzoek kunnen starten wat
+    gaat over het verbeteren van de op landmarkdetectie gebaseerde methode. Onze gekozen implementatie zou
+    een stuk beter kunnen werken wanneer er rekening gehouden wordt met de pose waarin het gezicht zich bevindt.
+    Een vervolgonderzoek zou dan kunnen gaan over het gebruik van 3D pose estimation, waarbij de houding van het hoofd
+    in 3d ruimte geschat wordt, om zo metingen te kunnen corrigeren door middel van matrix translaties, om zo altijd te
+    rekenen alsof het slachtoffer recht in de camera kijkt.
+
+    \paragraph{Optical Flow} Er is nog veel te lezen over optical flow methodes en hoe je deze effectief implementeert.
+    Wij hebben hierover een \emph{\citet{Readinglist} Reading list} gevonden.
     Hier staan op dit moment 72 artikels in over optical flow technieken.
 
-    \paragraph{Pixy2}
-    Ondanks dat de pixy camera geen gezichtskenmerken kan herkennen, is het misschien wel mogelijk om een algoritme efficienter te laten werken door de pixy voorwerk te laten doen.
+    \paragraph{Pixy2} Ondanks dat de pixy camera geen gezichtskenmerken kan herkennen, is het misschien wel mogelijk om een algoritme efficienter te laten werken door de pixy voorwerk te laten doen.
     Er kan onderzocht worden of het mogelijk is met de Pixy om oninteressante gebieden uit te sluiten van berekening in een algoritme.
     Hierdoor kunnen algoritmen mogelijk op minder sterke microcontrollers uitgevoerd worden, of sneller resultaten leveren.
 
 
-    \section{Literatuur}\label{sec:literatuur2}
-    \emph{Work in Progress}
-    In dit hoofdstuk beschrijven we de onderzochte literatuur.
-    Hierbij geven wij aan wat de relevantie is tot ons eigen onderzoek.
 
 
     \section{Bijlagen}\label{sec:bijlagen}
