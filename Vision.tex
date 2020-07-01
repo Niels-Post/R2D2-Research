@@ -371,6 +371,59 @@
     wanneer de ogen lichter samengeknepen worden.
 
 
+    \subsubsection{Optical flow}
+    Tijdens het onderzoek naar de optical flow methode is er gekeken naar verschillende types algoritmes. 
+    Er zijn namelijk een hoop verschillende implementaties te vinden online. 
+    Dit zijn zowel compleet verschillende ideeën, als libaries die gebruik zouden moeten versoepelen.
+    Er zijn veel papers door gelezen, zoals \emph{\citet{naghsh2006efficient}} of artikels van \emph{\citet{Readinglist}}. 
+    Er is veel tijd besteed aan literatuur onderzoek in de hoop om beter te begrijpen wat mogelijk is en welke algoritmes het beste zouden werken.
+    Dit was een lastig process vanwege de vele en complexe wiskundige formules. 
+    Deze waren voor ons doel niet heel intressant en hebben we zo veel mogelijk om heen geprobeerd te lezen en te focusen op de verschillende ideeën die naarvoren kwamen.
+    Twee voornaamste ideeën die naar voren kwamen zijn de volgende.
+    \begin{itemize}
+        \item \emph{Corner tracking.} Het idee achter corner tracking is dat hoge kwaliteit zo genoemde hoeken worden gevonden en deze gevolgd worden. 
+        Deze punten hoeven geen werkelijke hoeken te zijn en zijn voornamelijk hoog contrast punten. 
+        Het achterliggende idee is dat als je aan het begin alleen hoog kwaliteit punten volgd je geen computerkracht hoeft te verspillen 
+        aan het volgen van pixels die geen meerwaarde hebben of zelfs een negatieve impact hebben op de resultaten.
+        \item \emph{full frame tracking.} 
+        Full frame tracking is wanneer de optical flow calculatie wordt uitgevoerd op elke laatste pixel van een frame. 
+        Dit is uiteraard intensiever maar kan betere resultaten opleveren voor met relatief hoge framerate beelden. 
+        Dit laatste is wel een zekere eis omdat de minder goed gedefineerde pixels zo extreem kunnen veranderen dat deze 
+        niet verder te volgen zijn als er te grote tijdsverschillen tussen frames zit.    
+    \end{itemize}
+    Als eerste heb ik de Corner gebaseerde tracking geprobeerd te implementeren.
+    Hiervoor heeft opencv een functie en demo voor, welke ik gebruikt heb om mee te testen.
+    Een probleem waar ik snel tegen aan liep is dat het lastig was om zelf punten aan te wijzen die het algoritme moest volgen.
+    Dit is logisch, gezien het hele idee is dat een preprocessing stap goede punten selecteerd. 
+    Dit maakte het werk echter wel lastiger omdat precies de gezichtsfeatures die getrackt moesten worden, niet geselecteerd werden. 
+    De functie die de punten selecteerd heeft een hoop parameters en hiermee is gespeeld in de hoop toch goede punten te vinden in intressante gebieden als de wenkbrouwen.
+    De voornaamste binnen het gezicht gevonden punten waren op de rand met de ogen, gezien het grote contrast tussen huid, oogwit, de pupil en iris.
+    Hier onder is te zien dat zelfs met deze sterke punten tracking nogsteeds erg lastig was. 
+    \newline
+    \todo{vervangen met de correcte fotos }
+    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
+    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
+    \newline
+    De punten zijn wat moeilijk te zien omdat de kleuren niet vel zijn maar dit zijn twee frames van de output waar je kan zien dat de getrackte punten versprongen zijn over het oog
+    \newline
+    Nadat dit eerste algoritme niet goed bleek te werken is er gewerkt aan het full frame tracking algoritme. 
+    Deze bleek lastiger te implementeren en dus is \emph{\citet{pyflow}} \todo{fix this} gebruikt om dit te testen. 
+    Helaas is deze library slecht gedocumenteerd en om een onbekende reden duurde het ook onredelijk lang om individele frames te analyseren.
+    Deze library is een wrapper en dus is naar de bron gegaan, namelijk een dlib functie die de optical flow visualisaties van hele videos kan maken.
+    Echter bleek ook snel al dat hier problemen mee zouden komen. 
+    Onderstaands zijn enkele frames uit de output van deze functie te zien, en hier is duidelijk te zien hoe soms de beweging van de wenkbrouwen wel zichtbaar is, en hoe deze soms verdwijnt.
+    Dit maakte ook dit algoritme helaas ongeschikt voor het volgen van facial features.
+    \todo{vervangen met de correcte fotos }
+    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
+    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
+
+    \newline
+    De voornaamste reden van de ondervonden problemen lijkt te zijn dat het vervormen van het gezicht, wat is wat we willen registeren, te veel verschil oplevert in de textuur van de huid.
+    Zo wordt optical flow veel gebruikt in stabalisatie algoritme om bewegingen van een scene te bepalen, echter is die scene meestal statisch. 
+    Op het moment dat wij dan gezichtsfeatures willen volgen gaat dit om dynamische situaties.
+    Vooral onder imprefecte belichting levert rimpeling van de huid nieuwe schaduwen en highlights op op de huid. 
+    Dit is natuurlijk desastreus voor een algoritme dat in essentie pixelwaarde probeert te volgen over verloop van tijd, gezien deze waarde constant veranderen 
+
 
     \section{Conclusie en Discussie}\label{sec:conclusie-en-discussie}
 
@@ -381,9 +434,6 @@
     Wel is de indruk gewekt dat, alhoewel de methode met landmark detection in de huidige implementatie niet toereikend is,
     de optical flow methode los van de implementatie ook niet goed zou werken. Dit denken wij, omdat de problemen waar wij met optical
     flow tegenaan zijn gelopen gerelateerd zijn aan het lage contrast tussen gezichtsvlakken, en niet aan de implementatie zelf.
-
-
-
 
 
     \subsection{Vergelijking camera's}
@@ -409,13 +459,16 @@
 
 
 
+
     \section{Aanbevelingen en Suggesties voor verder onderzoek}\label{sec:aanbevelingen2}
     Omdat uit dit onderzoek geen beschreven werkende implementatie is voortgekomen, en wij niet denken dat wij met dit onderzoek alle
     mogelijkheden voor pijndetectie op basis van Vision hebben uitgeput, raden wij een lezer
-    aan om een vervolgonderzoek te organiseren als zij daarin geïnteresseerd zijn.
+    aan om een vervolgonderzoek te organiseren als zij daarin geïnteresseerd zijn. 
 
-    \paragraph{Andere methoden} Een eerste mogelijke vervolgonderzoek zou niet besproken methoden beschrijven. Alhoewel wij deze niet hebben kunnen
-    vinden verwachten wij dat er meer methoden zijn om door middel van Computer Vision een pijndetectie-algoritme te implementeren.
+
+    \paragraph{Andere methoden} Een eerste mogelijke vervolgonderzoek zou naar waarschijnlijkheid niet besproken methoden beschrijven of combinaties waar wij geen tijd en gelegenheid voor hebben gevonden.
+    Alhoewel wij deze niet hebben kunnen vinden binnen onze research periode verwachten wij dat er meer methoden zijn om door middel van Computer Vision een pijndetectie-algoritme te implementeren. 
+    Ook is het misschien mogelijk om een beter functionerende versie van optical tracking te vinden, gezien hier meer literatuur voor beschrikbaar is dan we de tijd hebben gehad om door te spitten.
 
     \paragraph{Landmark Detection} Verder zou de lezer een onderzoek kunnen starten wat
     gaat over het verbeteren van de op landmarkdetectie gebaseerde methode. Onze gekozen implementatie zou
@@ -423,10 +476,14 @@
     Een vervolgonderzoek zou dan kunnen gaan over het gebruik van 3D pose estimation, waarbij de houding van het hoofd
     in 3d ruimte geschat wordt, om zo metingen te kunnen corrigeren door middel van matrix translaties, om zo altijd te
     rekenen alsof het slachtoffer recht in de camera kijkt.
+    Een andere suggestie is om optical flow te gebruiken om deze correcties te detecteren.
+    Gezien aanwezige codebases en demos zou dit een logische volgende stap kunnen zijn.
 
     \paragraph{Optical Flow} Er is nog veel te lezen over optical flow methodes en hoe je deze effectief implementeert.
     Wij hebben hierover een \emph{\citet{Readinglist} Reading list} gevonden.
-    Hier staan op dit moment 72 artikels in over optical flow technieken.
+    Hier staan op dit moment 72 artikels in over optical flow technieken. 
+    Dit is zeker geen complete lijst met onderzoeken maar is zeker wel intressant lees materiaal.
+
 
     \paragraph{Pixy2} Ondanks dat de pixy camera geen gezichtskenmerken kan herkennen, is het misschien wel mogelijk om een algoritme efficienter te laten werken door de pixy voorwerk te laten doen.
     Er kan onderzocht worden of het mogelijk is met de Pixy om oninteressante gebieden uit te sluiten van berekening in een algoritme.
@@ -553,32 +610,35 @@
 
     \paragraph{Embedded capaciteit}
     De berekening die uitgevoerd moeten worden zijn een heleboel relatief simpele operaties.
-    Een embedded systeem zou hier relatief lang over doen (seconden), maar het is zeker niet onmogelijk.
+    Een embedded systeem zou hier zeker wel relatief lang over doen (elke seconden), maar het is zeker niet onmogelijk.
     De precieze capaciteiten moeten worden vast gesteld met testen maar we hebben vertrouwen dat het mogelijk is om deze module te draaien op een Raspberry Pi.
 
     \paragraph{Maximale geschatte effectieve afstand}
     Je hebt geen hoge resolutie nodig om de gezichtseigenschappen te kunnen traceren met optical flow.
     Om deze methode goed uit te kunnen voeren op een embedded systeem wil je bij voorkeur een volledig gezicht zonder achtergrond.
     Om dit voor elkaar te krijgen zou je moeten het gezicht moeten uitvergroten.
-    Op lage kwaliteit cameras levert dit meer ruis op, wat problemen levert in optical flow berekening.
+    Op lage kwaliteit cameras levert dit meer ruis op, dit levert wel problemen op in optical flow berekening vanwege de instabiliteit van de gevolgde pixel.
     De benodigde berekeningen kunnen tot ongeveer 200x200 pixels uitgevoerd worden en met een standaard wide angle camera zou dit tot enkele meters haalbaar moeten zijn.
 
     \paragraph{Kosten vereiste specifieke apparatuur}
-    We hebben hiervoor een camera (20 euro) en Raspberry Pi minimaal model 3B+ (35 euro), maar liever een model 4B (40 euro).
+    We hebben hiervoor een camera (20 euro) en Raspberry Pi minimaal model 3B+ (35 euro), maar liever een model 4B (40 euro). 
+    De voorkeur van Pi type komt van de wens om een zo krachtig mogelijke processor te hebben. 
 
     \paragraph{Haalbaarheid}
-    Wij zijn twijfelachtig over de werkelijke Haalbaarheid van deze methode, gezien de complexiteit van implementatie.
+    Wij zijn twijfelachtig over de werkelijke haalbaarheid van deze methode, gezien de complexiteit van implementatie.
     Het zou haalbaar moeten zijn als we een paar voorwaarden hebben:
     \begin{itemize}
         \item Goed belichte, hoog contrast en laag ruis input beeld.
         \item In het input beeld alleen het gezicht met gezichtseigenschappen al getagt.
     \end{itemize}
+    Een ander tevoorzien probleem zou kunnen zijn het gevolg van de vertrekking van de huid tijdens beweging. 
+    Bijvoorbeeld tijdens het vertrekken van je wenkbrouwen komen erboven meer rimpels omdat je huid op elkaar wordt gedrukt. 
+    Dit zou als gevolgen hebben dat er schaduwen onstaan en deze zouden de optical flow berekeningen kunnen verwarren. 
 
     \paragraph{Mogelijke implementatie}
     Een mogelijke implementatie zou berusten op enige bestaande libaries zoals libd of opencv.
     Dit omdat de implementatie van deze methode complex is en we het werk dat wij moeten doen zo veel mogelijk willen inperken tot wat nog niet bestaat.
-    Dubbel werk doen is nooit handig, en al helemaal niet als het werk dat je wel moet doen zo complex is.
-
+    Dubbel werk doen is nooit handig, en al helemaal niet als het werk dat je wel moet doen buiten bekende perken ligt en waarschijnlijk zeer complex is.
 
     \bibliography{Include/Main}
 
