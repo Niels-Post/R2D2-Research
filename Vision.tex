@@ -398,13 +398,13 @@
     Dit maakte het werk echter wel lastiger omdat precies de gezichtsfeatures die getrackt moesten worden, niet geselecteerd werden. 
     De functie die de punten selecteerd heeft een hoop parameters en hiermee is gespeeld in de hoop toch goede punten te vinden in intressante gebieden als de wenkbrouwen.
     De voornaamste binnen het gezicht gevonden punten waren op de rand met de ogen, gezien het grote contrast tussen huid, oogwit, de pupil en iris.
-    Hier onder is te zien dat zelfs met deze sterke punten tracking nogsteeds erg lastig was. 
+    Hier onder is te zien dat zelfs met deze sterke punten tracking nogsteeds erg lastig was omdat de oogleden bepaalde punten bedekte. 
+    Ook na het volledig heropenen van de ogen waren deze punten verloren, zoals te zien in de laatste foto. 
     \newline
-    \todo{vervangen met de correcte fotos }
-    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
-    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
+    \includegraphics[width=0.6\linewidth]{Images/path21.png}
+    \includegraphics[width=0.6\linewidth]{Images/path22.png}
+    \includegraphics[width=0.6\linewidth]{Images/path23.png}
     \newline
-    De punten zijn wat moeilijk te zien omdat de kleuren niet vel zijn maar dit zijn twee frames van de output waar je kan zien dat de getrackte punten versprongen zijn over het oog
     \newline
     Nadat dit eerste algoritme niet goed bleek te werken is er gewerkt aan het full frame tracking algoritme. 
     Deze bleek lastiger te implementeren en dus is \emph{\citet{pyflow}} \todo{fix this} gebruikt om dit te testen. 
@@ -413,9 +413,8 @@
     Echter bleek ook snel al dat hier problemen mee zouden komen. 
     Onderstaands zijn enkele frames uit de output van deze functie te zien, en hier is duidelijk te zien hoe soms de beweging van de wenkbrouwen wel zichtbaar is, en hoe deze soms verdwijnt.
     Dit maakte ook dit algoritme helaas ongeschikt voor het volgen van facial features.
-    \todo{vervangen met de correcte fotos }
-    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
-    \includegraphics[width=0.6\linewidth]{Images/Probleem_landmark.png}
+    \includegraphics[width=0.6\linewidth]{Images/opticalflow1.png}
+    \includegraphics[width=0.6\linewidth]{Images/opticalflow2.png}
 
     \newline
     De voornaamste reden van de ondervonden problemen lijkt te zijn dat het vervormen van het gezicht, wat is wat we willen registeren, te veel verschil oplevert in de textuur van de huid.
